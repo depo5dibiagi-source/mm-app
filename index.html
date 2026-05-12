@@ -85,8 +85,10 @@ function val(id){return el(id)?el(id).value:'';}
 function inp(id,v){if(el(id))el(id).value=v;}
 
 function stPT(tipo){
-const hD=new Date(hoy());
-return Math.max(0,(D.pt||[]).filter(mv=>mv.tipo===tipo&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0));
+var hD=new Date(hoy());
+var tot=0;
+(D.pt||[]).forEach(function(mv){if(mv.tipo===tipo&&new Date(mv.fecha)<=hD)tot+=mv.dir===‘in’?mv.pal:-mv.pal;});
+return Math.max(0,tot);
 }
 function stCli(cid){
 return Math.max(0,(D.movCli||[]).filter(m=>m.clienteId===cid).reduce((s,m)=>s+(m.dir===‘in’?m.pal:-m.pal),0));
@@ -208,29 +210,29 @@ const esFrio=OP.tipo&&OP.tipo.includes(‘frio’);
 const tipoMer=esFrio?‘frio’:‘seco’;
 const stS=stPT(tipoMer);
 const ocDisp=[…new Set((D.mp||[]).filter(r=>r.tipo===tipoMer&&!r.fe).map(r=>r.oc))].sort();
-const tit=esMp?`${OP.operacion==='ingreso'?'Ingreso':'Egreso'} MP ${esFrio?'Fría':'Seca'}`:esPt?`${OP.operacion==='ingreso'?'Ingreso':'Egreso'} PT ${esFrio?'Frío':'Seco'}`:`${OP.operacion==='ingreso'?'Ingreso':'Egreso'} — ${OP.clienteNom}`;
+const tit=esMp?`${OP.operacion==='ingreso'?'Ingreso':'Egreso'} MP ${esFrio?'Fría':'Seca'}`:esPt?`${OP.operacion==='ingreso'?'Ingreso':'Egreso'} PT ${esFrio?'Frío':'Seco'}`:`${OP.operacion==='ingreso'?'Ingreso':'Egreso'} - ${OP.clienteNom}`;
 setOpTit(tit);
 
 let html=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e5e5;padding:20px;margin-top:8px"> <div style="font-size:16px;font-weight:700;margin-bottom:16px">${tit}</div>`;
 
 if(esMp&&OP.operacion===‘ingreso’){
-html+=`<div class="g2"><div class="fg"><label>Orden de compra *</label><input id="f-oc" placeholder="OC-2025-001"></div> <div class="fg"><label>Fecha *</label><input id="f-fi" type="date" value="${hoy()}"></div></div> <div class="fg"><label>Producto *</label><input id="f-prod" placeholder="Ej: Harina de trigo" oninput="syncProd(this.value)"></div> <div class="fg"><label>Lotes *</label> <div style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee"> <div id="lotes-cont"></div> <button class="btn" style="width:100%;margin-top:6px;border-style:dashed;font-size:12px" onclick="addLoteOP()">+ Agregar lote</button> </div></div> <div class="fg"><label>Zona</label><select id="f-zona"><option value="">— Sin asignar —</option><option value="almacenaje">🏪 Almacenaje</option><option value="armado">📦 Armado de pedidos</option></select></div> <div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1..."></div>`;
+html+=`<div class="g2"><div class="fg"><label>Orden de compra *</label><input id="f-oc" placeholder="OC-2025-001"></div> <div class="fg"><label>Fecha *</label><input id="f-fi" type="date" value="${hoy()}"></div></div> <div class="fg"><label>Producto *</label><input id="f-prod" placeholder="Ej: Harina de trigo" oninput="syncProd(this.value)"></div> <div class="fg"><label>Lotes *</label> <div style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee"> <div id="lotes-cont"></div> <button class="btn" style="width:100%;margin-top:6px;border-style:dashed;font-size:12px" onclick="addLoteOP()">+ Agregar lote</button> </div></div> <div class="fg"><label>Zona</label><select id="f-zona"><option value="">- Sin asignar -</option><option value="almacenaje">🏪 Almacenaje</option><option value="armado">📦 Armado de pedidos</option></select></div> <div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1..."></div>`;
 lotesOP=[{nom:’’,cod:’’}];
 }
 else if(esMp&&OP.operacion===‘egreso’){
 const opts=ocDisp.map(o=>`<option value="${o}">OC: ${o}</option>`).join(’’);
-html+=`<div class="fg"><label>Orden de compra *</label> <select id="f-oc-eg" onchange="cargarLotesEg('${tipoMer}')"><option value="">— Elegí una OC —</option>${opts}</select></div> <div id="lotes-eg-wrap" style="display:none;margin-bottom:14px"> <label style="font-size:12px;color:#666;font-weight:500;display:block;margin-bottom:8px">Lotes a egresar *</label> <div id="lotes-eg-list" style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee"></div> </div> <div class="fg"><label>Fecha de egreso *</label><input id="f-fe" type="date" value="${hoy()}"></div>`;
+html+=`<div class="fg"><label>Orden de compra *</label> <select id="f-oc-eg" onchange="cargarLotesEg('${tipoMer}')"><option value="">- Elegí una OC -</option>${opts}</select></div> <div id="lotes-eg-wrap" style="display:none;margin-bottom:14px"> <label style="font-size:12px;color:#666;font-weight:500;display:block;margin-bottom:8px">Lotes a egresar *</label> <div id="lotes-eg-list" style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee"></div> </div> <div class="fg"><label>Fecha de egreso *</label><input id="f-fe" type="date" value="${hoy()}"></div>`;
 lotesSelOP=[];
 }
 else if(esPt&&OP.operacion===‘ingreso’){
-html+=`<div class="info-box"><strong>Tipo:</strong> ${esFrio?'❄️ Frío':'☀️ Seco'} &nbsp;|&nbsp; <strong>Stock actual:</strong> <span style="color:#185FA5;font-weight:700">${stS} posiciones</span></div> <div class="g2"><div class="fg"><label>Remito *</label><input id="f-rem" placeholder="REM-001"></div> <div class="fg"><label>Fecha *</label><input id="f-fi" type="date" value="${hoy()}"></div></div> <div class="fg"><label>Transporte</label><input id="f-tra" placeholder="Transporte..."></div> <div class="fg"><label>posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div> <div class="fg"><label>Zona</label><select id="f-zona"><option value="">— Sin asignar —</option><option value="almacenaje">🏪 Almacenaje</option><option value="armado">📦 Armado de pedidos</option></select></div> <div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1..."></div>`;
+html+=`<div class="info-box"><strong>Tipo:</strong> ${esFrio?'❄️ Frío':'☀️ Seco'} &nbsp;|&nbsp; <strong>Stock actual:</strong> <span style="color:#185FA5;font-weight:700">${stS} posiciones</span></div> <div class="g2"><div class="fg"><label>Remito *</label><input id="f-rem" placeholder="REM-001"></div> <div class="fg"><label>Fecha *</label><input id="f-fi" type="date" value="${hoy()}"></div></div> <div class="fg"><label>Transporte</label><input id="f-tra" placeholder="Transporte..."></div> <div class="fg"><label>posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div> <div class="fg"><label>Zona</label><select id="f-zona"><option value="">- Sin asignar -</option><option value="almacenaje">🏪 Almacenaje</option><option value="armado">📦 Armado de pedidos</option></select></div> <div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1..."></div>`;
 }
 else if(esPt&&OP.operacion===‘egreso’){
 html+=`<div class="info-box"><strong>Tipo:</strong> ${esFrio?'❄️ Frío':'☀️ Seco'} &nbsp;|&nbsp; <strong>Stock:</strong> <span style="color:#185FA5;font-weight:700">${stS} posiciones</span></div> <div class="g2"><div class="fg"><label>Fecha *</label><input id="f-fe" type="date" value="${hoy()}"></div> <div class="fg"><label>posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div></div> <div class="g2"><div class="fg"><label>Remito salida *</label><input id="f-rs" placeholder="RS-001"></div> <div class="fg"><label>Ord. entrega *</label><input id="f-oe" placeholder="OE-001"></div></div> <div class="g2"><div class="fg"><label>Ord. compra *</label><input id="f-oc" placeholder="OC-001"></div> <div class="fg"><label>Transporte</label><input id="f-tra" placeholder="Transporte..."></div></div>`;
 }
 else if(esCli){
 const stC=stCli(OP.cliente);
-html+=`${OP.operacion==='egreso'?`<div class="info-box"><strong>Stock actual:</strong> <span style="color:#185FA5;font-weight:700">${stC} posiciones</span></div>`:''} <div class="g2"><div class="fg"><label>Fecha *</label><input id="f-fecha" type="date" value="${hoy()}"></div> <div class="fg"><label>posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div></div> <div class="fg"><label>Descripción</label><input id="f-desc" placeholder="Ej: Mangueras 16mm"></div> <div class="fg"><label>Remito</label><input id="f-rem" placeholder="REM-001"></div> ${OP.operacion==='ingreso'?`<div class="fg"><label>Zona</label><select id="f-zona"><option value="">— Sin asignar —</option><option value="almacenaje">🏪 Almacenaje</option><option value="armado">📦 Armado de pedidos</option></select></div>
+html+=`${OP.operacion==='egreso'?`<div class="info-box"><strong>Stock actual:</strong> <span style="color:#185FA5;font-weight:700">${stC} posiciones</span></div>`:''} <div class="g2"><div class="fg"><label>Fecha *</label><input id="f-fecha" type="date" value="${hoy()}"></div> <div class="fg"><label>posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div></div> <div class="fg"><label>Descripción</label><input id="f-desc" placeholder="Ej: Mangueras 16mm"></div> <div class="fg"><label>Remito</label><input id="f-rem" placeholder="REM-001"></div> ${OP.operacion==='ingreso'?`<div class="fg"><label>Zona</label><select id="f-zona"><option value="">- Sin asignar -</option><option value="almacenaje">🏪 Almacenaje</option><option value="armado">📦 Armado de pedidos</option></select></div>
 <div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1..."></div>`:''}`;
 }
 
@@ -267,7 +269,7 @@ if(!oc){wrap.style.display=‘none’;return;}
 const lotes=D.mp.filter(r=>r.oc===oc&&r.tipo===tipo&&!r.fe);
 if(!lotes.length){wrap.style.display=‘none’;return;}
 lotesSelOP=[];
-list.innerHTML=lotes.map(r=>` <div id="lote-card-${r._id}" onclick="togLoteCard('${r._id}')" style="display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:9px;margin-bottom:8px;border:2px solid #eee;cursor:pointer;transition:.1s;-webkit-tap-highlight-color:rgba(0,0,0,.05)"> <div id="lote-chk-${r._id}" style="width:24px;height:24px;border-radius:6px;border:2px solid #ddd;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:#fff"></div> <div style="flex:1"> <div style="font-weight:600;font-size:14px">${r.nom}</div> <div style="font-size:12px;color:#888">Lote: ${r.cod||'—'} · Ingresó: ${r.fi}</div> </div> </div>`).join(’’);
+list.innerHTML=lotes.map(r=>` <div id="lote-card-${r._id}" onclick="togLoteCard('${r._id}')" style="display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:9px;margin-bottom:8px;border:2px solid #eee;cursor:pointer;transition:.1s;-webkit-tap-highlight-color:rgba(0,0,0,.05)"> <div id="lote-chk-${r._id}" style="width:24px;height:24px;border-radius:6px;border:2px solid #ddd;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:#fff"></div> <div style="flex:1"> <div style="font-weight:600;font-size:14px">${r.nom}</div> <div style="font-size:12px;color:#888">Lote: ${r.cod||'-'} · Ingresó: ${r.fi}</div> </div> </div>`).join(’’);
 wrap.style.display=‘block’;
 }
 
@@ -347,7 +349,7 @@ const fecha=val(‘f-fecha’),pal=parseInt(val(‘f-pal’))||0;
 if(!fecha||pal<1)return er(‘Completá fecha y posiciones’);
 if(OP.operacion===‘egreso’&&pal>stCli(OP.cliente))return er(`posiciones insuficientes. Stock: ${stCli(OP.cliente)}`);
 D.movCli=[…D.movCli,{_id:uid(),clienteId:OP.cliente,fecha,dir:OP.operacion===‘ingreso’?‘in’:‘out’,pal,desc:val(‘f-desc’),remito:val(‘f-rem’),zona:OP.operacion===‘ingreso’?val(‘f-zona’):’’,fila:OP.operacion===‘ingreso’?val(‘f-fila’):’’,operario:OP.operario||’’,ts:new Date().toISOString()}];
-sv();opExito(`${OP.operacion==='ingreso'?'Ingreso':'Egreso'} de ${pal} posiciones — ${OP.clienteNom}`);
+sv();opExito(`${OP.operacion==='ingreso'?'Ingreso':'Egreso'} de ${pal} posiciones - ${OP.clienteNom}`);
 }
 }
 
@@ -465,7 +467,7 @@ return `<div class="rr"><span>🏭 ${c.nom}</span><span>${$c(tot)}</span></div>`
 }).join(’’);
 
 return `<div style="background:linear-gradient(135deg,#185FA5,#0C447C);border-radius:12px;padding:18px;margin-bottom:14px;color:#fff">
-<div style="font-size:13px;opacity:.85;margin-bottom:12px">🏢 Total del depósito — ${R.mes}</div>
+<div style="font-size:13px;opacity:.85;margin-bottom:12px">🏢 Total del depósito - ${R.mes}</div>
 <div style="font-size:28px;font-weight:700;margin-bottom:3px">${$c(R.gran)}</div>
 <div style="font-size:11px;opacity:.7;margin-bottom:14px">Suma de todos los clientes</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -475,8 +477,8 @@ return `<div style="background:linear-gradient(135deg,#185FA5,#0C447C);border-ra
 
 <div class="met-grid">
 <div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">Lotes MP activos</div><div style="font-size:20px;font-weight:600">${R.mpActivos}</div></div>
-<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">PT Seco — stock</div><div style="font-size:20px;font-weight:600">${R.stS}</div><div style="font-size:11px;color:#aaa">posiciones</div></div>
-<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">PT Frío — stock</div><div style="font-size:20px;font-weight:600">${R.stF}</div><div style="font-size:11px;color:#aaa">posiciones</div></div>
+<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">PT Seco - stock</div><div style="font-size:20px;font-weight:600">${R.stS}</div><div style="font-size:11px;color:#aaa">posiciones</div></div>
+<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">PT Frío - stock</div><div style="font-size:20px;font-weight:600">${R.stF}</div><div style="font-size:11px;color:#aaa">posiciones</div></div>
 <div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">Camiones mes</div><div style="font-size:20px;font-weight:600">${R.cams.length}</div></div>
 </div>
 <div class="card"><div class="card-tit"><span>🌽 Arcor</span><span>${$c(R.arcorTotal)}</span></div>
@@ -583,15 +585,15 @@ return `<div class="card">
 ${items.map(txt=>`<span style="background:#F0F4F9;border-radius:20px;padding:4px 11px;font-size:12px;color:#185FA5;font-weight:600">${txt}</span>`).join('')}
 </div>
 ${mpSecaInD.length||mpSecaOutD.length?`<div style="font-size:11px;color:#888;font-weight:600;margin-bottom:5px;text-transform:uppercase">📦 MP Seca</div>
-${mpSecaInD.map(r=>`<div class="mov-card mov-in"><span style="font-size:18px">📥</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nom}</div><div style="font-size:11px;color:#555">OC: ${r.oc} · Lote: ${r.cod||'—'}${r.zona?' · '+r.zona:''}${r.fila?' · Fila '+r.fila:''}${r.operario?' · '+r.operario:''}</div></div><span style="color:#2E7D32;font-weight:700;font-size:12px">Ingresó</span></div>`).join('')}
-${mpSecaOutD.map(r=>`<div class="mov-card mov-out"><span style="font-size:18px">📤</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nom}</div><div style="font-size:11px;color:#555">OC: ${r.oc} · Lote: ${r.cod||'—'}${r.operario?' · '+r.operario:''}</div></div><span style="color:#C62828;font-weight:700;font-size:12px">Egresó</span></div>`).join('')}`:''}
+${mpSecaInD.map(r=>`<div class="mov-card mov-in"><span style="font-size:18px">📥</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nom}</div><div style="font-size:11px;color:#555">OC: ${r.oc} · Lote: ${r.cod||'-'}${r.zona?' · '+r.zona:''}${r.fila?' · Fila '+r.fila:''}${r.operario?' · '+r.operario:''}</div></div><span style="color:#2E7D32;font-weight:700;font-size:12px">Ingresó</span></div>`).join('')}
+${mpSecaOutD.map(r=>`<div class="mov-card mov-out"><span style="font-size:18px">📤</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nom}</div><div style="font-size:11px;color:#555">OC: ${r.oc} · Lote: ${r.cod||'-'}${r.operario?' · '+r.operario:''}</div></div><span style="color:#C62828;font-weight:700;font-size:12px">Egresó</span></div>`).join('')}`:''}
 ${mpFrioInD.length||mpFrioOutD.length?`<div style="font-size:11px;color:#888;font-weight:600;margin-bottom:5px;margin-top:8px;text-transform:uppercase">❄️ MP Fría</div>
-${mpFrioInD.map(r=>`<div class="mov-card mov-in"><span style="font-size:18px">📥</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nom}</div><div style="font-size:11px;color:#555">OC: ${r.oc} · Lote: ${r.cod||'—'}${r.zona?' · '+r.zona:''}${r.fila?' · Fila '+r.fila:''}${r.operario?' · '+r.operario:''}</div></div><span style="color:#2E7D32;font-weight:700;font-size:12px">Ingresó</span></div>`).join('')}
-${mpFrioOutD.map(r=>`<div class="mov-card mov-out"><span style="font-size:18px">📤</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nom}</div><div style="font-size:11px;color:#555">OC: ${r.oc} · Lote: ${r.cod||'—'}${r.operario?' · '+r.operario:''}</div></div><span style="color:#C62828;font-weight:700;font-size:12px">Egresó</span></div>`).join('')}`:''}
+${mpFrioInD.map(r=>`<div class="mov-card mov-in"><span style="font-size:18px">📥</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nom}</div><div style="font-size:11px;color:#555">OC: ${r.oc} · Lote: ${r.cod||'-'}${r.zona?' · '+r.zona:''}${r.fila?' · Fila '+r.fila:''}${r.operario?' · '+r.operario:''}</div></div><span style="color:#2E7D32;font-weight:700;font-size:12px">Ingresó</span></div>`).join('')}
+${mpFrioOutD.map(r=>`<div class="mov-card mov-out"><span style="font-size:18px">📤</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nom}</div><div style="font-size:11px;color:#555">OC: ${r.oc} · Lote: ${r.cod||'-'}${r.operario?' · '+r.operario:''}</div></div><span style="color:#C62828;font-weight:700;font-size:12px">Egresó</span></div>`).join('')}`:''}
 ${ptSecaInD.length||ptSecaOutD.length?`<div style="font-size:11px;color:#888;font-weight:600;margin-bottom:5px;margin-top:8px;text-transform:uppercase">☀️ PT Seco</div>
-${[...ptSecaInD,...ptSecaOutD].map(mv=>`<div class="mov-card ${mv.dir==='in'?'mov-in':'mov-out'}"><span style="font-size:18px">${mv.dir==='in'?'📥':'📤'}</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${mv.pal} posiciones</div><div style="font-size:11px;color:#555">Remito: ${mv.remito||'—'}${mv.oc?' · OC: '+mv.oc:''}${mv.operario?' · '+mv.operario:''}</div></div><span style="font-weight:700;font-size:13px;color:${mv.dir==='in'?'#2E7D32':'#C62828'}">${mv.dir==='in'?'+':'-'}${mv.pal}</span></div>`).join('')}`:''}
+${[...ptSecaInD,...ptSecaOutD].map(mv=>`<div class="mov-card ${mv.dir==='in'?'mov-in':'mov-out'}"><span style="font-size:18px">${mv.dir==='in'?'📥':'📤'}</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${mv.pal} posiciones</div><div style="font-size:11px;color:#555">Remito: ${mv.remito||'-'}${mv.oc?' · OC: '+mv.oc:''}${mv.operario?' · '+mv.operario:''}</div></div><span style="font-weight:700;font-size:13px;color:${mv.dir==='in'?'#2E7D32':'#C62828'}">${mv.dir==='in'?'+':'-'}${mv.pal}</span></div>`).join('')}`:''}
 ${ptFrioInD.length||ptFrioOutD.length?`<div style="font-size:11px;color:#888;font-weight:600;margin-bottom:5px;margin-top:8px;text-transform:uppercase">❄️ PT Frío</div>
-${[...ptFrioInD,...ptFrioOutD].map(mv=>`<div class="mov-card ${mv.dir==='in'?'mov-in':'mov-out'}"><span style="font-size:18px">${mv.dir==='in'?'📥':'📤'}</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${mv.pal} posiciones</div><div style="font-size:11px;color:#555">Remito: ${mv.remito||'—'}${mv.oc?' · OC: '+mv.oc:''}${mv.operario?' · '+mv.operario:''}</div></div><span style="font-weight:700;font-size:13px;color:${mv.dir==='in'?'#2E7D32':'#C62828'}">${mv.dir==='in'?'+':'-'}${mv.pal}</span></div>`).join('')}`:''}
+${[...ptFrioInD,...ptFrioOutD].map(mv=>`<div class="mov-card ${mv.dir==='in'?'mov-in':'mov-out'}"><span style="font-size:18px">${mv.dir==='in'?'📥':'📤'}</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${mv.pal} posiciones</div><div style="font-size:11px;color:#555">Remito: ${mv.remito||'-'}${mv.oc?' · OC: '+mv.oc:''}${mv.operario?' · '+mv.operario:''}</div></div><span style="font-weight:700;font-size:13px;color:${mv.dir==='in'?'#2E7D32':'#C62828'}">${mv.dir==='in'?'+':'-'}${mv.pal}</span></div>`).join('')}`:''}
 </div>`;
 ```
 
@@ -600,7 +602,7 @@ ${[...ptFrioInD,...ptFrioOutD].map(mv=>`<div class="mov-card ${mv.dir==='in'?'mo
 return `
 
 <div class="card">
-<div class="card-tit">📊 Totales del mes — ${mes}</div>
+<div class="card-tit">📊 Totales del mes - ${mes}</div>
 ${filaTot('📦','MP Seca',mpSecaIn,mpSecaOut,'lotes')}
 ${filaTot('❄️','MP Fría',mpFrioIn,mpFrioOut,'lotes')}
 ${filaTot('☀️','PT Seco',ptSecaIn,ptSecaOut,'pos.')}
@@ -609,7 +611,7 @@ ${(!mpSecaIn&&!mpSecaOut&&!mpFrioIn&&!mpFrioOut&&!ptSecaIn&&!ptSecaOut&&!ptFrioI
 </div>
 
 <div style="margin-bottom:8px">
-<div style="font-size:13px;font-weight:600;color:#555;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px">📈 Comparativa — hoy vs hace 7 días</div>
+<div style="font-size:13px;font-weight:600;color:#555;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px">📈 Comparativa - hoy vs hace 7 días</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
 ${compCard('📦','MP Seca',ahora.mpS,semana.mpS,'lotes')}
 ${compCard('❄️','MP Fría',ahora.mpF,semana.mpF,'lotes')}
@@ -628,11 +630,11 @@ const mpSeco=(D.mp||[]).filter(r=>r.tipo===‘seco’&&!r.fe);
 const mpFrio=(D.mp||[]).filter(r=>r.tipo===‘frio’&&!r.fe);
 const stS=stPT(‘seco’),stF=stPT(‘frio’);
 
-function loteCard(r){return `<div class="lote-card"> <div style="font-weight:600;font-size:13px;margin-bottom:3px">${r.nom} <span style="font-size:11px;color:#aaa">[${r.cod||'—'}]</span></div> <div style="font-size:12px;color:#888;margin-bottom:8px">OC: ${r.oc} · Ingresó: ${r.fi}${r.zona?' · '+r.zona:''}${r.fila?' · Fila '+r.fila:''}${r.operario?' · Cargó: '+r.operario:''}</div> <div style="display:flex;gap:8px"> <button class="btn" style="font-size:12px;padding:6px 12px" onclick="stkEgr('${r._id}')">↩ Egresar</button> <button class="btn btnr" style="font-size:12px;padding:6px 12px" onclick="stkElMP('${r._id}')">🗑️</button> </div></div>`;}
+function loteCard(r){return `<div class="lote-card"> <div style="font-weight:600;font-size:13px;margin-bottom:3px">${r.nom} <span style="font-size:11px;color:#aaa">[${r.cod||'-'}]</span></div> <div style="font-size:12px;color:#888;margin-bottom:8px">OC: ${r.oc} · Ingresó: ${r.fi}${r.zona?' · '+r.zona:''}${r.fila?' · Fila '+r.fila:''}${r.operario?' · Cargó: '+r.operario:''}</div> <div style="display:flex;gap:8px"> <button class="btn" style="font-size:12px;padding:6px 12px" onclick="stkEgr('${r._id}')">↩ Egresar</button> <button class="btn btnr" style="font-size:12px;padding:6px 12px" onclick="stkElMP('${r._id}')">🗑️</button> </div></div>`;}
 
 function ptRows(tipo){return(D.pt||[]).filter(mv=>mv.tipo===tipo).sort((a,b)=>b.fecha&&b.fecha.localeCompare(a.fecha)).slice(0,15).map(mv=>` <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px"> <div><span style="font-weight:600;color:${mv.dir==='in'?'#2E7D32':'#C62828'}">${mv.dir==='in'?'↓ Ingreso':'↑ Egreso'}</span> <span style="color:#888;margin-left:8px">${mv.pal} p. · ${mv.fecha}</span></div> <button class="btn btnr" style="font-size:11px;padding:3px 8px" onclick="stkElPT('${mv._id}')">🗑️</button> </div>`).join(’’);}
 
-b.innerHTML=` <div class="card"><div class="card-tit">📦 MP Seca — ${mpSeco.length} lotes</div> ${mpSeco.length?mpSeco.map(loteCard).join(''):'<div class="empty">Sin lotes activos</div>'} </div> <div class="card"><div class="card-tit">❄️ MP Fría — ${mpFrio.length} lotes</div> ${mpFrio.length?mpFrio.map(loteCard).join(''):'<div class="empty">Sin lotes activos</div>'} </div> <div class="card"><div class="card-tit">📬 PT Seco — Stock: ${stS} posiciones</div> ${ptRows('seco')||'<div class="empty">Sin movimientos</div>'} </div> <div class="card"><div class="card-tit">❄️ PT Frío — Stock: ${stF} posiciones</div> ${ptRows('frio')||'<div class="empty">Sin movimientos</div>'} </div>`;
+b.innerHTML=` <div class="card"><div class="card-tit">📦 MP Seca - ${mpSeco.length} lotes</div> ${mpSeco.length?mpSeco.map(loteCard).join(''):'<div class="empty">Sin lotes activos</div>'} </div> <div class="card"><div class="card-tit">❄️ MP Fría - ${mpFrio.length} lotes</div> ${mpFrio.length?mpFrio.map(loteCard).join(''):'<div class="empty">Sin lotes activos</div>'} </div> <div class="card"><div class="card-tit">📬 PT Seco - Stock: ${stS} posiciones</div> ${ptRows('seco')||'<div class="empty">Sin movimientos</div>'} </div> <div class="card"><div class="card-tit">❄️ PT Frío - Stock: ${stF} posiciones</div> ${ptRows('frio')||'<div class="empty">Sin movimientos</div>'} </div>`;
 }
 function stkEgr(id){const fe=prompt(‘Fecha de egreso (AAAA-MM-DD):’,hoy());if(!fe)return;D.mp=D.mp.map(r=>r._id===id?{…r,fe,movs:[…(r.movs||[]),{fe}]}:r);sv();renderAdmTab();}
 function stkElMP(id){if(confirm(’¿Eliminar este lote?’)){D.mp=D.mp.filter(x=>x._id!==id);sv();renderAdmTab();}}
@@ -643,7 +645,7 @@ function htmlTarifas(){
 const t=D.tar;
 const cliHtml=(D.clientes||[]).map(c=>`<div class="lote-card"> <div style="font-weight:600;font-size:13px">🏭 ${c.nom}</div> ${c.desc?`<div style="font-size:12px;color:#888">${c.desc}</div>`:''} <div style="font-size:11px;color:#888;margin:4px 0 8px">Est: $${c.tarEst||0}/p/día · Mov in: $${c.tarMI||0} · Mov out: $${c.tarME||0}</div> <div style="display:flex;gap:8px"> <button class="btn" style="font-size:12px;padding:6px 12px" onclick="editCli('${c._id}')">✏️ Editar</button> <button class="btn btnr" style="font-size:12px;padding:6px 12px" onclick="elimCli('${c._id}')">🗑️</button> </div></div>`).join(’’);
 
-return `<div class="card"><div class="card-tit">📊 Estadía Arcor — tarifa diaria ($)</div>
+return `<div class="card"><div class="card-tit">📊 Estadía Arcor - tarifa diaria ($)</div>
 <div class="g2">
 <div class="fg"><label>MP Seca / lote</label><input id="t-mps" type="number" value="${t.mps||''}" placeholder="0.00"></div>
 <div class="fg"><label>MP Fría / lote</label><input id="t-mpf" type="number" value="${t.mpf||''}" placeholder="0.00"></div>
@@ -727,7 +729,7 @@ const revenueM2=R.gran>0?(R.gran/M2_TOTAL).toFixed(2):0;
 function barColor(pct){return pct>90?’#C62828’:pct>70?’#E65100’:’#185FA5’;}
 
 return `<div style="margin-top:14px">
-<div style="font-size:13px;font-weight:600;color:#555;margin-bottom:10px;text-transform:uppercase;letter-spacing:.3px">📐 Indicadores de capacidad — hoy</div>
+<div style="font-size:13px;font-weight:600;color:#555;margin-bottom:10px;text-transform:uppercase;letter-spacing:.3px">📐 Indicadores de capacidad - hoy</div>
 <div class="indicador-grid">
 <div class="ind-card">
 <div class="ind-label">Posiciones ocupadas</div>
@@ -780,14 +782,14 @@ Object.keys(ocMap).forEach(oc=>ocMap[oc].sort((a,b)=>a.fi.localeCompare(b.fi)));
 
 if(!Object.keys(ocMap).length) return ‘<div class="card"><div class="empty">Sin lotes de MP para este mes.</div></div>’;
 
-// Cabecera de días — solo hasta hoy
+// Cabecera de días - solo hasta hoy
 const diasCab=diasArr.filter(fd=>fd<=hoy());
 const thDias=diasCab.map(fd=>{
 const d=parseInt(fd.slice(8));
 return `<th style="min-width:30px;font-size:10px">${d}</th>`;
 }).join(’’);
 
-let html=`<div style="font-size:12px;color:#888;margin-bottom:10px">Mes: <strong>${mes}</strong> — Verde: activo, Rojo: egresó ese día, Gris: no estaba</div>
+let html=`<div style="font-size:12px;color:#888;margin-bottom:10px">Mes: <strong>${mes}</strong> - Verde: activo, Rojo: egresó ese día, Gris: no estaba</div>
 
 <div class="planilla-wrap">
 <table class="planilla-table">
@@ -795,18 +797,18 @@ let html=`<div style="font-size:12px;color:#888;margin-bottom:10px">Mes: <strong
 <tbody>`;
 
 Object.entries(ocMap).forEach(([oc,lotes])=>{
-html+=`<tr><td class="oc-hdr" colspan="${diasCab.length+2}">OC: ${oc} — ${lotes.length} lote(s)</td></tr>`;
+html+=`<tr><td class="oc-hdr" colspan="${diasCab.length+2}">OC: ${oc} - ${lotes.length} lote(s)</td></tr>`;
 lotes.forEach(r=>{
 const celdas=diasCab.map(fd=>{
 const dia=new Date(fd);
 const fi=new Date(r.fi);
 const fe=r.fe?new Date(r.fe):null;
-if(dia<fi) return ‘<td class="cel-no">—</td>’;
+if(dia<fi) return ‘<td class="cel-no">-</td>’;
 if(fe&&fd===r.fe) return ‘<td class="cel-eg">↩</td>’; // egresó ese día
-if(fe&&dia>fe) return ‘<td class="cel-no">—</td>’;
+if(fe&&dia>fe) return ‘<td class="cel-no">-</td>’;
 return ‘<td class="cel-ok">✓</td>’;
 }).join(’’);
-html+=`<tr> <td class="lote-cel"><strong>${r.nom}</strong><br><span style="font-size:10px;color:#888">[${r.cod||'—'}] ${r.tipo==='frio'?'❄️':'☀️'}</span></td> ${celdas} <td style="font-size:11px;color:#888">${r.operario||'—'}</td> </tr>`;
+html+=`<tr> <td class="lote-cel"><strong>${r.nom}</strong><br><span style="font-size:10px;color:#888">[${r.cod||'-'}] ${r.tipo==='frio'?'❄️':'☀️'}</span></td> ${celdas} <td style="font-size:11px;color:#888">${r.operario||'-'}</td> </tr>`;
 });
 });
 
@@ -818,7 +820,7 @@ html+=`</tbody></table></div>
 <span><span style="display:inline-block;width:14px;height:14px;background:#F5F5F5;border:1px solid #eee;border-radius:3px;margin-right:4px;vertical-align:middle"></span>No estaba</span>
 </div>`;
 
-return `<div class="card"><div class="card-tit">📅 Seguimiento de lotes por día — ${mes}</div>${html}</div>`;
+return `<div class="card"><div class="card-tit">📅 Seguimiento de lotes por día - ${mes}</div>${html}</div>`;
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
