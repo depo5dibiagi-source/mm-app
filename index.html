@@ -195,16 +195,16 @@ const nom=val(‘op-operario’).trim();
 if(!nom){alert(‘Ingresá tu nombre antes de continuar’);el(‘op-operario’).focus();return;}
 OP.operario=nom;OP.operacion=op;OP.paso=1;renderOpPaso();
 }
-function opSelCli(id,nom){OP.cliente=id;OP.clienteNom=nom;document.querySelectorAll(’.chip’).forEach(c=>c.classList.remove(‘on’));event.target.closest(’.chip’)?.classList.add(‘on’);}
+function opSelCli(id,nom){OP.cliente=id;OP.clienteNom=nom;document.querySelectorAll(’.chip’).forEach(c=>c.classList.remove(‘on’));event.target.closest(’.chip’)&&event.target.closest(’.chip’).classList.add(‘on’);}
 function opSelMer(m){OP.mercaderia=m;OP.paso=2;renderOpPaso();}
 function opSelTipo(t){OP.tipo=OP.mercaderia+’-’+t;OP.paso=3;renderOpPaso();}
 
 function renderFormOP(){
 const b=el(‘op-body’);
-const esMp=OP.(tipo&&tipo.startsWith(‘mp’);
-const esPt=OP.(tipo&&tipo.startsWith(‘pt’);
+const esMp=OP.tipo&&OP.tipo.startsWith(‘mp’);
+const esPt=OP.tipo&&OP.tipo.startsWith(‘pt’);
 const esCli=OP.cliente!==‘arcor’;
-const esFrio=OP.(tipo&&tipo.includes(‘frio’);
+const esFrio=OP.tipo&&OP.tipo.includes(‘frio’);
 const tipoMer=esFrio?‘frio’:‘seco’;
 const stS=stPT(tipoMer);
 const ocDisp=[…new Set((D.mp||[]).filter(r=>r.tipo===tipoMer&&!r.fe).map(r=>r.oc))].sort();
@@ -301,7 +301,7 @@ try{
 const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(’,’)[1]);r.onerror=rej;r.readAsDataURL(file);});
 const resp=await fetch(‘https://api.anthropic.com/v1/messages’,{method:‘POST’,headers:{‘Content-Type’:‘application/json’},body:JSON.stringify({model:‘claude-sonnet-4-20250514’,max_tokens:200,messages:[{role:‘user’,content:[{type:‘image’,source:{type:‘base64’,media_type:file.type||‘image/jpeg’,data:b64}},{type:‘text’,text:‘Foto de sticker de posición. Extraé LOTE y CÓDIGO. Respondé SOLO JSON: {“lote”:”…”,“codigo”:”…”} Sin nada más.’}]}]})});
 const d=await resp.json();
-const parsed=JSON.parse((d.content?.[0]?.text||’{}’).replace(/`json|`/g,’’).trim());
+const parsed=JSON.parse((d.content&&d.content[0]&&d.content[0].text||’{}’).replace(/`json|`/g,’’).trim());
 lotesOP[idx]={nom:parsed.lote||lotesOP[idx].nom,cod:parsed.codigo||lotesOP[idx].cod};
 renderLotesOP();
 }catch(e){alert(‘No pude leer el sticker. Cargalo a mano.’);}
@@ -310,8 +310,8 @@ finally{lbl.innerHTML=‘📷<input type="file" accept="image/*" capture="enviro
 
 function opGuardar(){
 const err=el(‘op-err’);err.style.display=‘none’;
-const esMp=OP.(tipo&&tipo.startsWith(‘mp’),esPt=OP.(tipo&&tipo.startsWith(‘pt’),esCli=OP.cliente!==‘arcor’;
-const esFrio=OP.(tipo&&tipo.includes(‘frio’),tipoMer=esFrio?‘frio’:‘seco’;
+const esMp=OP.tipo&&OP.tipo.startsWith(‘mp’),esPt=OP.tipo&&OP.tipo.startsWith(‘pt’),esCli=OP.cliente!==‘arcor’;
+const esFrio=OP.tipo&&OP.tipo.includes(‘frio’),tipoMer=esFrio?‘frio’:‘seco’;
 function er(msg){err.textContent=msg;err.style.display=‘block’;}
 
 if(esMp&&OP.operacion===‘ingreso’){
@@ -706,7 +706,7 @@ const c=D.clientes.find(x=>x._id===id);if(!c)return;
 inp(‘cli-eid’,id);inp(‘cli-nom’,c.nom);inp(‘cli-desc’,c.desc||’’);inp(‘cli-est’,c.tarEst||’’);inp(‘cli-mi’,c.tarMI||’’);inp(‘cli-me’,c.tarME||’’);
 if(el(‘form-cli-tit’))el(‘form-cli-tit’).textContent=‘✏️ Editar cliente’;
 if(el(‘cli-cancel’))el(‘cli-cancel’).style.display=’’;
-el(‘cli-nom’)?.scrollIntoView({behavior:‘smooth’});
+el(‘cli-nom’)&&el(‘cli-nom’).scrollIntoView({behavior:‘smooth’});
 }
 function cancelCli(){inp(‘cli-eid’,’’);inp(‘cli-nom’,’’);inp(‘cli-desc’,’’);inp(‘cli-est’,’’);inp(‘cli-mi’,’’);inp(‘cli-me’,’’);if(el(‘form-cli-tit’))el(‘form-cli-tit’).textContent=‘➕ Nuevo cliente’;if(el(‘cli-cancel’))el(‘cli-cancel’).style.display=‘none’;}
 function elimCli(id){if(confirm(’¿Eliminar este cliente?’)){D.clientes=D.clientes.filter(x=>x._id!==id);sv();renderAdmTab();}}
