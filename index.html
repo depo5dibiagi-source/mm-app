@@ -3,1216 +3,1407 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>MM - Deposito</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión Depósito — Arcor</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#F4F4F0;min-height:100vh;font-size:14px}
-input,select,button{font-family:Arial,sans-serif;font-size:14px}
-input,select{width:100%;padding:10px 12px;border:1.5px solid #ccc;border-radius:8px;color:#111;background:#fff;outline:none}
-input:focus,select:focus{border-color:#185FA5}
-.btn{padding:10px 16px;border-radius:8px;border:1.5px solid #ccc;background:#fff;color:#333;cursor:pointer;font-weight:500}
-.btnp{background:#185FA5;color:#fff;border-color:#185FA5}
-.btnr{color:#c62828;border-color:#ffcdd2}
-.card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px 16px;margin-bottom:12px}
-.tit{font-size:13px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #eee}
-.fg{margin-bottom:14px}
-.fg label{display:block;font-size:12px;color:#666;margin-bottom:4px;font-weight:600}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#F4F4F0;color:#1a1a1a;min-height:100vh}
+.hdr{background:#fff;border-bottom:1px solid #e5e5e5;padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50}
+.logo{width:38px;height:38px;background:#185FA5;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#E6F1FB;font-size:13px;font-weight:600;flex-shrink:0}
+.hdr h1{font-size:15px;font-weight:600;color:#111}
+.hdr p{font-size:12px;color:#888;margin-top:1px}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;margin-left:auto;flex-shrink:0}
+.sync-dot.ok{background:#4CAF50}.sync-dot.err{background:#f44336}
+.sync-dot.loading{background:#FF9800;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+nav{display:flex;gap:4px;padding:10px 20px;background:#fff;border-bottom:1px solid #e5e5e5;overflow-x:auto}
+.nb{padding:6px 14px;border-radius:8px;border:1px solid #ddd;background:transparent;color:#555;font-size:13px;cursor:pointer;white-space:nowrap;transition:all .15s}
+.nb.on{background:#185FA5;color:#fff;border-color:#185FA5}
+.nb:hover:not(.on){background:#f5f5f5;color:#111}
+.body{padding:18px 20px;max-width:1100px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.ct{font-size:13px;font-weight:600;color:#111;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #eee}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.hdr{background:#185FA5;padding:14px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
-.htit{color:#fff;font-size:15px;font-weight:700;flex:1}
-.back{width:34px;height:34px;border-radius:8px;border:none;background:rgba(255,255,255,0.2);color:#fff;font-size:18px;cursor:pointer}
-.bdy{padding:16px;max-width:500px;margin:0 auto}
-.opbtn{padding:18px 12px;border-radius:12px;border:2px solid #ddd;background:#fff;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;text-align:center;width:100%}
-.opbtn:active{border-color:#185FA5;background:#EEF4FF}
-.rr{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #eee}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.met{background:#F8F8F6;border-radius:8px;padding:13px 15px;border:1px solid #eee}
+.ml{font-size:11px;color:#888;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+.mv{font-size:22px;font-weight:600;color:#111}
+.ms{font-size:11px;color:#aaa;margin-top:2px}
+label{display:block;font-size:12px;color:#666;margin-bottom:4px;font-weight:500}
+input[type=text],input[type=number],input[type=date],input[type=month],select{width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;color:#111;background:#fff;outline:none;transition:border .15s}
+input:focus,select:focus{border-color:#185FA5}
+.fg{margin-bottom:11px}
+.btn{padding:7px 16px;border-radius:7px;border:1px solid #ddd;background:#fff;color:#333;font-size:13px;cursor:pointer;transition:all .15s;font-weight:500}
+.btn:hover{background:#f5f5f5}
+.btnp{background:#185FA5;color:#fff;border-color:#185FA5}.btnp:hover{background:#0C447C}
+.mf{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.mf label{margin:0;font-size:13px;font-weight:500}
+.mf input,.mf select{width:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;font-weight:600;color:#888;padding:8px 10px;border-bottom:1px solid #eee;text-transform:uppercase;letter-spacing:.3px}
+td{padding:8px 10px;border-bottom:1px solid #f0f0f0;color:#222;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#F8F8F6}
+.bdg{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.bdf{background:#E6F1FB;color:#185FA5}.bds{background:#FFF3E0;color:#E65100}
+.bdi{background:#E8F5E9;color:#2E7D32}.bdo{background:#FFEBEE;color:#C62828}
+.oc-blk{margin-bottom:20px}
+.oc-h{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:#F0F4F9;border-radius:8px;margin-bottom:6px;border-left:3px solid #185FA5}
+.oc-n{width:24px;height:24px;background:#185FA5;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0}
+.oc-tt{font-size:13px;font-weight:600;color:#111}
+.oc-ss{font-size:11px;color:#888;margin-top:1px}
+.res{background:#F8F8F6;border:1px solid #e0e0e0;border-radius:10px;padding:16px 18px;margin-top:14px}
+.rr{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;color:#333;border-bottom:1px solid #eee}
 .rr:last-child{border-bottom:none}
-.rrgrand{font-weight:700;font-size:14px;border-top:2px solid #ddd;border-bottom:none;padding-top:8px;margin-top:4px}
-.nav{display:flex;gap:4px;padding:8px 14px;background:#fff;border-bottom:1px solid #ddd;overflow-x:auto}
-.ntab{padding:5px 12px;border-radius:7px;border:1px solid #ddd;background:transparent;color:#555;font-size:12px;cursor:pointer;white-space:nowrap}
-.ntab.on{background:#185FA5;color:#fff;border-color:#185FA5}
-.firma{position:fixed;bottom:12px;right:14px;font-size:13px;color:#185FA5;z-index:9999;pointer-events:none;font-style:italic;font-weight:700;background:rgba(255,255,255,0.92);padding:4px 10px;border-radius:20px}
-.mcard{background:#F8F8F6;border-radius:8px;padding:12px 14px;margin-bottom:8px;border:1px solid #eee}
-.min{background:#E8F5E9}
-.mout{background:#FFEBEE}
-.mrow{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:8px;margin-bottom:6px}
-.empty{text-align:center;padding:24px;color:#bbb;font-size:13px}
-.errbox{background:#FFEBEE;color:#c62828;border-radius:7px;padding:8px 12px;font-size:13px;margin-bottom:10px}
-.infobox{background:#EEF4FF;border:1px solid #B5D4F4;border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:13px}
-.loterow{display:grid;grid-template-columns:1fr 1fr auto auto;gap:6px;margin-bottom:8px;align-items:center}
-.linp{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:13px;width:100%}
-.camb{display:flex;align-items:center;justify-content:center;width:36px;height:38px;border:1.5px solid #185FA5;border-radius:6px;background:#EEF4FF;cursor:pointer;flex-shrink:0;font-size:18px}
-.delb{width:32px;height:38px;border:1px solid #ffcdd2;background:#fff;color:#c62828;border-radius:6px;cursor:pointer;flex-shrink:0}
-.chip{padding:6px 14px;border-radius:20px;border:2px solid #ddd;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#555}
-.chip.on{border-color:#185FA5;background:#EEF4FF;color:#185FA5}
-.metgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
-.met{background:#F8F8F6;border-radius:8px;padding:12px 14px;border:1px solid #eee}
-.adh{background:#fff;border-bottom:1px solid #ddd;padding:12px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
-.indgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
-.indcard{background:#fff;border-radius:10px;padding:14px;border:1px solid #ddd;text-align:center}
-.indlbl{font-size:11px;color:#888;text-transform:uppercase;margin-bottom:6px}
-.indval{font-size:22px;font-weight:700;margin-bottom:4px}
-.bar{background:#eee;border-radius:99px;height:8px;margin:4px 0}
-.bfill{height:8px;border-radius:99px}
-.pla{overflow-x:auto}
-.platbl{border-collapse:collapse;font-size:11px;min-width:600px}
-.platbl th,.platbl td{border:1px solid #ddd;padding:4px 6px;white-space:nowrap}
-.platbl th{background:#EEF4FF;font-weight:700;text-align:center}
-.plalote{background:#fff;text-align:left;min-width:120px;position:sticky;left:0;z-index:2;border-right:2px solid #B5D4F4}
-.plaoc{background:#185FA5;color:#fff;font-weight:700;text-align:left}
-.celok{background:#C8E6C9;text-align:center;color:#2E7D32;font-weight:700}
-.celn{background:#F5F5F5;text-align:center;color:#ccc}
-.celeg{background:#FFCDD2;text-align:center;color:#C62828;font-weight:700}
+.rr.grand{font-weight:700;font-size:15px;color:#111;border-top:2px solid #ddd;margin-top:6px;padding-top:12px;border-bottom:none}
+.empty{text-align:center;padding:32px;color:#bbb;font-size:13px}
+.ovx{overflow-x:auto}
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:999;align-items:center;justify-content:center}
+.overlay.on{display:flex}
+.mdl{background:#fff;border-radius:12px;border:1px solid #e0e0e0;padding:22px 24px;width:480px;max-width:95vw;max-height:92vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.12)}
+.mdt{font-size:15px;font-weight:700;margin-bottom:16px;color:#111}
+.mrow{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.tag-saved{font-size:12px;color:#2E7D32;margin-left:10px;display:none}
+.resumen-card{background:linear-gradient(135deg,#185FA5 0%,#0C447C 100%);border-radius:12px;padding:20px;margin-bottom:16px;color:#fff}
+.resumen-card h2{font-size:14px;font-weight:600;opacity:.85;margin-bottom:16px}
+.resumen-total-big{font-size:32px;font-weight:700;margin-bottom:4px}
+.resumen-sub{font-size:12px;opacity:.75;margin-bottom:16px}
+.resumen-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.resumen-item{background:rgba(255,255,255,.15);border-radius:8px;padding:10px 12px}
+.resumen-item-label{font-size:11px;opacity:.8;margin-bottom:3px}
+.resumen-item-val{font-size:16px;font-weight:600}
+.accion-btn{padding:4px 8px;border-radius:5px;border:1px solid #ddd;background:#fff;color:#555;font-size:11px;cursor:pointer;margin-left:4px}
+.accion-btn.del{color:#c62828;border-color:#ffcdd2}
 </style>
 </head>
 <body>
-<div class="firma">&#169; Marcos Manchon</div>
-<div id="app"></div>
-<script>
-var K = 'mm_v4';
-function baseD() {
-return {
-tar: {mps:0,mpf:0,pts:0,ptf:0,mi:0,me:0,cam:0,pin:'1234'},
-mp: [], pt: [], clientes: [], movCli: []
+
+<div class="hdr">
+<div class="logo">DEP</div>
+<div><h1>Gestión Depósito — Arcor</h1><p>Estadías, movimientos y facturación mensual</p></div>
+<div class="sync-dot loading" id="syncDot" title="Conectando..."></div>
+</div>
+
+<nav>
+<button class="nb on" onclick="nav('res',this)">📊 Resumen</button>
+<button class="nb" onclick="nav('mps',this)">📦 MP Seca</button>
+<button class="nb" onclick="nav('mpf',this)">❄️ MP Fría</button>
+<button class="nb" onclick="nav('pt',this)">📬 PT</button>
+<button class="nb" onclick="nav('cam',this)">🚛 Camiones</button>
+<button class="nb" onclick="nav('stk',this)">🗂️ Stock</button>
+<button class="nb" onclick="nav('rep',this)">📋 Reporte</button>
+<button class="nb" onclick="nav('cli',this)">🏭 Otros clientes</button>
+<button class="nb" onclick="nav('cfg',this)">⚙️ Tarifas</button>
+</nav>
+
+<div class="body">
+
+<div class="sec on" id="sec-res">
+<div class="mf"><label>Mes:</label><input type="month" id="mes-res" onchange="rRes()"></div>
+<div id="resumen-content"></div>
+</div>
+
+<div class="sec" id="sec-mps">
+<div class="g4" id="met-mps"></div>
+<div class="mf">
+<label>Mes:</label><input type="month" id="mes-mps" onchange="rMPS()">
+<button class="btn btnp" onclick="aM('imo','seco')">+ Ingreso</button>
+<button class="btn" onclick="aM('emo','seco')">↩ Egreso</button>
+</div>
+<div id="plan-mps"></div><div id="res-mps"></div>
+</div>
+
+<div class="sec" id="sec-mpf">
+<div class="g4" id="met-mpf"></div>
+<div class="mf">
+<label>Mes:</label><input type="month" id="mes-mpf" onchange="rMPF()">
+<button class="btn btnp" onclick="aM('imo','frio')">+ Ingreso</button>
+<button class="btn" onclick="aM('emo','frio')">↩ Egreso</button>
+</div>
+<div id="plan-mpf"></div><div id="res-mpf"></div>
+</div>
+
+<div class="sec" id="sec-pt">
+<div class="g4" id="met-pt"></div>
+<div class="mf">
+<label>Mes:</label><input type="month" id="mes-pt" onchange="rPT()">
+<button class="btn btnp" onclick="aM('ipt')">+ Ingreso PT</button>
+<button class="btn" onclick="aM('ept')">↩ Egreso PT</button>
+</div>
+<div id="plan-pt"></div><div id="res-pt"></div>
+</div>
+
+<div class="sec" id="sec-cam">
+<div class="g4" id="met-cam"></div>
+<div class="mf"><label>Mes:</label><input type="month" id="mes-cam" onchange="rCam()"></div>
+<div id="plan-cam"></div><div id="res-cam"></div>
+</div>
+
+<!-- STOCK -->
+
+<div class="sec" id="sec-stk">
+<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+<select id="stk-filtro-oc" onchange="rStk()" style="flex:1;min-width:140px;padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+<option value="">Todas las OC</option>
+</select>
+<input type="text" id="stk-filtro-lote" oninput="rStk()" placeholder="🔍 Buscar lote..." style="flex:1;min-width:140px;padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+<button class="btn" onclick="document.getElementById('stk-filtro-oc').value='';document.getElementById('stk-filtro-lote').value='';rStk()">✕ Limpiar</button>
+</div>
+<div id="stk-content"></div>
+</div>
+
+<!-- REPORTE -->
+
+<div class="sec" id="sec-rep">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
+<label style="font-size:13px;font-weight:500;margin:0">Mes:</label>
+<input type="month" id="mes-rep" onchange="rRep()" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+<button class="btn btnp" onclick="exportarExcel()" style="margin-left:auto">📥 Exportar Excel</button>
+</div>
+<div id="rep-content"></div>
+</div>
+
+<!-- OTROS CLIENTES -->
+
+<div class="sec" id="sec-cli">
+<div class="g4" id="met-cli"></div>
+<div class="mf">
+<label>Mes:</label>
+<input type="month" id="mes-cli" onchange="rCli()">
+<select id="cli-sel" onchange="rCli()" style="width:auto;padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+<option value="">— Todos los clientes —</option>
+</select>
+<button class="btn btnp" onclick="abrirNuevoCliente()">+ Cliente</button>
+<button class="btn btnp" onclick="aM('icli')">+ Ingreso</button>
+<button class="btn" onclick="aM('ecli')">↩ Egreso</button>
+</div>
+<div id="plan-cli"></div>
+<div id="res-cli"></div>
+</div>
+
+<div class="sec" id="sec-cfg">
+<div class="card">
+<div class="ct">📊 Estadía diaria por pallet ($)</div>
+<div class="g2">
+<div class="fg"><label>MP Seca</label><input type="number" id="t-mps" step="0.01" placeholder="0.00"></div>
+<div class="fg"><label>MP Fría</label><input type="number" id="t-mpf" step="0.01" placeholder="0.00"></div>
+<div class="fg"><label>PT Seco</label><input type="number" id="t-pts" step="0.01" placeholder="0.00"></div>
+<div class="fg"><label>PT Frío</label><input type="number" id="t-ptf" step="0.01" placeholder="0.00"></div>
+</div>
+</div>
+<div class="card">
+<div class="ct">🔄 Movimientos por pallet ($)</div>
+<div class="g2">
+<div class="fg"><label>Ingreso</label><input type="number" id="t-mi" step="0.01" placeholder="0.00"></div>
+<div class="fg"><label>Egreso</label><input type="number" id="t-me" step="0.01" placeholder="0.00"></div>
+</div>
+</div>
+<div class="card">
+<div class="ct">🚛 Por camión cargado (PT)</div>
+<div class="fg" style="max-width:280px"><label>Por camión</label><input type="number" id="t-cam" step="0.01" placeholder="0.00"></div>
+</div>
+<button class="btn btnp" onclick="gTar()">Guardar tarifas</button>
+<span class="tag-saved" id="tSv">✓ Guardado</span>
+</div>
+</div>
+
+<!-- MODAL INGRESO MP -->
+
+<div class="overlay" id="ov-imo">
+<div class="mdl">
+<div class="mdt" id="tit-imo">Ingreso Materia Prima</div>
+<input type="hidden" id="imo-tipo"><input type="hidden" id="imo-id">
+<div class="g2">
+<div class="fg"><label>Orden de compra *</label><input type="text" id="imo-oc" placeholder="OC-2025-001"></div>
+<div class="fg"><label>Fecha de ingreso *</label><input type="date" id="imo-fi"></div>
+</div>
+<div class="fg"><label>Producto *</label><input type="text" id="imo-prod" placeholder="Ej: Harina de trigo" oninput="syncProd()"></div>
+<div style="margin-bottom:6px;margin-top:4px">
+<label style="margin-bottom:8px;display:block">Lotes *</label>
+<div style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee">
+<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-bottom:6px">
+<span style="font-size:11px;color:#888;font-weight:600">NOMBRE LOTE</span>
+<span style="font-size:11px;color:#888;font-weight:600">CÓDIGO</span>
+<span></span>
+</div>
+<div id="lotes-lista"></div>
+<button class="btn" style="font-size:13px;padding:8px 14px;margin-top:6px;width:100%;border-style:dashed" onclick="addLote()">+ Agregar lote</button>
+</div>
+</div>
+<div class="mrow">
+<button class="btn btnp" onclick="gIM()">Guardar ingreso</button>
+<button class="btn" onclick="cM('ov-imo')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL EGRESO MP -->
+
+<div class="overlay" id="ov-emo">
+<div class="mdl">
+<div class="mdt" id="tit-emo">Egreso Materia Prima</div>
+<input type="hidden" id="emo-tipo">
+<div class="fg">
+<label>Orden de compra *</label>
+<select id="emo-oc-sel" onchange="selEmoOC()">
+<option value="">— Elegí una OC —</option>
+</select>
+</div>
+<div id="emo-lotes-wrap" style="display:none">
+<label style="margin-bottom:8px;display:block">Lotes a egresar *</label>
+<div id="emo-lotes-lista" style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee;margin-bottom:12px"></div>
+</div>
+<div class="fg"><label>Fecha de egreso *</label><input type="date" id="emo-fe"></div>
+<div class="mrow">
+<button class="btn btnp" onclick="gEM()">Confirmar egreso</button>
+<button class="btn" onclick="cM('ov-emo')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL INGRESO PT -->
+
+<div class="overlay" id="ov-ipt">
+<div class="mdl">
+<div class="mdt" id="tit-ipt">Ingreso Producto Terminado</div>
+<input type="hidden" id="ipt-id">
+<div class="g2">
+<div class="fg"><label>Remito *</label><input type="text" id="ipt-rem" placeholder="REM-2025-001"></div>
+<div class="fg"><label>Fecha *</label><input type="date" id="ipt-fi"></div>
+</div>
+<div class="g2">
+<div class="fg"><label>Transporte</label><input type="text" id="ipt-tra" placeholder="Transporte El Norte"></div>
+<div class="fg"><label>Tipo *</label><select id="ipt-tipo"><option value="seco">Seco</option><option value="frio">Frío</option></select></div>
+</div>
+<div class="fg"><label>Pallets *</label><input type="number" id="ipt-pal" min="1" placeholder="0"></div>
+<div class="mrow">
+<button class="btn btnp" onclick="gIPT()">Guardar</button>
+<button class="btn" onclick="cM('ov-ipt')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL EGRESO PT -->
+
+<div class="overlay" id="ov-ept">
+<div class="mdl">
+<div class="mdt">Egreso Producto Terminado</div>
+<div id="ept-stock-info" style="background:#F0F4F9;border:1px solid #B5D4F4;border-radius:7px;padding:10px 13px;margin-bottom:12px;font-size:13px"></div>
+<div class="g2">
+<div class="fg"><label>Remito salida *</label><input type="text" id="ept-rs" placeholder="RS-2025-001"></div>
+<div class="fg"><label>Ord. entrega *</label><input type="text" id="ept-oe" placeholder="OE-2025-001"></div>
+</div>
+<div class="g2">
+<div class="fg"><label>Ord. compra *</label><input type="text" id="ept-oc" placeholder="OC-2025-001"></div>
+<div class="fg"><label>Transporte</label><input type="text" id="ept-tra" placeholder="Transporte El Norte"></div>
+</div>
+<div class="g2">
+<div class="fg"><label>Fecha *</label><input type="date" id="ept-fe"></div>
+<div class="fg"><label>Tipo *</label><select id="ept-tipo" onchange="actStockInfo()"><option value="seco">Seco</option><option value="frio">Frío</option></select></div>
+</div>
+<div class="fg"><label>Pallets *</label><input type="number" id="ept-pal" min="1" placeholder="0"></div>
+<div class="mrow">
+<button class="btn btnp" onclick="gEPT()">Guardar egreso</button>
+<button class="btn" onclick="cM('ov-ept')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL EDITAR PT -->
+
+<div class="overlay" id="ov-ept-edit">
+<div class="mdl">
+<div class="mdt">Editar movimiento PT</div>
+<input type="hidden" id="ept-edit-id">
+<div class="g2">
+<div class="fg"><label>Fecha *</label><input type="date" id="ept-edit-fecha"></div>
+<div class="fg"><label>Tipo *</label><select id="ept-edit-tipo"><option value="seco">Seco</option><option value="frio">Frío</option></select></div>
+</div>
+<div class="g2">
+<div class="fg"><label>Dirección</label><select id="ept-edit-dir"><option value="in">Ingreso</option><option value="out">Egreso</option></select></div>
+<div class="fg"><label>Pallets *</label><input type="number" id="ept-edit-pal" min="1"></div>
+</div>
+<div class="g2">
+<div class="fg"><label>Remito</label><input type="text" id="ept-edit-rem"></div>
+<div class="fg"><label>Transporte</label><input type="text" id="ept-edit-tra"></div>
+</div>
+<div class="g2">
+<div class="fg"><label>Ord. entrega</label><input type="text" id="ept-edit-oe"></div>
+<div class="fg"><label>Ord. compra</label><input type="text" id="ept-edit-oc"></div>
+</div>
+<div class="mrow">
+<button class="btn btnp" onclick="gEditPT()">Guardar cambios</button>
+<button class="btn" onclick="cM('ov-ept-edit')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL NUEVO CLIENTE -->
+
+<div class="overlay" id="ov-nuevo-cli">
+<div class="mdl" style="max-width:360px">
+<div class="mdt">Nuevo cliente</div>
+<div class="fg"><label>Nombre del cliente *</label><input type="text" id="nuevo-cli-nom" placeholder="Ej: Netafim"></div>
+<div class="fg"><label>Descripción (opcional)</label><input type="text" id="nuevo-cli-desc" placeholder="Ej: Mangueras de riego"></div>
+<div class="mrow">
+<button class="btn btnp" onclick="guardarNuevoCliente()">Guardar</button>
+<button class="btn" onclick="cM('ov-nuevo-cli')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL INGRESO CLIENTE -->
+
+<div class="overlay" id="ov-icli">
+<div class="mdl">
+<div class="mdt">Ingreso — Otros clientes</div>
+<div class="g2">
+<div class="fg"><label>Cliente *</label>
+<select id="icli-cliente"><option value="">— Elegí cliente —</option></select>
+</div>
+<div class="fg"><label>Fecha *</label><input type="date" id="icli-fecha"></div>
+</div>
+<div class="fg"><label>Descripción / producto</label><input type="text" id="icli-desc" placeholder="Ej: Mangueras 16mm"></div>
+<div class="g2">
+<div class="fg"><label>Remito</label><input type="text" id="icli-remito" placeholder="REM-001"></div>
+<div class="fg"><label>Pallets *</label><input type="number" id="icli-pal" min="1" placeholder="0"></div>
+</div>
+<div class="mrow">
+<button class="btn btnp" onclick="gICli()">Guardar ingreso</button>
+<button class="btn" onclick="cM('ov-icli')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL EGRESO CLIENTE -->
+
+<div class="overlay" id="ov-ecli">
+<div class="mdl">
+<div class="mdt">Egreso — Otros clientes</div>
+<div id="ecli-stock-info" style="background:#F0F4F9;border:1px solid #B5D4F4;border-radius:7px;padding:10px 13px;margin-bottom:12px;font-size:13px"></div>
+<div class="g2">
+<div class="fg"><label>Cliente *</label>
+<select id="ecli-cliente" onchange="actStockCli()"><option value="">— Elegí cliente —</option></select>
+</div>
+<div class="fg"><label>Fecha *</label><input type="date" id="ecli-fecha"></div>
+</div>
+<div class="fg"><label>Remito</label><input type="text" id="ecli-remito" placeholder="REM-001"></div>
+<div class="fg"><label>Pallets *</label><input type="number" id="ecli-pal" min="1" placeholder="0"></div>
+<div class="mrow">
+<button class="btn btnp" onclick="gECli()">Guardar egreso</button>
+<button class="btn" onclick="cM('ov-ecli')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL ACCION STOCK MP -->
+
+<div class="overlay" id="ov-stk-mp">
+<div class="mdl" style="max-width:340px">
+<div class="mdt" id="stk-mp-titulo">Opciones del lote</div>
+<div id="stk-mp-info" style="background:#F0F4F9;border:1px solid #B5D4F4;border-radius:7px;padding:10px 13px;margin-bottom:16px;font-size:13px;line-height:1.7"></div>
+<input type="hidden" id="stk-mp-id">
+<div style="display:flex;flex-direction:column;gap:10px">
+<button class="btn btnp" style="padding:12px;font-size:14px" onclick="stkMPAccion('edit')">✏️ Editar este lote</button>
+<button class="btn" style="padding:12px;font-size:14px" onclick="stkMPAccion('egr')">↩ Marcar como egresado</button>
+<button class="btn" style="padding:12px;font-size:14px;color:#c62828;border-color:#ffcdd2" onclick="stkMPAccion('del')">🗑️ Eliminar este lote</button>
+<button class="btn" style="padding:10px;font-size:13px;color:#888" onclick="cM('ov-stk-mp')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL ACCION STOCK PT -->
+
+<div class="overlay" id="ov-stk-pt">
+<div class="mdl" style="max-width:340px">
+<div class="mdt">Opciones del movimiento</div>
+<div id="stk-pt-info" style="background:#F0F4F9;border:1px solid #B5D4F4;border-radius:7px;padding:10px 13px;margin-bottom:16px;font-size:13px;line-height:1.7"></div>
+<input type="hidden" id="stk-pt-id">
+<div style="display:flex;flex-direction:column;gap:10px">
+<button class="btn btnp" style="padding:12px;font-size:14px" onclick="stkPTAccion('edit')">✏️ Editar este movimiento</button>
+<button class="btn" style="padding:12px;font-size:14px;color:#c62828;border-color:#ffcdd2" onclick="stkPTAccion('del')">🗑️ Eliminar este movimiento</button>
+<button class="btn" style="padding:10px;font-size:13px;color:#888" onclick="cM('ov-stk-pt')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL EGRESO RAPIDO MP -->
+
+<div class="overlay" id="ov-egr-mp">
+<div class="mdl" style="max-width:340px">
+<div class="mdt">Marcar lote como egresado</div>
+<div id="egr-mp-info" style="background:#F0F4F9;border:1px solid #B5D4F4;border-radius:7px;padding:10px 13px;margin-bottom:14px;font-size:13px;line-height:1.7"></div>
+<input type="hidden" id="egr-mp-id">
+<div class="fg"><label>Fecha de egreso *</label><input type="date" id="egr-mp-fe"></div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+<button class="btn btnp" style="padding:12px;font-size:14px" onclick="confirmarEgresoMP()">Confirmar egreso</button>
+<button class="btn" style="padding:10px;font-size:13px;color:#888" onclick="cM('ov-egr-mp')">Cancelar</button>
+</div>
+</div>
+</div>
+
+<script type="module">
+// Firebase init
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, doc, addDoc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = {
+apiKey: "AIzaSyB-TwNtylejYb8OqWHWR8isza0iXg2q1HQ",
+authDomain: "arcor-cdeb5.firebaseapp.com",
+projectId: "arcor-cdeb5",
+storageBucket: "arcor-cdeb5.firebasestorage.app",
+messagingSenderId: "969972193982",
+appId: "1:969972193982:web:75107086a00efcc2c31cef"
 };
-}
-var D = (function() {
-try {
-var s = localStorage.getItem(K);
-if (s) return JSON.parse(s);
-return baseD();
-} catch(e) { return baseD(); }
-})();
-
-function sv() {
-try { localStorage.setItem(K, JSON.stringify(D)); } catch(e) {}
-}
-function uid() { return Date.now() + Math.random().toString(36).slice(2); }
-function hoy() { return new Date().toISOString().slice(0,10); }
-function mes0() { return new Date().toISOString().slice(0,7); }
-function $c(n) {
-return ‘$’ + parseFloat(n || 0).toLocaleString(‘es-AR’, {minimumFractionDigits:2, maximumFractionDigits:2});
-}
-function el(id) { return document.getElementById(id); }
-function gv(id) { return el(id) ? el(id).value : ‘’; }
-function sv2(id, v) { if (el(id)) el(id).value = v; }
-
-function stPT(tipo) {
-var hD = new Date(hoy());
-var tot = 0;
-var list = D.pt || [];
-for (var i = 0; i < list.length; i++) {
-var mv = list[i];
-if (mv.tipo === tipo && new Date(mv.fecha) <= hD) {
-tot += mv.dir === ‘in’ ? mv.pal : -mv.pal;
-}
-}
-return Math.max(0, tot);
-}
-
-function stCli(cid) {
-var tot = 0;
-var list = D.movCli || [];
-for (var i = 0; i < list.length; i++) {
-var m = list[i];
-if (m.clienteId === cid) tot += m.dir === ‘in’ ? m.pal : -m.pal;
-}
-return Math.max(0, tot);
-}
-
-var pantalla = ‘inicio’;
-function ir(p) { pantalla = p; render(); }
-
-function render() {
-try {
-var app = el(‘app’);
-if (!app) return;
-if (pantalla === ‘inicio’) app.innerHTML = htmlInicio();
-else if (pantalla === ‘pin’) app.innerHTML = htmlPin();
-else if (pantalla === ‘operario’) renderOperario();
-else if (pantalla === ‘admin’) renderAdmin();
-} catch(e) {
-var app2 = el(‘app’);
-if (app2) app2.innerHTML = ’<div style="padding:20px;color:red"><b>Error:</b> ’ + e.message + ‘</div>’;
-}
-}
-
-// ===== INICIO =====
-function htmlInicio() {
-var cli = ‘’;
-for (var i = 0; i < D.clientes.length; i++) {
-var c = D.clientes[i];
-cli += ‘<button onclick=“selOp('op_cli_'’ + “+’”+c._id+”’+’)” +
-’ style=“width:100%;max-width:340px;padding:16px;border-radius:12px;border:2px solid #ddd;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:left;margin-bottom:12px”>’ +
-‘<div style="width:44px;height:44px;border-radius:10px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏭</div>’ +
-‘<div><div style="font-size:16px;font-weight:700">’ + c.nom + ‘</div>’ +
-‘<div style="font-size:12px;color:#888;margin-top:2px">’ + (c.desc || ‘Otro cliente’) + ‘</div></div></button>’;
-}
-return ‘<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;background:#F4F4F0">’ +
-‘<div style="width:64px;height:64px;background:#185FA5;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:700">MM</div>’ +
-‘<div style="text-align:center"><div style="font-size:22px;font-weight:700">MM</div><div style="font-size:13px;color:#888;margin-top:4px">Gestion de deposito</div></div>’ +
-‘<button onclick="ir(\'operario\')" style="width:100%;max-width:340px;padding:18px;border-radius:12px;border:2px solid #ddd;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:left">’ +
-‘<div style="width:44px;height:44px;border-radius:10px;background:#EEF4FF;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">👷</div>’ +
-‘<div><div style="font-size:16px;font-weight:700">Operario</div><div style="font-size:12px;color:#888;margin-top:2px">Registrar ingresos y egresos</div></div></button>’ +
-‘<button onclick="ir(\'pin\')" style="width:100%;max-width:340px;padding:18px;border-radius:12px;border:2px solid #ddd;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:left">’ +
-‘<div style="width:44px;height:44px;border-radius:10px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">📊</div>’ +
-‘<div><div style="font-size:16px;font-weight:700">Administrador</div><div style="font-size:12px;color:#888;margin-top:2px">Reportes, stock y tarifas</div></div></button>’ +
-‘</div>’;
-}
-
-// ===== PIN =====
-function htmlPin() {
-return ‘<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;background:#F4F4F0">’ +
-‘<div style="font-size:48px">🔐</div>’ +
-‘<div style="font-size:18px;font-weight:700">Acceso Administrador</div>’ +
-‘<div style="font-size:13px;color:#888">Ingresa tu PIN</div>’ +
-’<input id=“pin-inp” type=“password” inputmode=“numeric” maxlength=“6” placeholder=”****” oninput=“chkPin(this.value)” ’ +
-‘style=“font-size:28px;letter-spacing:12px;text-align:center;width:180px;padding:12px;border:2px solid #ddd;border-radius:10px”>’ +
-‘<div id="pin-err" style="color:#c62828;font-size:13px;display:none">PIN incorrecto</div>’ +
-‘<span onclick="ir(\'inicio\')" style="font-size:13px;color:#888;cursor:pointer;text-decoration:underline">Volver</span></div>’;
-}
-function chkPin(v) {
-var p = String(D.tar.pin || ‘1234’);
-if (v.length >= p.length && v === p) { ir(‘admin’); }
-else if (v.length >= 4) { if (el(‘pin-err’)) el(‘pin-err’).style.display = ‘block’; if (el(‘pin-inp’)) el(‘pin-inp’).value = ‘’; }
-}
-
-// ===== OPERARIO =====
-var OP = {paso:0, cliente:‘arcor’, clienteNom:‘Arcor’, operacion:null, mercaderia:null, tipo:null, operario:’’};
-var lotesOP = [{nom:’’,cod:’’}];
-var lotesSelOP = [];
-
-function resetOP() {
-OP = {paso:0, cliente:‘arcor’, clienteNom:‘Arcor’, operacion:null, mercaderia:null, tipo:null, operario:’’};
-lotesOP = [{nom:’’,cod:’’}];
-lotesSelOP = [];
-}
-
-function renderOperario() {
-var stepHtml = OP.paso > 0 ? ’<div style="color:rgba(255,255,255,0.7);font-size:12px">Paso ’ + OP.paso + ‘</div>’ : ‘’;
-el(‘app’).innerHTML =
-‘<div style="min-height:100vh;background:#F4F4F0;display:flex;flex-direction:column">’ +
-‘<div class="hdr"><button class="back" onclick="opVolver()">←</button>’ +
-‘<div class="htit" id="op-tit">Nueva operacion</div>’ + stepHtml + ‘</div>’ +
-‘<div class="bdy" id="op-body"></div></div>’;
-renderOpPaso();
-}
-
-function opVolver() {
-if (OP.paso === 0) { ir(‘inicio’); return; }
-OP.paso–;
-if (OP.paso === 0) { OP.operacion = null; OP.mercaderia = null; OP.tipo = null; }
-else if (OP.paso === 1) { OP.mercaderia = null; OP.tipo = null; }
-else if (OP.paso === 2) { OP.tipo = null; }
-renderOpPaso();
-}
-
-function stit(t) { if (el(‘op-tit’)) el(‘op-tit’).textContent = t; }
-
-function renderOpPaso() {
-var b = el(‘op-body’);
-if (!b) return;
-if (OP.paso === 0) {
-stit(‘Nueva operacion’);
-var chips = ’<button class="chip' + (OP.cliente === 'arcor' ? ' on' : '') + '" onclick="opCli(\'arcor\',\'Arcor\')">🌿 Arcor</button> ’;
-for (var i = 0; i < D.clientes.length; i++) {
-var c = D.clientes[i];
-chips += ’<button class="chip' + (OP.cliente === c._id ? ' on' : '') + '" onclick="opCli(\'' + c._id + '\',\'' + c.nom.replace(/'/g,'') + '\')">🏭 ’ + c.nom + ’</button> ’;
-}
-b.innerHTML =
-‘<div class="fg"><label>Tu nombre o legajo *</label><input id="op-nom" placeholder="Ej: Juan Perez" value="' + (OP.operario||'') + '"></div>’ +
-‘<div style="font-size:18px;font-weight:700;margin-bottom:6px">Que operacion?</div>’ +
-‘<div style="font-size:13px;color:#888;margin-bottom:16px">Entra o sale mercaderia?</div>’ +
-‘<div class="g2" style="margin-bottom:20px">’ +
-‘<button class="opbtn" onclick="opOp(\'ingreso\')"><span style="font-size:34px">📥</span><span style="font-size:15px;font-weight:700">Ingreso</span><span style="font-size:12px;color:#888">Entra al deposito</span></button>’ +
-‘<button class="opbtn" onclick="opOp(\'egreso\')"><span style="font-size:34px">📤</span><span style="font-size:15px;font-weight:700">Egreso</span><span style="font-size:12px;color:#888">Sale del deposito</span></button>’ +
-‘</div>’ +
-(D.clientes.length > 0 ? ‘<div style="font-size:12px;color:#888;margin-bottom:8px;font-weight:600">CLIENTE</div><div style="display:flex;gap:8px;flex-wrap:wrap">’ + chips + ‘</div>’ : ‘’);
-}
-else if (OP.paso === 1) {
-if (OP.cliente !== ‘arcor’) { OP.tipo = ‘cli’; renderFormOP(); return; }
-stit(‘Que mercaderia?’);
-b.innerHTML =
-‘<div style="font-size:18px;font-weight:700;margin-bottom:6px">Que mercaderia?</div>’ +
-‘<div style="font-size:13px;color:#888;margin-bottom:16px">Selecciona la categoria</div>’ +
-‘<div class="g2">’ +
-‘<button class="opbtn" onclick="opMer(\'mp\')"><span style="font-size:34px">📦</span><span style="font-size:15px;font-weight:700">Materia Prima</span><span style="font-size:12px;color:#888">Seca o Fria</span></button>’ +
-‘<button class="opbtn" onclick="opMer(\'pt\')"><span style="font-size:34px">📬</span><span style="font-size:15px;font-weight:700">Prod. Terminado</span><span style="font-size:12px;color:#888">Seco o Frio</span></button>’ +
-‘</div>’;
-}
-else if (OP.paso === 2) {
-stit(‘Seco o Frio?’);
-b.innerHTML =
-‘<div style="font-size:18px;font-weight:700;margin-bottom:6px">Seco o Frio?</div>’ +
-‘<div style="font-size:13px;color:#888;margin-bottom:16px">Tipo de almacenaje</div>’ +
-‘<div class="g2">’ +
-‘<button class="opbtn" onclick="opTipo(\'seco\')"><span style="font-size:34px">☀</span><span style="font-size:15px;font-weight:700">Seco</span></button>’ +
-‘<button class="opbtn" onclick="opTipo(\'frio\')"><span style="font-size:34px">❄</span><span style="font-size:15px;font-weight:700">Frio</span></button>’ +
-‘</div>’;
-}
-else if (OP.paso === 3) { renderFormOP(); }
-}
-
-function opOp(op) {
-var nom = gv(‘op-nom’).trim();
-if (!nom) { alert(‘Ingresa tu nombre antes de continuar’); if (el(‘op-nom’)) el(‘op-nom’).focus(); return; }
-OP.operario = nom; OP.operacion = op; OP.paso = 1; renderOpPaso();
-}
-function opCli(id, nom) {
-OP.cliente = id; OP.clienteNom = nom;
-var chips = document.querySelectorAll(’.chip’);
-for (var i = 0; i < chips.length; i++) chips[i].classList.remove(‘on’);
-if (event && event.target) event.target.classList.add(‘on’);
-}
-function opMer(m) { OP.mercaderia = m; OP.paso = 2; renderOpPaso(); }
-function opTipo(t) { OP.tipo = OP.mercaderia + ‘-’ + t; OP.paso = 3; renderOpPaso(); }
-
-function renderFormOP() {
-var b = el(‘op-body’);
-if (!b) return;
-var tipo = OP.tipo || ‘’;
-var esMp = tipo.indexOf(‘mp’) === 0;
-var esPt = tipo.indexOf(‘pt’) === 0;
-var esCli = OP.cliente !== ‘arcor’;
-var esFrio = tipo.indexOf(‘frio’) >= 0;
-var tipoMer = esFrio ? ‘frio’ : ‘seco’;
-var stS = stPT(tipoMer);
-var tit = ‘’;
-if (esMp) tit = (OP.operacion === ‘ingreso’ ? ‘Ingreso’ : ‘Egreso’) + ’ MP ’ + (esFrio ? ‘Fria’ : ‘Seca’);
-else if (esPt) tit = (OP.operacion === ‘ingreso’ ? ‘Ingreso’ : ‘Egreso’) + ’ PT ’ + (esFrio ? ‘Frio’ : ‘Seco’);
-else tit = (OP.operacion === ‘ingreso’ ? ‘Ingreso’ : ‘Egreso’) + ’ - ’ + OP.clienteNom;
-stit(tit);
-
-var html = ‘<div class="card"><div style="font-size:16px;font-weight:700;margin-bottom:16px">’ + tit + ‘</div>’;
-
-if (esMp && OP.operacion === ‘ingreso’) {
-html += ‘<div class="g2"><div class="fg"><label>Orden de compra *</label><input id="f-oc" placeholder="OC-001"></div>’ +
-‘<div class="fg"><label>Fecha *</label><input id="f-fi" type="date" value="' + hoy() + '"></div></div>’ +
-‘<div class="fg"><label>Producto *</label><input id="f-prod" placeholder="Ej: Harina de trigo" oninput="syncProd(this.value)"></div>’ +
-‘<div class="fg"><label>Lotes *</label>’ +
-‘<div style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee">’ +
-‘<div id="lotes-cont"></div>’ +
-‘<button class="btn" style="width:100%;margin-top:6px;border-style:dashed;font-size:12px" onclick="addLote()">+ Agregar lote</button>’ +
-‘</div></div>’ +
-‘<div class="g2"><div class="fg"><label>Zona</label><select id="f-zona"><option value="">Sin asignar</option><option value="almacenaje">Almacenaje</option><option value="armado">Armado de pedidos</option></select></div>’ +
-‘<div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1"></div></div>’;
-lotesOP = [{nom:’’,cod:’’}];
-}
-else if (esMp && OP.operacion === ‘egreso’) {
-var ocs = [];
-for (var i = 0; i < D.mp.length; i++) {
-var r = D.mp[i];
-if (r.tipo === tipoMer && !r.fe) {
-var found = false;
-for (var j = 0; j < ocs.length; j++) { if (ocs[j] === r.oc) { found = true; break; } }
-if (!found) ocs.push(r.oc);
-}
-}
-ocs.sort();
-var opts = ‘<option value="">Elige una OC</option>’;
-for (var k = 0; k < ocs.length; k++) opts += ‘<option value="' + ocs[k] + '">OC: ’ + ocs[k] + ‘</option>’;
-html += ‘<div class="fg"><label>Orden de compra *</label><select id="f-oc-eg" onchange="cargarLotes(\'' + tipoMer + '\')">’ + opts + ‘</select></div>’ +
-‘<div id="lotes-eg-wrap" style="display:none;margin-bottom:14px">’ +
-‘<label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:8px">Lotes a egresar *</label>’ +
-‘<div id="lotes-eg-list" style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee"></div></div>’ +
-‘<div class="fg"><label>Fecha de egreso *</label><input id="f-fe" type="date" value="' + hoy() + '"></div>’;
-lotesSelOP = [];
-}
-else if (esPt && OP.operacion === ‘ingreso’) {
-html += ‘<div class="infobox"><b>Tipo:</b> ’ + (esFrio ? ‘Frio’ : ‘Seco’) + ’  |  <b>Stock actual:</b> <span style="color:#185FA5;font-weight:700">’ + stS + ’ posiciones</span></div>’ +
-‘<div class="g2"><div class="fg"><label>Remito *</label><input id="f-rem" placeholder="REM-001"></div>’ +
-‘<div class="fg"><label>Fecha *</label><input id="f-fi" type="date" value="' + hoy() + '"></div></div>’ +
-‘<div class="fg"><label>Transporte</label><input id="f-tra" placeholder="Transporte..."></div>’ +
-‘<div class="fg"><label>Posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div>’ +
-‘<div class="g2"><div class="fg"><label>Zona</label><select id="f-zona"><option value="">Sin asignar</option><option value="almacenaje">Almacenaje</option><option value="armado">Armado de pedidos</option></select></div>’ +
-‘<div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1"></div></div>’;
-}
-else if (esPt && OP.operacion === ‘egreso’) {
-html += ‘<div class="infobox"><b>Tipo:</b> ’ + (esFrio ? ‘Frio’ : ‘Seco’) + ’  |  <b>Stock:</b> <span style="color:#185FA5;font-weight:700">’ + stS + ’ posiciones</span></div>’ +
-‘<div class="g2"><div class="fg"><label>Fecha *</label><input id="f-fe" type="date" value="' + hoy() + '"></div>’ +
-‘<div class="fg"><label>Posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div></div>’ +
-‘<div class="g2"><div class="fg"><label>Remito salida *</label><input id="f-rs" placeholder="RS-001"></div>’ +
-‘<div class="fg"><label>Ord. entrega *</label><input id="f-oe" placeholder="OE-001"></div></div>’ +
-‘<div class="g2"><div class="fg"><label>Ord. compra *</label><input id="f-oc" placeholder="OC-001"></div>’ +
-‘<div class="fg"><label>Transporte</label><input id="f-tra" placeholder="Transporte..."></div></div>’;
-}
-else if (esCli) {
-var stC = stCli(OP.cliente);
-if (OP.operacion === ‘egreso’) {
-html += ‘<div class="infobox"><b>Stock actual:</b> <span style="color:#185FA5;font-weight:700">’ + stC + ’ posiciones</span></div>’;
-}
-html += ‘<div class="g2"><div class="fg"><label>Fecha *</label><input id="f-fecha" type="date" value="' + hoy() + '"></div>’ +
-‘<div class="fg"><label>Posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div></div>’ +
-‘<div class="fg"><label>Descripcion</label><input id="f-desc" placeholder="Ej: Mangueras 16mm"></div>’ +
-‘<div class="fg"><label>Remito</label><input id="f-rem" placeholder="REM-001"></div>’;
-if (OP.operacion === ‘ingreso’) {
-html += ‘<div class="g2"><div class="fg"><label>Zona</label><select id="f-zona"><option value="">Sin asignar</option><option value="almacenaje">Almacenaje</option><option value="armado">Armado de pedidos</option></select></div>’ +
-‘<div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1"></div></div>’;
-}
-}
-
-html += ‘<div id="op-err" class="errbox" style="display:none"></div>’ +
-‘<button class="btn btnp" style="width:100%;padding:14px;font-size:16px;font-weight:700;margin-top:8px" onclick="opGuardar()">Guardar</button></div>’;
-
-b.innerHTML = html;
-if (esMp && OP.operacion === ‘ingreso’) renderLotes();
-}
-
-function syncProd(v) {
-for (var i = 0; i < lotesOP.length; i++) lotesOP[i].nom = v;
-renderLotes();
-}
-
-function renderLotes() {
-var c = el(‘lotes-cont’);
-if (!c) return;
-var html = ‘’;
-for (var i = 0; i < lotesOP.length; i++) {
-var l = lotesOP[i];
-var nom = l.nom.replace(/”/g, ‘’);
-var cod = l.cod.replace(/”/g, ‘’);
-html += ‘<div class="loterow">’ +
-‘<input class="linp" placeholder="Producto" value="' + nom + '" readonly style="background:#f5f5f5;color:#555">’ +
-‘<input class="linp" placeholder="N de lote" value="' + cod + '" oninput="setLC(' + i + ',this.value)">’ +
-‘<label class="camb" title="Foto sticker">📷<input type="file" accept="image/*" capture="environment" style="display:none" onchange="escanear(event,' + i + ')"></label>’ +
-(lotesOP.length > 1 ? ‘<button class="delb" onclick="delLote(' + i + ')">X</button>’ : ‘<span style="width:32px"></span>’) +
-‘</div>’;
-}
-c.innerHTML = html;
-}
-
-function addLote() {
-var prod = gv(‘f-prod’) || ‘’;
-lotesOP.push({nom: prod, cod: ‘’});
-renderLotes();
-}
-function setLC(i, v) { lotesOP[i].cod = v; }
-function delLote(i) { lotesOP.splice(i, 1); renderLotes(); }
-
-function cargarLotes(tipo) {
-var oc = gv(‘f-oc-eg’);
-var wrap = el(‘lotes-eg-wrap’);
-var list2 = el(‘lotes-eg-list’);
-if (!oc) { if (wrap) wrap.style.display = ‘none’; return; }
-var lotes = [];
-for (var i = 0; i < D.mp.length; i++) {
-var r = D.mp[i];
-if (r.oc === oc && r.tipo === tipo && !r.fe) lotes.push(r);
-}
-if (!lotes.length) { if (wrap) wrap.style.display = ‘none’; return; }
-lotesSelOP = [];
-var html = ‘’;
-for (var j = 0; j < lotes.length; j++) {
-var r2 = lotes[j];
-html += ‘<div id=“lc-’ + r2._id + ‘” onclick=“togLote('’ + r2._id + ’')” ’ +
-‘style=“display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:9px;margin-bottom:8px;border:2px solid #eee;cursor:pointer”>’ +
-‘<div id="lchk-' + r2._id + '" style="width:24px;height:24px;border-radius:6px;border:2px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#fff"></div>’ +
-‘<div><div style="font-weight:700;font-size:14px">’ + r2.nom + ‘</div>’ +
-’<div style="font-size:12px;color:#888">Lote: ’ + (r2.cod || ‘-’) + ’ - Ingreso: ’ + r2.fi + ‘</div></div></div>’;
-}
-if (list2) list2.innerHTML = html;
-if (wrap) wrap.style.display = ‘block’;
-}
-
-function togLote(id) {
-var idx = lotesSelOP.indexOf(id);
-var card = el(‘lc-’ + id);
-var chk = el(‘lchk-’ + id);
-if (idx >= 0) {
-lotesSelOP.splice(idx, 1);
-if (card) { card.style.borderColor = ‘#eee’; card.style.background = ‘#fff’; }
-if (chk) { chk.style.borderColor = ‘#ccc’; chk.style.background = ‘#fff’; chk.innerHTML = ‘’; }
-} else {
-lotesSelOP.push(id);
-if (card) { card.style.borderColor = ‘#185FA5’; card.style.background = ‘#EEF4FF’; }
-if (chk) { chk.style.borderColor = ‘#185FA5’; chk.style.background = ‘#185FA5’; chk.innerHTML = ‘<span style="color:#fff;font-size:13px">✓</span>’; }
-}
-}
-
-function escanear(e, idx) {
-var file = e.target.files[0];
-if (!file) return;
-var lbl = e.target.parentElement;
-if (lbl) lbl.textContent = ‘…’;
-var reader = new FileReader();
-reader.onload = function() {
-var b64 = reader.result.split(’,’)[1];
-fetch(‘https://api.anthropic.com/v1/messages’, {
-method: ‘POST’,
-headers: {‘Content-Type’: ‘application/json’},
-body: JSON.stringify({
-model: ‘claude-sonnet-4-20250514’,
-max_tokens: 200,
-messages: [{role:‘user’,content:[
-{type:‘image’,source:{type:‘base64’,media_type:file.type||‘image/jpeg’,data:b64}},
-{type:‘text’,text:‘Foto de sticker de pallet. Extrae el LOTE y CODIGO. Responde SOLO JSON: {“lote”:”…”,“codigo”:”…”} Sin nada mas.’}
-]}]
-})
-}).then(function(r) { return r.json(); })
-.then(function(d) {
-var txt = ‘’;
-if (d.content && d.content[0]) txt = d.content[0].text || ‘’;
-txt = txt.replace(/`json|`/g, ‘’).trim();
-var parsed = JSON.parse(txt);
-if (parsed.lote) lotesOP[idx].nom = parsed.lote;
-if (parsed.codigo) lotesOP[idx].cod = parsed.codigo;
-renderLotes();
-}).catch(function() { alert(‘No pude leer el sticker. Cargalo a mano.’); })
-.finally(function() { if (lbl) lbl.innerHTML = ‘📷<input type="file" accept="image/*" capture="environment" style="display:none" onchange="escanear(event,' + idx + ')">’; e.target.value = ‘’; });
-};
-reader.readAsDataURL(file);
-}
-
-function opGuardar() {
-var err = el(‘op-err’);
-if (err) err.style.display = ‘none’;
-var tipo = OP.tipo || ‘’;
-var esMp = tipo.indexOf(‘mp’) === 0;
-var esPt = tipo.indexOf(‘pt’) === 0;
-var esCli = OP.cliente !== ‘arcor’;
-var esFrio = tipo.indexOf(‘frio’) >= 0;
-var tipoMer = esFrio ? ‘frio’ : ‘seco’;
-
-function er(msg) { if (err) { err.textContent = msg; err.style.display = ‘block’; } else alert(msg); }
-
-if (esMp && OP.operacion === ‘ingreso’) {
-var oc = gv(‘f-oc’).trim();
-var fi = gv(‘f-fi’);
-var prod = gv(‘f-prod’).trim();
-if (!oc || !fi || !prod) { er(‘Completa OC, fecha y producto’); return; }
-for (var i = 0; i < lotesOP.length; i++) { if (!lotesOP[i].nom) { er(‘Todos los lotes necesitan nombre’); return; } }
-var zona = gv(‘f-zona’);
-var fila = gv(‘f-fila’);
-for (var j = 0; j < lotesOP.length; j++) {
-D.mp.push({_id:uid(),tipo:tipoMer,oc:oc,fi:fi,fe:null,prod:prod,nom:lotesOP[j].nom,cod:lotesOP[j].cod,zona:zona,fila:fila,operario:OP.operario,movs:[],ts:new Date().toISOString()});
-}
-sv(); opExito(lotesOP.length + ’ lote(s) ingresados en OC ’ + oc);
-}
-else if (esMp && OP.operacion === ‘egreso’) {
-var fe = gv(‘f-fe’);
-if (!fe) { er(‘Ingresa la fecha’); return; }
-if (!lotesSelOP.length) { er(‘Selecciona al menos un lote’); return; }
-for (var k = 0; k < D.mp.length; k++) {
-if (lotesSelOP.indexOf(D.mp[k]._id) >= 0) {
-D.mp[k].fe = fe;
-D.mp[k].movs = D.mp[k].movs || [];
-D.mp[k].movs.push({fe:fe});
-}
-}
-sv(); opExito(lotesSelOP.length + ’ lote(s) egresados’);
-}
-else if (esPt && OP.operacion === ‘ingreso’) {
-var rem = gv(‘f-rem’).trim();
-var fi2 = gv(‘f-fi’);
-var pal = parseInt(gv(‘f-pal’)) || 0;
-if (!rem || !fi2 || pal < 1) { er(‘Completa remito, fecha y posiciones’); return; }
-D.pt.push({_id:uid(),fecha:fi2,tipo:tipoMer,dir:‘in’,pal:pal,remito:rem,tra:gv(‘f-tra’),zona:gv(‘f-zona’),fila:gv(‘f-fila’),operario:OP.operario,oe:’’,oc:’’,ts:new Date().toISOString()});
-sv(); opExito(’Ingreso de ’ + pal + ’ posiciones PT ’ + tipoMer);
-}
-else if (esPt && OP.operacion === ‘egreso’) {
-var rs = gv(‘f-rs’).trim();
-var oe = gv(‘f-oe’).trim();
-var oc2 = gv(‘f-oc’).trim();
-var fe2 = gv(‘f-fe’);
-var pal2 = parseInt(gv(‘f-pal’)) || 0;
-if (!rs || !oe || !oc2 || !fe2 || pal2 < 1) { er(‘Completa todos los campos’); return; }
-if (pal2 > stPT(tipoMer)) { er(’Posiciones insuficientes. Stock: ’ + stPT(tipoMer)); return; }
-D.pt.push({_id:uid(),fecha:fe2,tipo:tipoMer,dir:‘out’,pal:pal2,remito:rs,oe:oe,oc:oc2,tra:gv(‘f-tra’),operario:OP.operario,ts:new Date().toISOString()});
-sv(); opExito(’Egreso de ’ + pal2 + ’ posiciones PT ’ + tipoMer);
-}
-else if (esCli) {
-var fecha = gv(‘f-fecha’);
-var pal3 = parseInt(gv(‘f-pal’)) || 0;
-if (!fecha || pal3 < 1) { er(‘Completa fecha y posiciones’); return; }
-if (OP.operacion === ‘egreso’ && pal3 > stCli(OP.cliente)) { er(’Posiciones insuficientes. Stock: ’ + stCli(OP.cliente)); return; }
-var z = OP.operacion === ‘ingreso’ ? gv(‘f-zona’) : ‘’;
-var f2 = OP.operacion === ‘ingreso’ ? gv(‘f-fila’) : ‘’;
-D.movCli.push({_id:uid(),clienteId:OP.cliente,fecha:fecha,dir:OP.operacion===‘ingreso’?‘in’:‘out’,pal:pal3,desc:gv(‘f-desc’),remito:gv(‘f-rem’),zona:z,fila:f2,operario:OP.operario,ts:new Date().toISOString()});
-sv(); opExito((OP.operacion===‘ingreso’?‘Ingreso’:‘Egreso’) + ’ de ’ + pal3 + ’ posiciones - ’ + OP.clienteNom);
-}
-}
-
-function opExito(msg) {
-var b = el(‘op-body’);
-if (!b) return;
-b.innerHTML = ‘<div style="text-align:center;padding:40px 20px">’ +
-‘<div style="font-size:60px;margin-bottom:16px">✅</div>’ +
-‘<div style="font-size:20px;font-weight:700;margin-bottom:8px">Registrado!</div>’ +
-‘<div style="font-size:13px;color:#888;margin-bottom:28px">’ + msg + ‘</div>’ +
-‘<button class="btn btnp" style="padding:12px 28px;font-size:15px;font-weight:600" onclick="resetOP();renderOperario()">+ Nueva operacion</button></div>’;
-stit(‘Listo!’);
-}
-
-// ===== ADMIN =====
-var tabAdm = ‘res’;
-
-function renderAdmin() {
-el(‘app’).innerHTML =
-‘<div style="min-height:100vh;background:#F4F4F0;display:flex;flex-direction:column">’ +
-‘<div class="adh">’ +
-‘<div style="width:32px;height:32px;background:#185FA5;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700">MM</div>’ +
-‘<div style="flex:1"><div style="font-size:13px;font-weight:700">MM - Administracion</div></div>’ +
-‘<button class="btn" style="font-size:12px;padding:5px 12px" onclick="ir(\'inicio\')">Salir</button></div>’ +
-‘<div class="nav">’ +
-‘<button class="ntab' + (tabAdm==='res'?' on':'') + '" onclick="admTab(\'res\')">Resumen</button>’ +
-‘<button class="ntab' + (tabAdm==='mov'?' on':'') + '" onclick="admTab(\'mov\')">Movimientos</button>’ +
-‘<button class="ntab' + (tabAdm==='stk'?' on':'') + '" onclick="admTab(\'stk\')">Stock</button>’ +
-‘<button class="ntab' + (tabAdm==='pla'?' on':'') + '" onclick="admTab(\'pla\')">Planilla</button>’ +
-‘<button class="ntab' + (tabAdm==='tar'?' on':'') + '" onclick="admTab(\'tar\')">Tarifas</button>’ +
-‘</div>’ +
-‘<div style="padding:14px;max-width:900px;margin:0 auto;width:100%" id="adm-body"></div></div>’;
-renderTab();
-}
-
-function admTab(t) {
-tabAdm = t;
-var tabs2 = document.querySelectorAll(’.ntab’);
-var names = [‘res’,‘mov’,‘stk’,‘pla’,‘tar’];
-for (var i = 0; i < tabs2.length; i++) {
-tabs2[i].classList.toggle(‘on’, i === names.indexOf(t));
-}
-renderTab();
-}
-
-function renderTab() {
-var b = el(‘adm-body’);
-if (!b) return;
-if (tabAdm === ‘res’) b.innerHTML = htmlRes();
-else if (tabAdm === ‘mov’) b.innerHTML = htmlMov();
-else if (tabAdm === ‘stk’) htmlStk(b);
-else if (tabAdm === ‘pla’) b.innerHTML = htmlPla();
-else if (tabAdm === ‘tar’) b.innerHTML = htmlTar();
-}
-
-// ===== RESUMEN =====
-function calcMPtot(tipo) {
-var mes = mes0();
-var parts = mes.split(’-’);
-var y = parseInt(parts[0]);
-var m = parseInt(parts[1]);
-var im = new Date(y, m-1, 1);
-var fm = new Date(y, m, 0);
-var hD = new Date(hoy());
-var tar = tipo === ‘seco’ ? D.tar.mps : D.tar.mpf;
-var tmi = D.tar.mi || 0;
-var tme = D.tar.me || 0;
-var tot = 0;
-var list2 = D.mp || [];
-for (var i = 0; i < list2.length; i++) {
-var r = list2[i];
-if (r.tipo !== tipo) continue;
-var rfi = new Date(r.fi);
-var rfe = r.fe ? new Date(r.fe) : null;
-if (rfi > fm) continue;
-if (rfe && rfe < im) continue;
-var de = rfi > im ? rfi : im;
-var ha = rfe ? (rfe < hD ? rfe : hD) : hD;
-if (de <= ha) {
-var dias = Math.ceil((ha - de) / 86400000) + 1;
-tot += dias * (tar || 0);
-}
-tot += tmi;
-if (r.fe && rfe >= im && rfe <= fm) tot += tme;
-}
-return tot;
-}
-
-function calcPT() {
-var mes = mes0();
-var parts = mes.split(’-’);
-var y = parseInt(parts[0]);
-var m = parseInt(parts[1]);
-var diasMes = new Date(y, m, 0).getDate();
-var hoyDate = new Date();
-var tot = 0;
-for (var d = 1; d <= diasMes; d++) {
-var fd = y + ‘-’ + String(m).padStart(2,‘0’) + ‘-’ + String(d).padStart(2,‘0’);
-var dD = new Date(fd);
-if (dD > hoyDate) break;
-var stS2 = 0, stF2 = 0;
-for (var i = 0; i < D.pt.length; i++) {
-var mv = D.pt[i];
-if (new Date(mv.fecha) <= dD) {
-var delta = mv.dir === ‘in’ ? mv.pal : -mv.pal;
-if (mv.tipo === ‘seco’) stS2 += delta;
-else stF2 += delta;
-}
-}
-tot += Math.max(0, stS2) * (D.tar.pts || 0);
-tot += Math.max(0, stF2) * (D.tar.ptf || 0);
-for (var j = 0; j < D.pt.length; j++) {
-if (D.pt[j].fecha === fd) tot += D.pt[j].pal * (D.tar.mi || 0);
-}
-}
-return tot;
-}
-
-function calcCam() {
-var pref = mes0();
-var cam = D.tar.cam || 0;
-var cnt = 0;
-for (var i = 0; i < D.pt.length; i++) {
-var mv = D.pt[i];
-if (mv.dir === ‘out’ && mv.fecha && mv.fecha.indexOf(pref) === 0) cnt++;
-}
-return {cnt: cnt, tot: cnt * cam};
-}
-
-function calcCliTot() {
-var mes = mes0();
-var parts = mes.split(’-’);
-var y = parseInt(parts[0]);
-var m = parseInt(parts[1]);
-var diasMes = new Date(y, m, 0).getDate();
-var hoyDate = new Date();
-var pref = mes;
-var tot = 0;
-for (var ci = 0; ci < D.clientes.length; ci++) {
-var cli = D.clientes[ci];
-for (var d = 1; d <= diasMes; d++) {
-var fd = y + ‘-’ + String(m).padStart(2,‘0’) + ‘-’ + String(d).padStart(2,‘0’);
-var dD = new Date(fd);
-if (dD > hoyDate) break;
-var st = 0;
-for (var i = 0; i < D.movCli.length; i++) {
-var mv2 = D.movCli[i];
-if (mv2.clienteId === cli._id && new Date(mv2.fecha) <= dD) {
-st += mv2.dir === ‘in’ ? mv2.pal : -mv2.pal;
-}
-}
-tot += Math.max(0, st) * (cli.tarEst || 0);
-}
-for (var j = 0; j < D.movCli.length; j++) {
-var mv3 = D.movCli[j];
-if (mv3.clienteId === cli._id && mv3.fecha && mv3.fecha.indexOf(pref) === 0) {
-tot += mv3.pal * (mv3.dir === ‘in’ ? (cli.tarMI || 0) : (cli.tarME || 0));
-}
-}
-}
-return tot;
-}
-
-function htmlRes() {
-var mes = mes0();
-var mpS = calcMPtot(‘seco’);
-var mpF = calcMPtot(‘frio’);
-var pt = calcPT();
-var cam = calcCam();
-var arcor = mpS + mpF + pt + cam.tot;
-var cli = calcCliTot();
-var gran = arcor + cli;
-var stS2 = stPT(‘seco’);
-var stF2 = stPT(‘frio’);
-var mpAct = 0;
-for (var i = 0; i < D.mp.length; i++) { if (!D.mp[i].fe) mpAct++; }
-
-// Indicadores
-var PMAX = 1300, M2MAX = 2400, M2PP = 1.2;
-var totPos = mpAct + stS2 + stF2;
-var pctP = Math.min(100, Math.round(totPos / PMAX * 100));
-var m2ocp = Math.round(totPos * M2PP * 10) / 10;
-var pctM = Math.min(100, Math.round(m2ocp / M2MAX * 100));
-var m2lib = Math.max(0, M2MAX - m2ocp);
-var revM2 = gran > 0 ? (gran / M2MAX).toFixed(2) : 0;
-function bcolor(p) { return p > 90 ? ‘#C62828’ : p > 70 ? ‘#E65100’ : ‘#185FA5’; }
-
-var cliRows = ‘’;
-for (var ci = 0; ci < D.clientes.length; ci++) {
-var c2 = D.clientes[ci];
-var pref = mes;
-var t2 = 0;
-var y2 = parseInt(mes.split(’-’)[0]);
-var m2 = parseInt(mes.split(’-’)[1]);
-var dm2 = new Date(y2, m2, 0).getDate();
-var hD2 = new Date();
-for (var d = 1; d <= dm2; d++) {
-var fd = y2 + ‘-’ + String(m2).padStart(2,‘0’) + ‘-’ + String(d).padStart(2,‘0’);
-if (new Date(fd) > hD2) break;
-var st2 = 0;
-for (var k = 0; k < D.movCli.length; k++) {
-var mv4 = D.movCli[k];
-if (mv4.clienteId === c2._id && new Date(mv4.fecha) <= new Date(fd)) {
-st2 += mv4.dir === ‘in’ ? mv4.pal : -mv4.pal;
-}
-}
-t2 += Math.max(0, st2) * (c2.tarEst || 0);
-}
-for (var jj = 0; jj < D.movCli.length; jj++) {
-var mv5 = D.movCli[jj];
-if (mv5.clienteId === c2._id && mv5.fecha && mv5.fecha.indexOf(pref) === 0) {
-t2 += mv5.pal * (mv5.dir === ‘in’ ? (c2.tarMI||0) : (c2.tarME||0));
-}
-}
-cliRows += ’<div class="rr"><span>🏭 ’ + c2.nom + ‘</span><span>’ + $c(t2) + ‘</span></div>’;
-}
-
-return ‘<div style="background:linear-gradient(135deg,#185FA5,#0C447C);border-radius:12px;padding:18px;margin-bottom:14px;color:#fff">’ +
-’<div style="font-size:13px;opacity:0.85;margin-bottom:12px">Total del deposito - ’ + mes + ‘</div>’ +
-‘<div style="font-size:28px;font-weight:700;margin-bottom:3px">’ + $c(gran) + ‘</div>’ +
-‘<div style="font-size:11px;opacity:0.7;margin-bottom:14px">Suma de todos los clientes</div>’ +
-‘<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">’ +
-‘<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:9px 11px"><div style="font-size:11px;opacity:0.8">Arcor</div><div style="font-size:15px;font-weight:600">’ + $c(arcor) + ‘</div></div>’ +
-‘<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:9px 11px"><div style="font-size:11px;opacity:0.8">Otros clientes</div><div style="font-size:15px;font-weight:600">’ + $c(cli) + ‘</div></div>’ +
-‘</div></div>’ +
-‘<div class="metgrid">’ +
-‘<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;margin-bottom:4px">Lotes MP activos</div><div style="font-size:20px;font-weight:600">’ + mpAct + ‘</div></div>’ +
-‘<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;margin-bottom:4px">PT Seco stock</div><div style="font-size:20px;font-weight:600">’ + stS2 + ‘</div><div style="font-size:11px;color:#aaa">posiciones</div></div>’ +
-‘<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;margin-bottom:4px">PT Frio stock</div><div style="font-size:20px;font-weight:600">’ + stF2 + ‘</div><div style="font-size:11px;color:#aaa">posiciones</div></div>’ +
-‘<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;margin-bottom:4px">Camiones mes</div><div style="font-size:20px;font-weight:600">’ + cam.cnt + ‘</div></div>’ +
-‘</div>’ +
-’<div class="card"><div class="tit">Arcor - ’ + $c(arcor) + ‘</div>’ +
-‘<div class="rr"><span>MP Seca</span><span>’ + $c(mpS) + ‘</span></div>’ +
-‘<div class="rr"><span>MP Fria</span><span>’ + $c(mpF) + ‘</span></div>’ +
-‘<div class="rr"><span>Prod. Terminados</span><span>’ + $c(pt) + ‘</span></div>’ +
-‘<div class="rr"><span>Camiones</span><span>’ + $c(cam.tot) + ‘</span></div>’ +
-‘<div class="rr rrgrand"><span>Total Arcor</span><span>’ + $c(arcor) + ‘</span></div></div>’ +
-(D.clientes.length ? ‘<div class="card"><div class="tit">Otros clientes - ’ + $c(cli) + ‘</div>’ + (cliRows || ‘<div class="empty">Sin movimientos</div>’) + ‘<div class="rr rrgrand"><span>Total otros</span><span>’ + $c(cli) + ‘</span></div></div>’ : ‘’) +
-‘<div style="background:#111;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">’ +
-‘<span style="color:#fff;font-size:13px;font-weight:600">Total a facturar</span>’ +
-‘<span style="color:#4CAF50;font-size:20px;font-weight:700">’ + $c(gran) + ‘</span></div>’ +
-‘<div style="font-size:13px;font-weight:700;color:#555;margin-bottom:10px;text-transform:uppercase">Indicadores de capacidad</div>’ +
-‘<div class="indgrid">’ +
-‘<div class="indcard"><div class="indlbl">Posiciones ocupadas</div><div class="indval" style="color:' + bcolor(pctP) + '">’ + pctP + ‘%</div><div class="bar"><div class="bfill" style="width:' + pctP + '%;background:' + bcolor(pctP) + '"></div></div><div style="font-size:11px;color:#888">’ + totPos + ’ / ’ + PMAX + ‘</div></div>’ +
-‘<div class="indcard"><div class="indlbl">Superficie ocupada</div><div class="indval" style="color:' + bcolor(pctM) + '">’ + pctM + ‘%</div><div class="bar"><div class="bfill" style="width:' + pctM + '%;background:' + bcolor(pctM) + '"></div></div><div style="font-size:11px;color:#888">’ + m2ocp + ’ / ’ + M2MAX + ’ m2</div></div>’ +
-‘<div class="indcard"><div class="indlbl">Superficie libre</div><div class="indval" style="color:#2E7D32">’ + m2lib + ‘</div><div style="font-size:11px;color:#888">metros cuadrados</div></div>’ +
-‘<div class="indcard"><div class="indlbl">Ganancia / m2</div><div class="indval" style="color:#185FA5">$’ + revM2 + ‘</div><div style="font-size:11px;color:#888">en lo que va del mes</div></div>’ +
-‘</div>’;
-}
-
-// ===== MOVIMIENTOS =====
-function stEnFecha(tipo, fechaStr) {
-var fd = new Date(fechaStr);
-var tot = 0;
-for (var i = 0; i < D.pt.length; i++) {
-var mv = D.pt[i];
-if (mv.tipo === tipo && new Date(mv.fecha) <= fd) tot += mv.dir === ‘in’ ? mv.pal : -mv.pal;
-}
-return Math.max(0, tot);
-}
-function lotesEnFecha(tipo, fechaStr) {
-var fd = new Date(fechaStr);
-var cnt = 0;
-for (var i = 0; i < D.mp.length; i++) {
-var r = D.mp[i];
-if (r.tipo === tipo && new Date(r.fi) <= fd && (!r.fe || new Date(r.fe) > fd)) cnt++;
-}
-return cnt;
-}
-
-function htmlMov() {
-var mes = mes0();
-var parts = mes.split(’-’);
-var y = parseInt(parts[0]);
-var m = parseInt(parts[1]);
-var diasMes = new Date(y, m, 0).getDate();
-var hoyDate = new Date();
-var fdHoy = hoy();
-var fd7d = new Date(hoyDate);
-fd7d.setDate(fd7d.getDate() - 7);
-var fd7 = fd7d.toISOString().slice(0, 10);
-
-var dias = [];
-for (var d = 1; d <= diasMes; d++) {
-var fd = y + ‘-’ + String(m).padStart(2,‘0’) + ‘-’ + String(d).padStart(2,‘0’);
-if (new Date(fd) > hoyDate) break;
-var ptDia = [], mpIn = [], mpOut = [];
-for (var i = 0; i < D.pt.length; i++) { if (D.pt[i].fecha === fd) ptDia.push(D.pt[i]); }
-for (var j = 0; j < D.mp.length; j++) { if (D.mp[j].fi === fd) mpIn.push(D.mp[j]); }
-for (var k = 0; k < D.mp.length; k++) { if (D.mp[k].fe === fd) mpOut.push(D.mp[k]); }
-if (ptDia.length || mpIn.length || mpOut.length) dias.push({fd:fd, ptDia:ptDia, mpIn:mpIn, mpOut:mpOut});
-}
-
-// Totales del mes
-var totals = {msI:0,msO:0,mfI:0,mfO:0,ptSI:0,ptSO:0,ptFI:0,ptFO:0};
-for (var di = 0; di < dias.length; di++) {
-var day = dias[di];
-for (var ii = 0; ii < day.mpIn.length; ii++) {
-if (day.mpIn[ii].tipo === ‘seco’) totals.msI++; else totals.mfI++;
-}
-for (var io = 0; io < day.mpOut.length; io++) {
-if (day.mpOut[io].tipo === ‘seco’) totals.msO++; else totals.mfO++;
-}
-for (var pi = 0; pi < day.ptDia.length; pi++) {
-var pv = day.ptDia[pi];
-if (pv.tipo === ‘seco’ && pv.dir === ‘in’) totals.ptSI += pv.pal;
-else if (pv.tipo === ‘seco’ && pv.dir === ‘out’) totals.ptSO += pv.pal;
-else if (pv.tipo === ‘frio’ && pv.dir === ‘in’) totals.ptFI += pv.pal;
-else if (pv.tipo === ‘frio’ && pv.dir === ‘out’) totals.ptFO += pv.pal;
-}
-}
-
-// Comparativa semanal
-var ahora = {mpS: lotesEnFecha(‘seco’,fdHoy), mpF: lotesEnFecha(‘frio’,fdHoy), ptS: stEnFecha(‘seco’,fdHoy), ptF: stEnFecha(‘frio’,fdHoy)};
-var antes = {mpS: lotesEnFecha(‘seco’,fd7), mpF: lotesEnFecha(‘frio’,fd7), ptS: stEnFecha(‘seco’,fd7), ptF: stEnFecha(‘frio’,fd7)};
-
-function compCard(ico, label, ahoraV, antesV, unidad) {
-var diff = ahoraV - antesV;
-var pct = antesV > 0 ? Math.round(Math.abs(diff) / antesV * 100) : 0;
-var fl = diff > 0 ? ‘↑’ : (diff < 0 ? ‘↓’ : ‘→’);
-var col = diff > 0 ? ‘#1565C0’ : (diff < 0 ? ‘#B71C1C’ : ‘#555’);
-var fondo = diff > 0 ? ‘#E3F2FD’ : (diff < 0 ? ‘#FFEBEE’ : ‘#F5F5F5’);
-var txt = diff > 0 ? (’+’ + diff + ’ vs semana pasada (’ + pct + ‘%)’) : (diff < 0 ? (diff + ’ vs semana pasada (’ + pct + ‘%)’) : ‘Sin cambio vs semana pasada’);
-return ‘<div style="background:#fff;border-radius:10px;padding:12px;border:1px solid #ddd">’ +
-‘<div style="font-size:11px;color:#888;margin-bottom:6px;text-transform:uppercase">’ + ico + ’ ’ + label + ‘</div>’ +
-‘<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px">’ +
-‘<span style="font-size:24px;font-weight:700">’ + ahoraV + ‘</span>’ +
-‘<span style="font-size:12px;color:#888">’ + unidad + ’ hoy</span>’ +
-‘<span style="font-size:20px;font-weight:700;color:' + col + ';margin-left:auto">’ + fl + ‘</span></div>’ +
-‘<div style="background:' + fondo + ';border-radius:6px;padding:4px 8px;font-size:12px;color:' + col + ';font-weight:600">’ + txt + ‘</div>’ +
-’<div style="font-size:11px;color:#aaa;margin-top:4px">Hace 7 dias: ’ + antesV + ’ ’ + unidad + ‘</div></div>’;
-}
-
-// Detalle dias
-var diasHtml = ‘’;
-for (var di2 = 0; di2 < dias.length; di2++) {
-var day2 = dias[di2];
-var mpSI = [], mpFI = [], mpSO = [], mpFO = [], ptSIl = [], ptSOl = [], ptFIl = [], ptFOl = [];
-for (var ii2 = 0; ii2 < day2.mpIn.length; ii2++) {
-if (day2.mpIn[ii2].tipo === ‘seco’) mpSI.push(day2.mpIn[ii2]); else mpFI.push(day2.mpIn[ii2]);
-}
-for (var io2 = 0; io2 < day2.mpOut.length; io2++) {
-if (day2.mpOut[io2].tipo === ‘seco’) mpSO.push(day2.mpOut[io2]); else mpFO.push(day2.mpOut[io2]);
-}
-for (var pi2 = 0; pi2 < day2.ptDia.length; pi2++) {
-var pv2 = day2.ptDia[pi2];
-if (pv2.tipo === ‘seco’ && pv2.dir === ‘in’) ptSIl.push(pv2);
-else if (pv2.tipo === ‘seco’ && pv2.dir === ‘out’) ptSOl.push(pv2);
-else if (pv2.tipo === ‘frio’ && pv2.dir === ‘in’) ptFIl.push(pv2);
-else if (pv2.tipo === ‘frio’ && pv2.dir === ‘out’) ptFOl.push(pv2);
-}
-var sumPtSI = 0, sumPtSO = 0, sumPtFI = 0, sumPtFO = 0;
-for (var x = 0; x < ptSIl.length; x++) sumPtSI += ptSIl[x].pal;
-for (var x2 = 0; x2 < ptSOl.length; x2++) sumPtSO += ptSOl[x2].pal;
-for (var x3 = 0; x3 < ptFIl.length; x3++) sumPtFI += ptFIl[x3].pal;
-for (var x4 = 0; x4 < ptFOl.length; x4++) sumPtFO += ptFOl[x4].pal;
-
-```
-var items = [];
-if (mpSI.length || mpSO.length) items.push('MP Seca: ' + (mpSI.length ? '+'+mpSI.length : '') + (mpSO.length ? ' -'+mpSO.length : '') + ' lotes');
-if (mpFI.length || mpFO.length) items.push('MP Fria: ' + (mpFI.length ? '+'+mpFI.length : '') + (mpFO.length ? ' -'+mpFO.length : '') + ' lotes');
-if (sumPtSI || sumPtSO) items.push('PT Seco: ' + (sumPtSI ? '+'+sumPtSI : '') + (sumPtSO ? ' -'+sumPtSO : '') + ' pos.');
-if (sumPtFI || sumPtFO) items.push('PT Frio: ' + (sumPtFI ? '+'+sumPtFI : '') + (sumPtFO ? ' -'+sumPtFO : '') + ' pos.');
-
-var chips2 = '';
-for (var it = 0; it < items.length; it++) {
-chips2 += '<span style="background:#EEF4FF;border-radius:20px;padding:4px 10px;font-size:12px;color:#185FA5;font-weight:600">' + items[it] + '</span> ';
-}
-
-var detMP = '';
-for (var r2i = 0; r2i < mpSI.length; r2i++) {
-var r2 = mpSI[r2i];
-detMP += '<div class="mrow min"><span style="font-size:16px">&#128229;</span><div style="flex:1"><div style="font-size:13px;font-weight:600">' + r2.nom + '</div><div style="font-size:11px;color:#555">OC: ' + r2.oc + ' - Lote: ' + (r2.cod||'-') + (r2.operario ? ' - ' + r2.operario : '') + '</div></div><span style="color:#2E7D32;font-weight:700;font-size:12px">Ingreso</span></div>';
-}
-for (var r2o = 0; r2o < mpSO.length; r2o++) {
-var r2x = mpSO[r2o];
-detMP += '<div class="mrow mout"><span style="font-size:16px">&#128228;</span><div style="flex:1"><div style="font-size:13px;font-weight:600">' + r2x.nom + '</div><div style="font-size:11px;color:#555">OC: ' + r2x.oc + (r2x.operario ? ' - ' + r2x.operario : '') + '</div></div><span style="color:#C62828;font-weight:700;font-size:12px">Egreso</span></div>';
-}
-for (var rfi = 0; rfi < mpFI.length; rfi++) {
-var rf = mpFI[rfi];
-detMP += '<div class="mrow min"><span style="font-size:16px">&#128229;</span><div style="flex:1"><div style="font-size:13px;font-weight:600">' + rf.nom + '</div><div style="font-size:11px;color:#555">OC: ' + rf.oc + ' - Lote: ' + (rf.cod||'-') + (rf.operario ? ' - ' + rf.operario : '') + '</div></div><span style="color:#2E7D32;font-weight:700;font-size:12px">Ingreso</span></div>';
-}
-for (var rfo = 0; rfo < mpFO.length; rfo++) {
-var rfx = mpFO[rfo];
-detMP += '<div class="mrow mout"><span style="font-size:16px">&#128228;</span><div style="flex:1"><div style="font-size:13px;font-weight:600">' + rfx.nom + '</div><div style="font-size:11px;color:#555">OC: ' + rfx.oc + (rfx.operario ? ' - ' + rfx.operario : '') + '</div></div><span style="color:#C62828;font-weight:700;font-size:12px">Egreso</span></div>';
-}
-var detPT = '';
-var allPT = ptSIl.concat(ptSOl).concat(ptFIl).concat(ptFOl);
-for (var pp = 0; pp < allPT.length; pp++) {
-var mv6 = allPT[pp];
-detPT += '<div class="mrow ' + (mv6.dir==='in'?'min':'mout') + '"><span style="font-size:16px">' + (mv6.dir==='in'?'&#128229;':'&#128228;') + '</span><div style="flex:1"><div style="font-size:13px;font-weight:600">' + mv6.pal + ' posiciones ' + (mv6.tipo==='frio'?'Frio':'Seco') + '</div><div style="font-size:11px;color:#555">Remito: ' + (mv6.remito||'-') + (mv6.oc?' - OC: '+mv6.oc:'') + (mv6.operario?' - '+mv6.operario:'') + '</div></div><span style="font-weight:700;font-size:13px;color:' + (mv6.dir==='in'?'#2E7D32':'#C62828') + '">' + (mv6.dir==='in'?'+':'-') + mv6.pal + '</span></div>';
-}
-
-diasHtml += '<div class="card">' +
-'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
-'<div style="font-weight:700;font-size:15px">' + day2.fd + '</div>' +
-'<div style="font-size:11px;color:#888">' + (day2.ptDia.length + day2.mpIn.length + day2.mpOut.length) + ' mov.</div></div>' +
-'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">' + chips2 + '</div>' +
-detMP + detPT + '</div>';
-```
-
-}
-
-function filaTot(ico, label, inn, out, unidad) {
-if (!inn && !out) return ‘’;
-return ‘<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0f0f0">’ +
-‘<span style="font-size:14px">’ + ico + ‘</span><div style="flex:1;font-size:13px;font-weight:500">’ + label + ‘</div>’ +
-(inn > 0 ? ‘<span style="background:#E8F5E9;color:#2E7D32;font-weight:700;font-size:12px;padding:3px 9px;border-radius:99px">+’ + inn + ’ ’ + unidad + ‘</span>’ : ‘’) +
-(out > 0 ? ‘<span style="background:#FFEBEE;color:#C62828;font-weight:700;font-size:12px;padding:3px 9px;border-radius:99px">-’ + out + ’ ’ + unidad + ‘</span>’ : ‘’) +
-‘</div>’;
-}
-
-return ’<div class="card"><div class="tit">Totales del mes - ’ + mes + ‘</div>’ +
-filaTot(‘MP’, ‘MP Seca’, totals.msI, totals.msO, ‘lotes’) +
-filaTot(‘MP’, ‘MP Fria’, totals.mfI, totals.mfO, ‘lotes’) +
-filaTot(‘PT’, ‘PT Seco’, totals.ptSI, totals.ptSO, ‘pos.’) +
-filaTot(‘PT’, ‘PT Frio’, totals.ptFI, totals.ptFO, ‘pos.’) +
-(!totals.msI && !totals.msO && !totals.mfI && !totals.mfO && !totals.ptSI && !totals.ptSO && !totals.ptFI && !totals.ptFO ? ‘<div class="empty">Sin movimientos este mes.</div>’ : ‘’) +
-‘</div>’ +
-‘<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:700;color:#555;margin-bottom:8px;text-transform:uppercase">Comparativa - hoy vs hace 7 dias</div>’ +
-‘<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">’ +
-compCard(‘MP’, ‘MP Seca’, ahora.mpS, antes.mpS, ‘lotes’) +
-compCard(‘MP’, ‘MP Fria’, ahora.mpF, antes.mpF, ‘lotes’) +
-compCard(‘PT’, ‘PT Seco’, ahora.ptS, antes.ptS, ‘pos.’) +
-compCard(‘PT’, ‘PT Frio’, ahora.ptF, antes.ptF, ‘pos.’) +
-‘</div>’ +
-‘<div style="font-size:11px;color:#aaa;margin-top:8px;text-align:center">arriba = llenando | igual = estable | abajo = vaciando</div></div>’ +
-(dias.length ? diasHtml : ‘<div class="card"><div class="empty">Sin movimientos este mes.</div></div>’);
-}
-
-// ===== STOCK =====
-function htmlStk(b) {
-var mpS = [], mpF = [];
-for (var i = 0; i < D.mp.length; i++) {
-if (D.mp[i].tipo === ‘seco’ && !D.mp[i].fe) mpS.push(D.mp[i]);
-else if (D.mp[i].tipo === ‘frio’ && !D.mp[i].fe) mpF.push(D.mp[i]);
-}
-var stS2 = stPT(‘seco’), stF2 = stPT(‘frio’);
-
-function lCard(r) {
-return ‘<div class="mcard">’ +
-‘<div style="font-weight:700;font-size:13px;margin-bottom:3px">’ + r.nom + ’ [’ + (r.cod||’-’) + ‘]</div>’ +
-’<div style="font-size:12px;color:#888;margin-bottom:8px">OC: ’ + r.oc + ’ - Ingreso: ’ + r.fi + (r.zona ? ’ - ’ + r.zona : ‘’) + (r.fila ? ’ - Fila ’ + r.fila : ‘’) + (r.operario ? ’ - ’ + r.operario : ‘’) + ‘</div>’ +
-‘<div style="display:flex;gap:8px">’ +
-‘<button class="btn" style="font-size:12px;padding:6px 12px" onclick="stkEgr(\'' + r._id + '\')">Egresar</button>’ +
-‘<button class="btn btnr" style="font-size:12px;padding:6px 12px" onclick="stkElMP(\'' + r._id + '\')">Eliminar</button>’ +
-‘</div></div>’;
-}
-
-function ptR(tipo) {
-var movs = [];
-for (var i2 = 0; i2 < D.pt.length; i2++) {
-if (D.pt[i2].tipo === tipo) movs.push(D.pt[i2]);
-}
-movs.sort(function(a,b) { return b.fecha < a.fecha ? -1 : 1; });
-if (movs.length > 15) movs = movs.slice(0, 15);
-var html2 = ‘’;
-for (var j = 0; j < movs.length; j++) {
-var mv7 = movs[j];
-html2 += ‘<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px">’ +
-‘<div><span style="font-weight:600;color:' + (mv7.dir==='in'?'#2E7D32':'#C62828') + '">’ + (mv7.dir===‘in’?‘Ingreso’:‘Egreso’) + ‘</span>’ +
-‘<span style="color:#888;margin-left:8px">’ + mv7.pal + ’ pos. - ’ + mv7.fecha + ‘</span></div>’ +
-‘<button class="btn btnr" style="font-size:11px;padding:3px 8px" onclick="stkElPT(\'' + mv7._id + '\')">X</button></div>’;
-}
-return html2 || ‘<div class="empty">Sin movimientos</div>’;
-}
-
-b.innerHTML =
-‘<div class="card"><div class="tit">MP Seca - ’ + mpS.length + ’ lotes</div>’ + (mpS.length ? mpS.map(lCard).join(’’) : ‘<div class="empty">Sin lotes activos</div>’) + ‘</div>’ +
-‘<div class="card"><div class="tit">MP Fria - ’ + mpF.length + ’ lotes</div>’ + (mpF.length ? mpF.map(lCard).join(’’) : ‘<div class="empty">Sin lotes activos</div>’) + ‘</div>’ +
-‘<div class="card"><div class="tit">PT Seco - Stock: ’ + stS2 + ’ posiciones</div>’ + ptR(‘seco’) + ‘</div>’ +
-‘<div class="card"><div class="tit">PT Frio - Stock: ’ + stF2 + ’ posiciones</div>’ + ptR(‘frio’) + ‘</div>’;
-}
-
-function stkEgr(id) {
-var fe = prompt(‘Fecha de egreso (AAAA-MM-DD):’, hoy());
-if (!fe) return;
-for (var i = 0; i < D.mp.length; i++) {
-if (D.mp[i]._id === id) { D.mp[i].fe = fe; D.mp[i].movs = D.mp[i].movs || []; D.mp[i].movs.push({fe:fe}); break; }
-}
-sv(); renderTab();
-}
-function stkElMP(id) {
-if (!confirm(‘Eliminar este lote?’)) return;
-D.mp = D.mp.filter(function(x) { return x._id !== id; });
-sv(); renderTab();
-}
-function stkElPT(id) {
-if (!confirm(‘Eliminar?’)) return;
-D.pt = D.pt.filter(function(x) { return x._id !== id; });
-sv(); renderTab();
-}
-
-// ===== PLANILLA =====
-function htmlPla() {
-var mes = mes0();
-var parts = mes.split(’-’);
-var y = parseInt(parts[0]);
-var m = parseInt(parts[1]);
-var diasMes = new Date(y, m, 0).getDate();
-var fdHoy = hoy();
-
-var diasCab = [];
-for (var d = 1; d <= diasMes; d++) {
-var fd = y + ‘-’ + String(m).padStart(2,‘0’) + ‘-’ + String(d).padStart(2,‘0’);
-if (fd <= fdHoy) diasCab.push(fd);
-}
-
-var im = new Date(y, m-1, 1);
-var fm = new Date(y, m, 0);
-var regs = [];
-for (var i = 0; i < D.mp.length; i++) {
-var r = D.mp[i];
-var rfi = new Date(r.fi);
-var rfe = r.fe ? new Date(r.fe) : null;
-if (rfi <= fm && (!rfe || rfe >= im)) regs.push(r);
-}
-
-var ocMap = {};
-for (var j = 0; j < regs.length; j++) {
-var oc = regs[j].oc;
-if (!ocMap[oc]) ocMap[oc] = [];
-ocMap[oc].push(regs[j]);
-}
-var ocKeys = Object.keys(ocMap).sort();
-for (var ok = 0; ok < ocKeys.length; ok++) {
-ocMap[ocKeys[ok]].sort(function(a,b) { return a.fi < b.fi ? -1 : 1; });
-}
-
-if (!ocKeys.length) return ‘<div class="card"><div class="empty">Sin lotes de MP para este mes.</div></div>’;
-
-var thDias = ‘’;
-for (var dd = 0; dd < diasCab.length; dd++) {
-thDias += ‘<th style="min-width:28px;font-size:10px">’ + parseInt(diasCab[dd].slice(8)) + ‘</th>’;
-}
-
-var rows = ‘’;
-for (var oi = 0; oi < ocKeys.length; oi++) {
-var oc2 = ocKeys[oi];
-var lotes2 = ocMap[oc2];
-rows += ‘<tr><td class="plaoc" colspan="' + (diasCab.length + 2) + '">OC: ’ + oc2 + ’ - ’ + lotes2.length + ’ lote(s)</td></tr>’;
-for (var li = 0; li < lotes2.length; li++) {
-var r2 = lotes2[li];
-var celdas = ‘’;
-for (var cd = 0; cd < diasCab.length; cd++) {
-var fdX = diasCab[cd];
-var diaX = new Date(fdX);
-var fiX = new Date(r2.fi);
-var feX = r2.fe ? new Date(r2.fe) : null;
-if (diaX < fiX) celdas += ‘<td class="celn">-</td>’;
-else if (fdX === r2.fe) celdas += ‘<td class="celeg">↩</td>’;
-else if (feX && diaX > feX) celdas += ‘<td class="celn">-</td>’;
-else celdas += ‘<td class="celok">✓</td>’;
-}
-rows += ‘<tr><td class="plalote"><b>’ + r2.nom + ‘</b><br><span style="font-size:10px;color:#888">[’ + (r2.cod||’-’) + ‘] ’ + (r2.tipo===‘frio’?‘Frio’:‘Seco’) + ‘</span></td>’ + celdas + ‘<td style="font-size:11px;color:#888">’ + (r2.operario||’-’) + ‘</td></tr>’;
-}
-}
-
-return ’<div class="card"><div class="tit">Planilla de lotes por dia - ’ + mes + ‘</div>’ +
-‘<div style="font-size:12px;color:#888;margin-bottom:8px">Verde: activo | Rojo: egreso | Gris: no estaba</div>’ +
-‘<div class="pla"><table class="platbl">’ +
-‘<thead><tr><th class="plalote">Lote</th>’ + thDias + ‘<th style="min-width:80px">Operario</th></tr></thead>’ +
-‘<tbody>’ + rows + ‘</tbody></table></div></div>’;
-}
-
-// ===== TARIFAS =====
-function htmlTar() {
-var t = D.tar;
-var cliHtml = ‘’;
-for (var i = 0; i < D.clientes.length; i++) {
-var c = D.clientes[i];
-cliHtml += ‘<div class="mcard">’ +
-‘<div style="font-weight:700;font-size:13px">’ + c.nom + ‘</div>’ +
-(c.desc ? ‘<div style="font-size:12px;color:#888">’ + c.desc + ‘</div>’ : ‘’) +
-‘<div style="font-size:11px;color:#888;margin:4px 0 8px">Est: $’ + (c.tarEst||0) + ‘/pos/dia - Mov in: $’ + (c.tarMI||0) + ’ - Mov out: $’ + (c.tarME||0) + ‘</div>’ +
-‘<div style="display:flex;gap:8px">’ +
-‘<button class="btn" style="font-size:12px;padding:6px 12px" onclick="editCli(\'' + c._id + '\')">Editar</button>’ +
-‘<button class="btn btnr" style="font-size:12px;padding:6px 12px" onclick="elimCli(\'' + c._id + '\')">Eliminar</button>’ +
-‘</div></div>’;
-}
-
-return ‘<div class="card"><div class="tit">Estadias Arcor - tarifa diaria ($)</div>’ +
-‘<div class="g2">’ +
-‘<div class="fg"><label>MP Seca / lote</label><input id="t-mps" type="number" value="' + (t.mps||'') + '" placeholder="0.00"></div>’ +
-‘<div class="fg"><label>MP Fria / lote</label><input id="t-mpf" type="number" value="' + (t.mpf||'') + '" placeholder="0.00"></div>’ +
-‘<div class="fg"><label>PT Seco / posicion</label><input id="t-pts" type="number" value="' + (t.pts||'') + '" placeholder="0.00"></div>’ +
-‘<div class="fg"><label>PT Frio / posicion</label><input id="t-ptf" type="number" value="' + (t.ptf||'') + '" placeholder="0.00"></div>’ +
-‘</div></div>’ +
-‘<div class="card"><div class="tit">Movimientos Arcor ($)</div>’ +
-‘<div class="g2">’ +
-‘<div class="fg"><label>Ingreso / posicion</label><input id="t-mi" type="number" value="' + (t.mi||'') + '" placeholder="0.00"></div>’ +
-‘<div class="fg"><label>Egreso / posicion</label><input id="t-me" type="number" value="' + (t.me||'') + '" placeholder="0.00"></div>’ +
-‘</div></div>’ +
-‘<div class="card"><div class="tit">Tarifa por camion PT</div>’ +
-‘<div class="fg"><label>Por camion cargado</label><input id="t-cam" type="number" value="' + (t.cam||'') + '" placeholder="0.00"></div></div>’ +
-‘<div class="card"><div class="tit">PIN de administrador</div>’ +
-‘<div class="fg"><label>Nuevo PIN (vacio = no cambia)</label><input id="t-pin" type="password" inputmode="numeric" maxlength="6" placeholder="****"></div></div>’ +
-‘<button class="btn btnp" style="width:100%;padding:14px;font-size:16px;font-weight:700;margin-bottom:8px" onclick="guardarTar()">Guardar tarifas Arcor</button>’ +
-‘<div id="tar-ok" style="color:#2E7D32;text-align:center;margin-bottom:16px;display:none;font-weight:600">Guardado</div>’ +
-‘<div class="card"><div class="tit">Clientes</div>’ + (cliHtml || ‘<div class="empty">Sin clientes</div>’) + ‘</div>’ +
-‘<div class="card" style="background:#EEF4FF;border-color:#B5D4F4">’ +
-‘<div id="cli-tit" style="font-size:12px;font-weight:700;color:#185FA5;margin-bottom:12px">Nuevo cliente</div>’ +
-‘<input type="hidden" id="cli-eid">’ +
-‘<div class="g2">’ +
-‘<div class="fg"><label>Nombre *</label><input id="cli-nom" placeholder="Ej: Netafim"></div>’ +
-‘<div class="fg"><label>Descripcion</label><input id="cli-desc" placeholder="Ej: Mangueras"></div>’ +
-‘</div>’ +
-‘<div style="font-size:11px;font-weight:700;color:#666;text-transform:uppercase;margin-bottom:10px">Tarifas ($)</div>’ +
-‘<div class="g2">’ +
-‘<div class="fg"><label>Estadia / pos / dia</label><input id="cli-est" type="number" placeholder="0.00"></div>’ +
-‘<div class="fg"><label>Mov. ingreso / pos</label><input id="cli-mi2" type="number" placeholder="0.00"></div>’ +
-‘</div>’ +
-‘<div class="fg"><label>Mov. egreso / pos</label><input id="cli-me2" type="number" placeholder="0.00"></div>’ +
-‘<div style="display:flex;gap:8px">’ +
-‘<button class="btn btnp" style="flex:1;padding:12px;font-size:14px;font-weight:600" onclick="guardarCli()">Guardar cliente</button>’ +
-‘<button class="btn" id="cli-cancel" style="padding:12px;font-size:14px;display:none" onclick="cancelCli()">Cancelar</button>’ +
-‘</div></div>’;
-}
-
-function guardarTar() {
-var pin = gv(‘t-pin’);
-D.tar = {
-mps: parseFloat(gv(‘t-mps’)) || 0,
-mpf: parseFloat(gv(‘t-mpf’)) || 0,
-pts: parseFloat(gv(‘t-pts’)) || 0,
-ptf: parseFloat(gv(‘t-ptf’)) || 0,
-mi: parseFloat(gv(‘t-mi’)) || 0,
-me: parseFloat(gv(‘t-me’)) || 0,
-cam: parseFloat(gv(‘t-cam’)) || 0,
-pin: (pin && pin.length >= 4) ? pin : (D.tar.pin || ‘1234’)
-};
-sv();
-var ok = el(‘tar-ok’);
-if (ok) { ok.style.display = ‘block’; setTimeout(function() { ok.style.display = ‘none’; }, 2500); }
-}
-
-function guardarCli() {
-var nom = gv(‘cli-nom’).trim();
-if (!nom) { alert(‘Ingresa el nombre’); return; }
-var eid = gv(‘cli-eid’);
-var obj = {
-nom: nom,
-desc: gv(‘cli-desc’).trim(),
-tarEst: parseFloat(gv(‘cli-est’)) || 0,
-tarMI: parseFloat(gv(‘cli-mi2’)) || 0,
-tarME: parseFloat(gv(‘cli-me2’)) || 0
-};
-if (eid) {
-for (var i = 0; i < D.clientes.length; i++) {
-if (D.clientes[i]._id === eid) { D.clientes[i] = Object.assign({}, D.clientes[i], obj); break; }
-}
-} else {
-obj._id = uid();
-D.clientes.push(obj);
-}
-sv(); renderTab();
-}
-
-function editCli(id) {
-var c = null;
-for (var i = 0; i < D.clientes.length; i++) { if (D.clientes[i]._id === id) { c = D.clientes[i]; break; } }
-if (!c) return;
-sv2(‘cli-eid’, id); sv2(‘cli-nom’, c.nom); sv2(‘cli-desc’, c.desc || ‘’);
-sv2(‘cli-est’, c.tarEst || ‘’); sv2(‘cli-mi2’, c.tarMI || ‘’); sv2(‘cli-me2’, c.tarME || ‘’);
-if (el(‘cli-tit’)) el(‘cli-tit’).textContent = ‘Editar cliente’;
-if (el(‘cli-cancel’)) el(‘cli-cancel’).style.display = ‘’;
-if (el(‘cli-nom’)) el(‘cli-nom’).scrollIntoView({behavior:‘smooth’});
-}
-
-function cancelCli() {
-sv2(‘cli-eid’,’’); sv2(‘cli-nom’,’’); sv2(‘cli-desc’,’’);
-sv2(‘cli-est’,’’); sv2(‘cli-mi2’,’’); sv2(‘cli-me2’,’’);
-if (el(‘cli-tit’)) el(‘cli-tit’).textContent = ‘Nuevo cliente’;
-if (el(‘cli-cancel’)) el(‘cli-cancel’).style.display = ‘none’;
-}
-
-function elimCli(id) {
-if (!confirm(‘Eliminar este cliente?’)) return;
-D.clientes = D.clientes.filter(function(x) { return x._id !== id; });
-sv(); renderTab();
-}
-
-// ===== ARRANCAR =====
-if(document.readyState===‘loading’){document.addEventListener(‘DOMContentLoaded’,render);}else{render();}
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+let data={tar:{mps:0,mpf:0,pts:0,ptf:0,mi:0,me:0,cam:0},mp:[],pt:[],clientes:[],movCli:[]};
+let secActiva='res';
+function sv(){}
+function dot(e){const d=document.getElementById('syncDot');if(!d)return;d.className='sync-dot '+e;d.title=e==='ok'?'Conectado ✓':e==='err'?'Error':'Sincronizando...';}
+function v(id){return document.getElementById(id);}
+function hoy(){return new Date().toISOString().slice(0,10);}
+function mes0(){return new Date().toISOString().slice(0,7);}
+function $c(n){return '$'+parseFloat(n||0).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function uid(){return Date.now()+Math.random().toString(36).slice(2);}
+onSnapshot(doc(db,'config','tarifas'),s=>{if(s.exists())data.tar=s.data();if(secActiva==='cfg')cTar();dot('ok');},()=>dot('err'));
+onSnapshot(collection(db,'mp'),s=>{data.mp=s.docs.map(d=>({...d.data(),_id:d.id}));rSec();},()=>dot('err'));
+onSnapshot(collection(db,'pt'),s=>{data.pt=s.docs.map(d=>({...d.data(),_id:d.id}));rSec();},()=>dot('err'));
+onSnapshot(collection(db,'clientes'),s=>{data.clientes=s.docs.map(d=>({...d.data(),_id:d.id}));rSec();},()=>dot('err'));
+onSnapshot(collection(db,'movCli'),s=>{data.movCli=s.docs.map(d=>({...d.data(),_id:d.id}));rSec();},()=>dot('err'));
+
+function rSec(){
+if(secActiva==='res')rRes();
+else if(secActiva==='mps')rMPS();
+else if(secActiva==='mpf')rMPF();
+else if(secActiva==='pt')rPT();
+else if(secActiva==='cam')rCam();
+else if(secActiva==='stk')rStk();
+else if(secActiva==='rep')rRep();
+else if(secActiva==='cli')rCli();
+}
+
+function nav(id,btn){
+document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+v('sec-'+id).classList.add('on');btn.classList.add('on');
+secActiva=id;rSec();if(id==='cfg')cTar();
+}
+
+function addLote(){
+const lista=v('lotes-lista');
+const prod=v('imo-prod').value.trim();
+const div=document.createElement('div');
+div.style.cssText='display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center';
+div.innerHTML='<input type="text" placeholder="Nombre del lote" class="lote-nom" value="'+prod+'"><input type="text" placeholder="Código" class="lote-cod"><button style="padding:5px 9px;border:1px solid #ffcdd2;background:#fff;color:#c62828;border-radius:5px;cursor:pointer;font-size:13px" onclick="this.parentElement.remove()">✕</button>';
+lista.appendChild(div);
+}
+function syncProd(){
+// Auto-completa el nombre en lotes que aún están vacíos
+const prod=v('imo-prod').value.trim();
+document.querySelectorAll('.lote-nom').forEach(inp=>{if(!inp.value||inp.value===inp.dataset.prev)inp.value=prod;inp.dataset.prev=prod;});
+}
+
+function aM(id,tipo){
+if(id==='imo'){
+v('imo-tipo').value=tipo;v('imo-id').value='';
+v('tit-imo').textContent='Ingreso MP '+(tipo==='frio'?'Fría':'Seca');
+v('imo-fi').value=hoy();
+v('imo-oc').value='';v('imo-prod').value='';
+v('lotes-lista').innerHTML='';
+addLote(); // empieza con 1 lote
+v('ov-imo').classList.add('on');
+}else if(id==='emo'){
+v('emo-tipo').value=tipo;
+v('tit-emo').textContent='Egreso MP '+(tipo==='frio'?'Fría':'Seca');
+v('emo-fe').value=hoy();
+v('emo-lotes-wrap').style.display='none';
+// Cargar OCs disponibles del tipo
+const sel=v('emo-oc-sel');
+sel.innerHTML='<option value="">— Elegí una OC —</option>';
+const activos=data.mp.filter(r=>r.tipo===tipo&&!r.fe);
+const ocs=[...new Set(activos.map(r=>r.oc))];
+if(!ocs.length){sel.innerHTML='<option value="" disabled>Sin OC activas</option>';}
+else{ocs.forEach(oc=>{const o=document.createElement('option');o.value=oc;const n=activos.filter(r=>r.oc===oc).length;o.textContent='OC: '+oc+' ('+n+' lote'+(n>1?'s':'')+' activo'+(n>1?'s':'')+')';sel.appendChild(o);});}
+v('ov-emo').classList.add('on');
+}else if(id==='ipt'){
+v('ipt-id').value='';v('tit-ipt').textContent='Ingreso Producto Terminado';
+v('ipt-fi').value=hoy();
+['ipt-rem','ipt-tra','ipt-pal'].forEach(f=>v(f).value='');
+v('ov-ipt').classList.add('on');
+}else if(id==='ept'){
+v('ept-fe').value=hoy();
+['ept-rs','ept-oe','ept-oc','ept-tra','ept-pal'].forEach(f=>v(f).value='');
+actStockInfo();v('ov-ept').classList.add('on');
+}else if(id==='icli'){
+v('icli-fecha').value=hoy();
+['icli-desc','icli-remito','icli-pal'].forEach(f=>v(f).value='');
+poblarSelectClientes('icli-cliente');
+v('ov-icli').classList.add('on');
+}else if(id==='ecli'){
+v('ecli-fecha').value=hoy();
+['ecli-remito','ecli-pal'].forEach(f=>v(f).value='');
+poblarSelectClientes('ecli-cliente');
+actStockCli();
+v('ov-ecli').classList.add('on');
+}
+}
+function cM(id){v(id).classList.remove('on');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('on');}));
+
+function selEmoOC(){
+const oc=v('emo-oc-sel').value;
+const tipo=v('emo-tipo').value;
+const wrap=v('emo-lotes-wrap');
+const lista=v('emo-lotes-lista');
+if(!oc){wrap.style.display='none';return;}
+// Mostrar lotes activos de esa OC con checkboxes
+const lotes=data.mp.filter(r=>r.oc===oc&&r.tipo===tipo&&!r.fe);
+if(!lotes.length){wrap.style.display='none';return;}
+lista.innerHTML=lotes.map(r=>`
+<label style="display:flex;align-items:center;gap:10px;padding:10px;background:#fff;border-radius:7px;margin-bottom:8px;border:1px solid #eee;cursor:pointer">
+<input type="checkbox" class="emo-lote-chk" value="${r._id}" style="width:18px;height:18px;cursor:pointer">
+<div>
+<div style="font-weight:600;font-size:13px">${r.nom} <span style="font-size:11px;color:#aaa">[${r.cod||'—'}]</span></div>
+<div style="font-size:11px;color:#888">Ingresó: ${r.fi}</div>
+</div>
+</label>`).join('');
+wrap.style.display='block';
+}
+function selEmo(){}
+
+function editMP(id){
+const r=data.mp.find(x=>x._id===id);if(!r)return;
+v('imo-id').value=id;v('imo-tipo').value=r.tipo;
+v('tit-imo').textContent='Editar lote';
+v('imo-oc').value=r.oc||'';v('imo-fi').value=r.fi||'';
+v('imo-prod').value=r.prod||r.nom||'';
+v('lotes-lista').innerHTML='';
+const div=document.createElement('div');
+div.style.cssText='display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:center';
+div.innerHTML='<input type="text" placeholder="Nombre lote" class="lote-nom" value="'+( r.nom||'')+'" ><input type="text" placeholder="Código" class="lote-cod" value="'+(r.cod||'')+'"><span></span>';
+v('lotes-lista').appendChild(div);
+v('ov-imo').classList.add('on');
+}
+async function delMP(id){
+if(!confirm('¿Eliminar este lote? No se puede deshacer.'))return;
+dot('loading');
+try{await deleteDoc(doc(db,'mp',id));dot('ok');}
+catch(e){alert('Error: '+e.message);dot('err');}
+}
+function editPT(id){
+const r=data.pt.find(x=>x._id===id);if(!r)return;
+v('ept-edit-id').value=id;v('ept-edit-fecha').value=r.fecha||'';
+v('ept-edit-tipo').value=r.tipo||'seco';v('ept-edit-dir').value=r.dir||'in';
+v('ept-edit-pal').value=r.pal||'';v('ept-edit-rem').value=r.remito||'';
+v('ept-edit-tra').value=r.tra||'';v('ept-edit-oe').value=r.oe||'';
+v('ept-edit-oc').value=r.oc||'';
+v('ov-ept-edit').classList.add('on');
+}
+async function gEditPT(){
+const id=v('ept-edit-id').value;const pa=parseInt(v('ept-edit-pal').value)||0;
+if(!id||pa<1){alert('Completá los campos');return;}
+dot('loading');
+try{await setDoc(doc(db,'pt',id),{fecha:v('ept-edit-fecha').value,tipo:v('ept-edit-tipo').value,dir:v('ept-edit-dir').value,pal:pa,remito:v('ept-edit-rem').value,tra:v('ept-edit-tra').value,oe:v('ept-edit-oe').value,oc:v('ept-edit-oc').value},{merge:true});cM('ov-ept-edit');dot('ok');}
+catch(e){alert('Error: '+e.message);dot('err');}
+}
+async function delPT(id){
+if(!confirm('¿Eliminar este movimiento? No se puede deshacer.'))return;
+dot('loading');
+try{await deleteDoc(doc(db,'pt',id));dot('ok');rStk();}
+catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+async function gIM(){
+const editId=v('imo-id').value;
+const t=v('imo-tipo').value,oc=v('imo-oc').value.trim(),fi=v('imo-fi').value,prod=v('imo-prod').value.trim();
+if(!oc||!fi||!prod){alert('Completá OC, fecha y producto');return;}
+dot('loading');
+try{
+if(editId){
+const noms=document.querySelectorAll('.lote-nom');
+const cods=document.querySelectorAll('.lote-cod');
+if(noms.length>0) await setDoc(doc(db,'mp',editId),{oc,fi,prod,nom:noms[0].value.trim(),cod:cods[0].value.trim()},{merge:true});
+}else{
+const noms=document.querySelectorAll('.lote-nom');
+const cods=document.querySelectorAll('.lote-cod');
+let ok=true;noms.forEach(n=>{if(!n.value.trim())ok=false;});
+if(!ok||noms.length===0){alert('Agregá al menos un lote con nombre');dot('ok');return;}
+for(let i=0;i<noms.length;i++){
+await addDoc(collection(db,'mp'),{tipo:t,oc,fi,fe:null,prod:prod,nom:noms[i].value.trim(),cod:cods[i]?cods[i].value.trim():'',movs:[],ts:new Date().toISOString()});
+}
+}
+cM('ov-imo');dot('ok');
+}catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+async function gEM(){
+const oc=v('emo-oc-sel').value;
+const fe=v('emo-fe').value;
+if(!oc){alert('Seleccioná una OC');return;}
+if(!fe){alert('Ingresá la fecha de egreso');return;}
+// Obtener lotes seleccionados con checkbox
+const chks=[...document.querySelectorAll('.emo-lote-chk:checked')];
+if(!chks.length){alert('Seleccioná al menos un lote');return;}
+dot('loading');
+try{
+for(const chk of chks){
+const id=chk.value;
+const r=data.mp.find(x=>x._id===id);if(!r)continue;
+await setDoc(doc(db,'mp',id),{fe,movs:[...(r.movs||[]),{fe}]},{merge:true});
+}
+cM('ov-emo');dot('ok');
+}catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+function stPT(tipo,hasta){
+const hd=new Date(hasta);
+return data.pt.filter(m=>m.tipo===tipo&&new Date(m.fecha)<=hd).reduce((s,m)=>s+(m.dir==='in'?m.pal:-m.pal),0);
+}
+function actStockInfo(){
+const ti=v('ept-tipo').value,st=Math.max(0,stPT(ti,hoy()));
+v('ept-stock-info').innerHTML='<strong>Stock actual '+(ti==='frio'?'Frío':'Seco')+':</strong> <span style="color:#185FA5;font-weight:700">'+st+' pallets</span>';
+}
+
+async function gIPT(){
+const editId=v('ipt-id').value;
+const re=v('ipt-rem').value.trim(),fi=v('ipt-fi').value,tr=v('ipt-tra').value.trim(),ti=v('ipt-tipo').value,pa=parseInt(v('ipt-pal').value)||0;
+if(!re||!fi||pa<1){alert('Completá remito, fecha y pallets');return;}
+dot('loading');
+try{
+if(editId){await setDoc(doc(db,'pt',editId),{fecha:fi,tipo:ti,pal:pa,remito:re,tra:tr},{merge:true});}
+else{await addDoc(collection(db,'pt'),{fecha:fi,tipo:ti,dir:'in',pal:pa,remito:re,tra:tr,oe:'',oc:'',ts:new Date().toISOString()});}
+cM('ov-ipt');dot('ok');
+}catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+async function gEPT(){
+const rs=v('ept-rs').value.trim(),oe=v('ept-oe').value.trim(),oc=v('ept-oc').value.trim(),tr=v('ept-tra').value.trim(),fe=v('ept-fe').value,ti=v('ept-tipo').value,pa=parseInt(v('ept-pal').value)||0;
+if(!rs||!oe||!oc||!fe||pa<1){alert('Completá remito, OE, OC, fecha y pallets');return;}
+const st=stPT(ti,fe);
+if(pa>st){alert('Pallets insuficientes. Stock al '+fe+': '+Math.max(0,st));return;}
+dot('loading');
+try{await addDoc(collection(db,'pt'),{fecha:fe,tipo:ti,dir:'out',pal:pa,remito:rs,oe,oc,tra:tr,ts:new Date().toISOString()});cM('ov-ept');dot('ok');}
+catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+function tope(mes){
+// Si el mes es el actual, el tope es hoy. Si es pasado, es el último día del mes.
+const[y,m]=mes.split('-').map(Number);
+const fm=new Date(y,m,0);
+const hd=new Date(hoy());
+const esActual=y===hd.getFullYear()&&m===hd.getMonth()+1;
+return esActual?hd:fm;
+}
+function dAlm(fi,fe,mes){
+const[y,m]=mes.split('-').map(Number);
+const im=new Date(y,m-1,1);
+const tp=tope(mes);
+const en=new Date(fi),sa=fe?new Date(fe):tp;
+const de=en>im?en:im,ha=sa<tp?sa:tp;
+if(de>ha)return 0;
+return Math.ceil((ha-de)/86400000)+1;
+}
+function dEgr(fi,feEg,mes){
+const[y,m]=mes.split('-').map(Number);
+const im=new Date(y,m-1,1);
+const tp=tope(mes);
+const en=new Date(fi),sa=new Date(feEg);
+const de=en>im?en:im,ha=sa<tp?sa:tp;
+if(de>ha)return 0;
+return Math.ceil((ha-de)/86400000)+1;
+}
+
+function calcMP(tipo,mes){
+// Cada lote = 1 unidad. Estadía = días almacenado × tarifa (sin pallets)
+const tar=tipo==='seco'?data.tar.mps:data.tar.mpf;
+const tmi=data.tar.mi||0,tme=data.tar.me||0;
+const[y,m]=mes.split('-').map(Number);
+const im=new Date(y,m-1,1),fm=new Date(y,m,0);
+const regs=data.mp.filter(r=>r.tipo===tipo&&new Date(r.fi)<=fm&&(!r.fe||new Date(r.fe)>=im));
+let tE=0,tMI=0,tMO=0;
+regs.forEach(r=>{
+// 1 lote = 1 unidad, sin importar pallets
+tE+=dAlm(r.fi,r.fe,mes)*1*(tar||0);
+tMI+=1*(tmi||0); // 1 movimiento de ingreso por lote
+if(r.fe&&new Date(r.fe)>=im&&new Date(r.fe)<=fm){
+tMO+=1*(tme||0); // 1 movimiento de egreso por lote
+}
+});
+return{tE,tMI,tMO,total:tE+tMI+tMO};
+}
+
+function calcPT(mes){
+const tS=data.tar.pts||0,tF=data.tar.ptf||0,tmi=data.tar.mi||0,tme=data.tar.me||0;
+const[y,m]=mes.split('-').map(Number);
+const diasMes=new Date(y,m,0).getDate();const hoyDate=new Date();
+let tES=0,tEF=0,tMI=0,tMO=0;
+for(let d=1;d<=diasMes;d++){
+const fd=y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+const dD=new Date(fd);if(dD>hoyDate)break;
+const stS=data.pt.filter(mv=>mv.tipo==='seco'&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0);
+const stF=data.pt.filter(mv=>mv.tipo==='frio'&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0);
+tES+=Math.max(0,stS)*tS;tEF+=Math.max(0,stF)*tF;
+const mH=data.pt.filter(mv=>mv.fecha===fd);
+tMI+=mH.filter(mv=>mv.dir==='in').reduce((s,mv)=>s+mv.pal,0)*tmi;
+tMO+=mH.filter(mv=>mv.dir==='out').reduce((s,mv)=>s+mv.pal,0)*tme;
+}
+return{tES,tEF,tE:tES+tEF,tMI,tMO,total:tES+tEF+tMI+tMO};
+}
+
+function calcCam(mes){
+const[y,m]=mes.split('-').map(Number);
+const im=new Date(y,m-1,1),fm=new Date(y,m,0),tc=data.tar.cam||0;
+const tot=data.pt.filter(mv=>mv.dir==='out'&&new Date(mv.fecha)>=im&&new Date(mv.fecha)<=fm).length;
+return{tot,total:tot*tc};
+}
+
+function rRes(){
+const mes=v('mes-res').value||mes0();
+const mps=calcMP('seco',mes),mpf=calcMP('frio',mes),pt=calcPT(mes),cam=calcCam(mes);
+const gran=mps.total+mpf.total+pt.total+cam.total;
+const hD=new Date(hoy());
+const stS=Math.max(0,data.pt.filter(mv=>mv.tipo==='seco'&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0));
+const stF=Math.max(0,data.pt.filter(mv=>mv.tipo==='frio'&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0));
+const mpSaldo=data.mp.filter(r=>r.saldo>0).reduce((s,r)=>s+r.saldo,0);
+v('resumen-content').innerHTML=`
+<div class="resumen-card">
+<h2>📊 Resumen del mes — ${mes}</h2>
+<div class="resumen-total-big">${$c(gran)}</div>
+<div class="resumen-sub">Total estimado a facturar a Arcor</div>
+<div class="resumen-grid">
+<div class="resumen-item"><div class="resumen-item-label">MP Seca</div><div class="resumen-item-val">${$c(mps.total)}</div></div>
+<div class="resumen-item"><div class="resumen-item-label">MP Fría</div><div class="resumen-item-val">${$c(mpf.total)}</div></div>
+<div class="resumen-item"><div class="resumen-item-label">Prod. Terminados</div><div class="resumen-item-val">${$c(pt.total)}</div></div>
+<div class="resumen-item"><div class="resumen-item-label">Cargas camiones</div><div class="resumen-item-val">${$c(cam.total)}</div></div>
+</div>
+</div>
+<div class="g4">
+<div class="met"><div class="ml">Stock MP</div><div class="mv">${mpSaldo}</div><div class="ms">pallets</div></div>
+<div class="met"><div class="ml">PT seco hoy</div><div class="mv">${stS}</div><div class="ms">pallets</div></div>
+<div class="met"><div class="ml">PT frío hoy</div><div class="mv">${stF}</div><div class="ms">pallets</div></div>
+<div class="met"><div class="ml">Camiones mes</div><div class="mv">${cam.tot}</div><div class="ms">cargas</div></div>
+</div>
+<div class="card">
+<div class="ct">Desglose por concepto</div>
+<div class="res" style="margin-top:0">
+<div class="rr"><span>Estadía MP Seca</span><span>${$c(mps.tE)}</span></div>
+<div class="rr"><span>Estadía MP Fría</span><span>${$c(mpf.tE)}</span></div>
+<div class="rr"><span>Estadía PT Seco</span><span>${$c(pt.tES)}</span></div>
+<div class="rr"><span>Estadía PT Frío</span><span>${$c(pt.tEF)}</span></div>
+<div class="rr"><span>Movimientos ingreso</span><span>${$c(mps.tMI+mpf.tMI+pt.tMI)}</span></div>
+<div class="rr"><span>Movimientos egreso</span><span>${$c(mps.tMO+mpf.tMO+pt.tMO)}</span></div>
+<div class="rr"><span>Tarifa camiones</span><span>${$c(cam.total)}</span></div>
+<div class="rr grand"><span>Total a facturar</span><span>${$c(gran)}</span></div>
+</div>
+</div>`;
+}
+
+function rMP(tipo,mesId,planId,resId,metId){
+const mes=v(mesId).value||mes0();
+const tar=tipo==='seco'?data.tar.mps:data.tar.mpf;
+const tmi=data.tar.mi||0,tme=data.tar.me||0;
+const[y,m]=mes.split('-').map(Number);
+const im=new Date(y,m-1,1),fm=new Date(y,m,0);
+// Todos los lotes del tipo que estuvieron activos en el mes
+const regs=data.mp.filter(r=>r.tipo===tipo&&new Date(r.fi)<=fm&&(!r.fe||new Date(r.fe)>=im));
+const ocM={};regs.forEach(r=>{if(!ocM[r.oc])ocM[r.oc]=[];ocM[r.oc].push(r);});
+Object.keys(ocM).forEach(oc=>ocM[oc].sort((a,b)=>a.fi.localeCompare(b.fi)));
+let tE=0,tMI=0,tMO=0,lotesActivos=0,ocN=0,html='';
+
+Object.entries(ocM).forEach(([oc,rs])=>{
+ocN++;let oE=0,oMI=0,oMO=0,rows='';
+rs.forEach(r=>{
+const ds=dAlm(r.fi,r.fe,mes);
+const eU=ds*(tar||0); // 1 unidad = 1 lote
+const miU=1*(tmi||0);
+const moU=r.fe&&new Date(r.fe)>=im&&new Date(r.fe)<=fm?1*(tme||0):0;
+oE+=eU;oMI+=miU;oMO+=moU;
+if(!r.fe)lotesActivos++;
+const estado=!r.fe
+?'<span class="bdg bdi">Activo</span>'
+:'<span class="bdg bdo">Egresado '+r.fe+'</span>';
+rows+=`<tr style="border-top:1px solid #eee">
+<td style="font-weight:600">${r.nom} <span style="font-size:11px;color:#aaa">[${r.cod||'—'}]</span></td>
+<td>${r.fi}</td>
+<td style="text-align:center">${estado}</td>
+<td style="text-align:center">${ds}</td>
+<td style="text-align:center;font-weight:600">1</td>
+<td style="text-align:right">${$c(eU)}</td>
+<td style="text-align:right;color:#888;font-size:12px">${$c(miU+moU)}</td>
+<td><button class="accion-btn" onclick="editMP('${r._id}')">✏️</button><button class="accion-btn del" onclick="delMP('${r._id}')">🗑️</button></td>
+</tr>`;
+});
+tE+=oE;tMI+=oMI;tMO+=oMO;
+html+=`<div class="oc-blk">
+<div class="oc-h">
+<div style="display:flex;align-items:center;gap:10px">
+<div class="oc-n">${ocN}</div>
+<div><div class="oc-tt">OC: ${oc}</div>
+<div class="oc-ss">${rs.length} lote(s) — Estadía: ${$c(oE)} | Movs: ${$c(oMI+oMO)}</div></div>
+</div>
+<div style="font-size:14px;font-weight:700;color:#111">${$c(oE+oMI+oMO)}</div>
+</div>
+<div class="card" style="padding:0;overflow:hidden"><div class="ovx">
+<table><thead><tr>
+<th>Lote</th><th>Ingreso</th><th style="text-align:center">Estado</th>
+<th style="text-align:center">Días</th><th style="text-align:center">Unidades</th>
+<th style="text-align:right">Estadía</th><th style="text-align:right">Mov.</th><th></th>
+</tr></thead><tbody>${rows}</tbody></table>
+</div></div>
+</div>`;
+});
+
+if(!html)html='<div class="card"><div class="empty">Sin registros para este mes.</div></div>';
+v(planId).innerHTML=html;
+const g=tE+tMI+tMO;
+v(resId).innerHTML=`<div class="res">
+<div class="rr"><span>Estadía de lotes</span><span>${$c(tE)}</span></div>
+<div class="rr"><span>Movimientos ingreso</span><span>${$c(tMI)}</span></div>
+<div class="rr"><span>Movimientos egreso</span><span>${$c(tMO)}</span></div>
+<div class="rr grand"><span>Total a facturar</span><span>${$c(g)}</span></div>
+</div>`;
+v(metId).innerHTML=`
+<div class="met"><div class="ml">OC del mes</div><div class="mv">${Object.keys(ocM).length}</div></div>
+<div class="met"><div class="ml">Lotes activos</div><div class="mv">${lotesActivos}</div></div>
+<div class="met"><div class="ml">Estadía del mes</div><div class="mv">${$c(tE)}</div></div>
+<div class="met"><div class="ml">Total a facturar</div><div class="mv">${$c(g)}</div></div>`;
+}
+function rMPS(){rMP('seco','mes-mps','plan-mps','res-mps','met-mps');}
+function rMPF(){rMP('frio','mes-mpf','plan-mpf','res-mpf','met-mpf');}
+
+function rPT(){
+const mes=v('mes-pt').value||mes0();
+const tS=data.tar.pts||0,tF=data.tar.ptf||0,tmi=data.tar.mi||0,tme=data.tar.me||0;
+const[y,m]=mes.split('-').map(Number);
+const diasMes=new Date(y,m,0).getDate();const hoyDate=new Date();
+let tES=0,tEF=0,tMI_S=0,tMI_F=0,tMO_S=0,tMO_F=0,rowsDia='';
+for(let d=1;d<=diasMes;d++){
+const fd=y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+const dD=new Date(fd);if(dD>hoyDate)break;
+const stS=data.pt.filter(mv=>mv.tipo==='seco'&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0);
+const stF=data.pt.filter(mv=>mv.tipo==='frio'&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0);
+const eS=Math.max(0,stS)*tS,eF=Math.max(0,stF)*tF;
+tES+=eS;tEF+=eF;
+const mH=data.pt.filter(mv=>mv.fecha===fd);
+tMI_S+=mH.filter(mv=>mv.tipo==='seco'&&mv.dir==='in').reduce((s,mv)=>s+mv.pal,0)*tmi;
+tMI_F+=mH.filter(mv=>mv.tipo==='frio'&&mv.dir==='in').reduce((s,mv)=>s+mv.pal,0)*tmi;
+tMO_S+=mH.filter(mv=>mv.tipo==='seco'&&mv.dir==='out').reduce((s,mv)=>s+mv.pal,0)*tme;
+tMO_F+=mH.filter(mv=>mv.tipo==='frio'&&mv.dir==='out').reduce((s,mv)=>s+mv.pal,0)*tme;
+if(stS>0||stF>0||mH.length>0)rowsDia+=`<tr><td>${fd}</td><td style="text-align:center">${Math.max(0,stS)}</td><td style="text-align:right">${$c(eS)}</td><td style="text-align:center">${Math.max(0,stF)}</td><td style="text-align:right">${$c(eF)}</td><td style="text-align:right;font-weight:600">${$c(eS+eF)}</td></tr>`;
+}
+const pref=y+'-'+String(m).padStart(2,'0');
+const movsM=data.pt.filter(mv=>mv.fecha&&mv.fecha.startsWith(pref)).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+const rowsMov=movsM.map(mv=>`<tr><td>${mv.fecha}</td><td><span class="bdg ${mv.tipo==='frio'?'bdf':'bds'}">${mv.tipo==='frio'?'Frío':'Seco'}</span></td><td><span class="bdg ${mv.dir==='in'?'bdi':'bdo'}">${mv.dir==='in'?'Ingreso':'Egreso'}</span></td><td style="text-align:center">${mv.pal}</td><td>${mv.remito||'—'}</td><td>${mv.oe||'—'}</td><td>${mv.oc||'—'}</td><td>${mv.tra||'—'}</td><td style="text-align:right">${$c(mv.dir==='in'?mv.pal*tmi:mv.pal*tme)}</td><td><button class="accion-btn" onclick="editPT('${mv._id}')">✏️</button><button class="accion-btn del" onclick="delPT('${mv._id}')">🗑️</button></td></tr>`).join('');
+const hD=new Date(hoy());
+const stS=data.pt.filter(mv=>mv.tipo==='seco'&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0);
+const stF=data.pt.filter(mv=>mv.tipo==='frio'&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0);
+const tE=tES+tEF,tMI=tMI_S+tMI_F,tMO=tMO_S+tMO_F,g=tE+tMI+tMO;
+v('plan-pt').innerHTML=(rowsDia?`<div class="card"><div class="ct">Estadía diaria del mes</div><div class="ovx"><table><thead><tr><th>Fecha</th><th style="text-align:center">Stock Seco</th><th style="text-align:right">Est. Seco</th><th style="text-align:center">Stock Frío</th><th style="text-align:right">Est. Frío</th><th style="text-align:right">Total día</th></tr></thead><tbody>${rowsDia}</tbody></table></div></div>`:'<div class="card"><div class="empty">Sin movimientos de PT para este mes.</div></div>')+(rowsMov?`<div class="card" style="margin-top:14px"><div class="ct">Movimientos del mes</div><div class="ovx"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Mov.</th><th style="text-align:center">Pallets</th><th>Remito</th><th>Ord. entrega</th><th>Ord. compra</th><th>Transporte</th><th style="text-align:right">Mov.$</th><th></th></tr></thead><tbody>${rowsMov}</tbody></table></div></div>`:'');
+v('res-pt').innerHTML=`<div class="res"><div class="rr"><span>Estadía seco</span><span>${$c(tES)}</span></div><div class="rr"><span>Estadía frío</span><span>${$c(tEF)}</span></div><div class="rr"><span>Movimientos ingreso</span><span>${$c(tMI)}</span></div><div class="rr"><span>Movimientos egreso</span><span>${$c(tMO)}</span></div><div class="rr grand"><span>Total a facturar</span><span>${$c(g)}</span></div></div>`;
+v('met-pt').innerHTML=`<div class="met"><div class="ml">Stock seco hoy</div><div class="mv">${Math.max(0,stS)}</div><div class="ms">pallets</div></div><div class="met"><div class="ml">Stock frío hoy</div><div class="mv">${Math.max(0,stF)}</div><div class="ms">pallets</div></div><div class="met"><div class="ml">Estadía del mes</div><div class="mv">${$c(tE)}</div></div><div class="met"><div class="ml">Total a facturar</div><div class="mv">${$c(g)}</div></div>`;
+}
+
+function rCam(){
+const mes=v('mes-cam').value||mes0();
+const[y,m]=mes.split('-').map(Number);
+const tc=data.tar.cam||0;
+const prefijo=y+'-'+String(m).padStart(2,'0');
+// Comparación por string para evitar problemas de timezone — incluye seco Y frío
+const cams=data.pt.filter(mv=>mv.dir==='out'&&mv.fecha&&mv.fecha.startsWith(prefijo)).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+const tot=cams.length,tarTot=tot*tc;
+const rows=cams.map((c,i)=>`<tr><td style="font-weight:700;color:#888;text-align:center">${i+1}</td><td>${c.fecha}</td><td>${c.remito||'—'}</td><td>${c.oe||'—'}</td><td>${c.oc||'—'}</td><td>${c.tra||'—'}</td><td style="text-align:center">${c.pal}</td><td><span class="bdg ${c.tipo==='frio'?'bdf':'bds'}">${c.tipo==='frio'?'Frío':'Seco'}</span></td><td style="text-align:right">${$c(tc)}</td></tr>`).join('');
+v('plan-cam').innerHTML=cams.length?`<div class="card" style="padding:0;overflow:hidden"><div class="ovx"><table><thead><tr><th style="text-align:center">#</th><th>Fecha</th><th>Remito sal.</th><th>Ord. entrega</th><th>Ord. compra</th><th>Transporte</th><th style="text-align:center">Pallets</th><th>Tipo</th><th style="text-align:right">Tarifa</th></tr></thead><tbody>${rows}</tbody></table></div></div>`:'<div class="card"><div class="empty">Sin cargas de camiones en este mes.</div></div>';
+v('res-cam').innerHTML=`<div class="res"><div class="rr"><span>Camiones cargados</span><span>${tot}</span></div><div class="rr"><span>Tarifa por camión</span><span>${$c(tc)}</span></div><div class="rr grand"><span>Total tarifa camiones</span><span>${$c(tarTot)}</span></div></div>`;
+v('met-cam').innerHTML=`<div class="met"><div class="ml">Camiones del mes</div><div class="mv">${tot}</div></div><div class="met"><div class="ml">Pallets movilizados</div><div class="mv">${cams.reduce((s,c)=>s+c.pal,0)}</div></div><div class="met"><div class="ml">Tarifa por camión</div><div class="mv">${$c(tc)}</div></div><div class="met"><div class="ml">Total a facturar</div><div class="mv">${$c(tarTot)}</div></div>`;
+}
+
+// Funciones de acción de stock — se abren modales estáticos
+let _stkMPid='', _stkPTid='';
+
+function abrirStkMP(id){
+const r=data.mp.find(x=>x._id===id);if(!r)return;
+_stkMPid=id;
+v('stk-mp-id').value=id;
+v('stk-mp-titulo').textContent='Lote: '+r.nom;
+v('stk-mp-info').innerHTML='<strong>OC:</strong> '+r.oc+' &nbsp;|&nbsp; <strong>Lote:</strong> '+r.nom+' ['+( r.cod||'—')+']'+'<br><strong>Ingresó:</strong> '+r.fi;
+v('ov-stk-mp').classList.add('on');
+}
+function stkMPAccion(acc){
+const id=v('stk-mp-id').value;
+cM('ov-stk-mp');
+if(acc==='edit'){setTimeout(()=>editMP(id),200);}
+else if(acc==='egr'){
+const r=data.mp.find(x=>x._id===id);if(!r)return;
+v('egr-mp-id').value=id;
+v('egr-mp-fe').value=hoy();
+v('egr-mp-info').innerHTML='<strong>Lote:</strong> '+r.nom+' ['+( r.cod||'—')+']<br><strong>OC:</strong> '+r.oc;
+setTimeout(()=>v('ov-egr-mp').classList.add('on'),200);
+}
+else if(acc==='del'){
+setTimeout(()=>{
+if(confirm('¿Eliminar el lote '+data.mp.find(x=>x._id===id)?.nom+'? No se puede deshacer.')){delMP(id);}
+},200);
+}
+}
+async function confirmarEgresoMP(){
+const id=v('egr-mp-id').value;
+const fe=v('egr-mp-fe').value;
+if(!fe){alert('Ingresá la fecha');return;}
+const r=data.mp.find(x=>x._id===id);if(!r)return;
+dot('loading');
+try{await setDoc(doc(db,'mp',id),{fe,movs:[...(r.movs||[]),{fe}]},{merge:true});cM('ov-egr-mp');dot('ok');}
+catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+function abrirStkPT(id){
+const r=data.pt.find(x=>x._id===id);if(!r)return;
+_stkPTid=id;
+v('stk-pt-id').value=id;
+v('stk-pt-info').innerHTML='<strong>'+(r.dir==='in'?'Ingreso':'Egreso')+'</strong> — '+r.pal+' pallets'+'<br><strong>Fecha:</strong> '+r.fecha+' &nbsp;|&nbsp; Remito: '+(r.remito||'—');
+v('ov-stk-pt').classList.add('on');
+}
+function stkPTAccion(acc){
+const id=v('stk-pt-id').value;
+cM('ov-stk-pt');
+if(acc==='edit'){setTimeout(()=>editPT(id),200);}
+else if(acc==='del'){
+setTimeout(()=>{
+if(confirm('¿Eliminar este movimiento? No se puede deshacer.')){delPT(id);rStk();}
+},200);
+}
+}
+
+function rStk(){
+const hD=new Date(hoy());
+// Leer filtros
+const filtOC=(document.getElementById('stk-filtro-oc')?.value||'').trim();
+const filtLote=(document.getElementById('stk-filtro-lote')?.value||'').toLowerCase().trim();
+
+// Actualizar desplegable de OCs
+const selOC=document.getElementById('stk-filtro-oc');
+if(selOC){
+const ocActual=selOC.value;
+const todasOC=[...new Set(data.mp.filter(r=>!r.fe).map(r=>r.oc))].sort();
+selOC.innerHTML='<option value="">Todas las OC</option>'+todasOC.map(oc=>`<option value="${oc}" ${oc===ocActual?'selected':''}>${oc}</option>`).join('');
+}
+
+// Filtrar MP
+const mpSeco=data.mp.filter(r=>r.tipo==='seco'&&!r.fe&&(!filtOC||r.oc===filtOC)&&(!filtLote||r.nom?.toLowerCase().includes(filtLote)||r.cod?.toLowerCase().includes(filtLote)));
+const mpFrio=data.mp.filter(r=>r.tipo==='frio'&&!r.fe&&(!filtOC||r.oc===filtOC)&&(!filtLote||r.nom?.toLowerCase().includes(filtLote)||r.cod?.toLowerCase().includes(filtLote)));
+const stS=Math.max(0,data.pt.filter(mv=>mv.tipo==='seco'&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0));
+const stF=Math.max(0,data.pt.filter(mv=>mv.tipo==='frio'&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0));
+
+function tarjetasMP(lista){
+if(!lista.length) return '<p style="color:#bbb;font-size:13px;padding:8px 0">Sin lotes activos</p>';
+return lista.map(r=>`<div class="stk-item-mp" data-id="${r._id}" style="background:#F8F8F6;border-radius:8px;padding:12px 14px;margin-bottom:10px;border:1px solid #eee;cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0.05)">
+<div style="font-weight:600;font-size:13px;margin-bottom:3px">${r.nom} <span style="font-size:11px;color:#aaa;font-weight:400">[${r.cod||'—'}]</span></div>
+<div style="font-size:12px;color:#888">OC: ${r.oc} &nbsp;·&nbsp; Ingresó: ${r.fi}</div>
+<div style="font-size:12px;color:#185FA5;margin-top:6px;font-weight:500">Tocá para ver opciones →</div>
+</div>`).join('');
+}
+
+function tarjetasPT(tipo){
+const movs=data.pt.filter(mv=>mv.tipo===tipo).sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,20);
+if(!movs.length) return '<p style="color:#bbb;font-size:13px;padding:8px 0">Sin movimientos</p>';
+return movs.map(mv=>`<div class="stk-item-pt" data-id="${mv._id}" style="background:#F8F8F6;border-radius:8px;padding:12px 14px;margin-bottom:10px;border:1px solid #eee;cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0.05)">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+<span class="bdg ${mv.dir==='in'?'bdi':'bdo'}">${mv.dir==='in'?'Ingreso':'Egreso'}</span>
+<span style="font-weight:600;font-size:13px">${mv.pal} pallets</span>
+<span style="font-size:12px;color:#888">${mv.fecha}</span>
+</div>
+<div style="font-size:12px;color:#888">Remito: ${mv.remito||'—'}</div>
+<div style="font-size:12px;color:#185FA5;margin-top:6px;font-weight:500">Tocá para ver opciones →</div>
+</div>`).join('');
+}
+
+v('stk-content').innerHTML=`
+<div class="card">
+<div class="ct">📦 MP Seca — ${mpSeco.length} lotes activos</div>
+${tarjetasMP(mpSeco)}
+<button class="btn btnp" style="margin-top:4px" onclick="aM('imo','seco')">+ Agregar lote seco</button>
+</div>
+<div class="card">
+<div class="ct">❄️ MP Fría — ${mpFrio.length} lotes activos</div>
+${tarjetasMP(mpFrio)}
+<button class="btn btnp" style="margin-top:4px" onclick="aM('imo','frio')">+ Agregar lote frío</button>
+</div>
+<div class="card">
+<div class="ct">📬 PT Seco — Stock actual: <strong>${stS} pallets</strong></div>
+${tarjetasPT('seco')}
+<div style="display:flex;gap:8px;margin-top:4px">
+<button class="btn btnp" onclick="aM('ipt')">+ Ingreso</button>
+<button class="btn" onclick="aM('ept')">↩ Egreso</button>
+</div>
+</div>
+<div class="card">
+<div class="ct">❄️ PT Frío — Stock actual: <strong>${stF} pallets</strong></div>
+${tarjetasPT('frio')}
+<div style="display:flex;gap:8px;margin-top:4px">
+<button class="btn btnp" onclick="aM('ipt')">+ Ingreso</button>
+<button class="btn" onclick="aM('ept')">↩ Egreso</button>
+</div>
+</div>`;
+
+// Delegación de eventos en el contenedor — funciona en todos los mobile browsers
+v('stk-content').addEventListener('click', function(e){
+const mp=e.target.closest('.stk-item-mp');
+const pt=e.target.closest('.stk-item-pt');
+if(mp) abrirStkMP(mp.dataset.id);
+else if(pt) abrirStkPT(pt.dataset.id);
+});
+}
+
+function rRep(){
+const mes=v('mes-rep').value||mes0();
+const[y,m]=mes.split('-').map(Number);
+const im=new Date(y,m-1,1),fm=new Date(y,m,0);
+const tp=tope(mes);
+
+// Todos los lotes que estuvieron activos en el mes (seco y frio)
+const regs=data.mp.filter(r=>new Date(r.fi)<=fm&&(!r.fe||new Date(r.fe)>=im))
+.sort((a,b)=>a.oc.localeCompare(b.oc)||a.fi.localeCompare(b.fi));
+
+const ocM={};
+regs.forEach(r=>{if(!ocM[r.oc])ocM[r.oc]=[];ocM[r.oc].push(r);});
+
+if(!regs.length){
+v('rep-content').innerHTML='<div class="card"><div class="empty">Sin movimientos de MP para este mes.</div></div>';
+return;
+}
+
+let html='';
+let ocN=0;
+Object.entries(ocM).forEach(([oc,rs])=>{
+ocN++;
+let rows='';
+rs.forEach((r,i)=>{
+const tipo=r.tipo==='frio'?'❄️ Fría':'📦 Seca';
+// Fecha desde: max(fecha ingreso, inicio mes)
+const desde=new Date(r.fi)>=im?r.fi:y+'-'+String(m).padStart(2,'0')+'-01';
+// Fecha hasta: min(fecha egreso o hoy, fin mes)
+const hastaDate=r.fe?new Date(r.fe):tp;
+const hastaFinal=hastaDate<tp?hastaDate:tp;
+const hasta=hastaFinal.toISOString().slice(0,10);
+const dias=dAlm(r.fi,r.fe,mes);
+const estado=!r.fe?'<span class="bdg bdi">Activo</span>':'<span class="bdg bdo">Egresado</span>';
+rows+=`<tr>
+<td style="text-align:center;color:#888;font-size:12px">${i+1}</td>
+<td style="font-weight:600">${r.nom||'—'} <span style="font-size:11px;color:#aaa">[${r.cod||'—'}]</span></td>
+<td style="text-align:center">${tipo}</td>
+<td style="text-align:center">${r.fi}</td>
+<td style="text-align:center">${r.fe||'—'}</td>
+<td style="text-align:center">${desde}</td>
+<td style="text-align:center">${hasta}</td>
+<td style="text-align:center;font-weight:600">${dias}</td>
+<td style="text-align:center">${estado}</td>
+</tr>`;
+});
+html+=`<div class="oc-blk">
+<div class="oc-h">
+<div style="display:flex;align-items:center;gap:10px">
+<div class="oc-n">${ocN}</div>
+<div><div class="oc-tt">OC: ${oc}</div>
+<div class="oc-ss">${rs.length} lote(s) en el mes</div></div>
+</div>
+</div>
+<div class="card" style="padding:0;overflow:hidden"><div class="ovx">
+<table><thead><tr>
+<th style="text-align:center">#</th>
+<th>Lote</th>
+<th style="text-align:center">Tipo</th>
+<th style="text-align:center">Ingreso</th>
+<th style="text-align:center">Egreso</th>
+<th style="text-align:center">Desde (mes)</th>
+<th style="text-align:center">Hasta (mes)</th>
+<th style="text-align:center">Días</th>
+<th style="text-align:center">Estado</th>
+</tr></thead>
+<tbody>${rows}</tbody>
+</table>
+</div></div>
+</div>`;
+});
+
+v('rep-content').innerHTML=html+`<div style="background:#F0F4F9;border-radius:8px;padding:12px 16px;margin-top:8px;font-size:12px;color:#555">
+<strong>Total de lotes en el mes:</strong> ${regs.length} &nbsp;|&nbsp;
+<strong>OC involucradas:</strong> ${Object.keys(ocM).length}
+</div>`;
+}
+
+function exportarExcel(){
+const mes=v('mes-rep').value||mes0();
+const[y,m]=mes.split('-').map(Number);
+const im=new Date(y,m-1,1),fm=new Date(y,m,0);
+const tp=tope(mes);
+
+const regs=data.mp.filter(r=>new Date(r.fi)<=fm&&(!r.fe||new Date(r.fe)>=im))
+.sort((a,b)=>a.oc.localeCompare(b.oc)||a.fi.localeCompare(b.fi));
+
+// Construir HTML de tabla para Excel
+let rows=regs.map((r,i)=>{
+const desde=new Date(r.fi)>=im?r.fi:y+'-'+String(m).padStart(2,'0')+'-01';
+const hastaDate=r.fe?new Date(r.fe):tp;
+const hastaFinal=hastaDate<tp?hastaDate:tp;
+const hasta=hastaFinal.toISOString().slice(0,10);
+const dias=dAlm(r.fi,r.fe,mes);
+return `<tr>
+<td>${r.oc}</td>
+<td>${r.nom||''}</td>
+<td>${r.cod||''}</td>
+<td>${r.tipo==='frio'?'Fría':'Seca'}</td>
+<td>${r.fi}</td>
+<td>${r.fe||''}</td>
+<td>${desde}</td>
+<td>${hasta}</td>
+<td>${dias}</td>
+<td>${r.fe?'Egresado':'Activo'}</td>
+</tr>`;
+}).join('');
+
+const tabla=`<table>
+<thead><tr>
+<th>Orden de Compra</th><th>Lote</th><th>Código</th><th>Tipo</th>
+<th>Fecha Ingreso</th><th>Fecha Egreso</th>
+<th>Desde (mes)</th><th>Hasta (mes)</th>
+<th>Días almacenado</th><th>Estado</th>
+</tr></thead>
+<tbody>${rows}</tbody>
+</table>`;
+
+const blob=new Blob([''+tabla],{type:'application/vnd.ms-excel;charset=utf-8'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');
+a.href=url;
+a.download='reporte_MP_'+mes+'.xls';
+a.click();
+URL.revokeObjectURL(url);
+}
+
+// ─── OTROS CLIENTES ──────────────────────────────────────────────────────────
+
+function poblarSelectClientes(selId){
+const sel=v(selId);if(!sel)return;
+const actual=sel.value;
+sel.innerHTML='<option value="">— Elegí cliente —</option>';
+data.clientes.sort((a,b)=>a.nom.localeCompare(b.nom)).forEach(c=>{
+const o=document.createElement('option');o.value=c._id;o.textContent=c.nom;
+if(c._id===actual)o.selected=true;
+sel.appendChild(o);
+});
+}
+
+function abrirNuevoCliente(){
+v('nuevo-cli-nom').value='';v('nuevo-cli-desc').value='';
+v('ov-nuevo-cli').classList.add('on');
+}
+
+async function guardarNuevoCliente(){
+const nom=v('nuevo-cli-nom').value.trim();
+const desc=v('nuevo-cli-desc').value.trim();
+if(!nom){alert('Ingresá el nombre del cliente');return;}
+dot('loading');
+try{
+await addDoc(collection(db,'clientes'),{nom,desc,ts:new Date().toISOString()});
+cM('ov-nuevo-cli');dot('ok');
+}catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+function stCli(clienteId,hasta){
+const hd=new Date(hasta);
+return Math.max(0,data.movCli.filter(m=>m.clienteId===clienteId&&new Date(m.fecha)<=hd).reduce((s,m)=>s+(m.dir==='in'?m.pal:-m.pal),0));
+}
+
+function actStockCli(){
+const cid=v('ecli-cliente').value;
+if(!cid){v('ecli-stock-info').innerHTML='';return;}
+const cli=data.clientes.find(c=>c._id===cid);
+const st=stCli(cid,hoy());
+v('ecli-stock-info').innerHTML='<strong>'+( cli?cli.nom:'Cliente')+'</strong> — Stock actual: <span style="color:#185FA5;font-weight:700">'+st+' pallets</span>';
+}
+
+async function gICli(){
+const cid=v('icli-cliente').value;
+const fecha=v('icli-fecha').value;
+const desc=v('icli-desc').value.trim();
+const remito=v('icli-remito').value.trim();
+const pal=parseInt(v('icli-pal').value)||0;
+if(!cid||!fecha||pal<1){alert('Completá cliente, fecha y pallets');return;}
+dot('loading');
+try{
+await addDoc(collection(db,'movCli'),{clienteId:cid,fecha,dir:'in',pal,desc,remito,ts:new Date().toISOString()});
+cM('ov-icli');dot('ok');
+}catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+async function gECli(){
+const cid=v('ecli-cliente').value;
+const fecha=v('ecli-fecha').value;
+const remito=v('ecli-remito').value.trim();
+const pal=parseInt(v('ecli-pal').value)||0;
+if(!cid||!fecha||pal<1){alert('Completá cliente, fecha y pallets');return;}
+const st=stCli(cid,fecha);
+if(pal>st){alert('Pallets insuficientes. Stock al '+fecha+': '+st);return;}
+dot('loading');
+try{
+await addDoc(collection(db,'movCli'),{clienteId:cid,fecha,dir:'out',pal,remito,ts:new Date().toISOString()});
+cM('ov-ecli');dot('ok');
+}catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+function rCli(){
+const mes=v('mes-cli').value||mes0();
+const cliFilter=v('cli-sel').value;
+const tmi=data.tar.mi||0,tme=data.tar.me||0;
+const[y,m]=mes.split('-').map(Number);
+const pref=y+'-'+String(m).padStart(2,'0');
+const hoyDate=new Date();
+const diasMes=new Date(y,m,0).getDate();
+
+// Poblar selector de clientes
+poblarSelectClientes('cli-sel');
+if(cliFilter) v('cli-sel').value=cliFilter;
+
+const clientes=cliFilter?data.clientes.filter(c=>c._id===cliFilter):data.clientes;
+
+let totalEstadia=0,totalMov=0;
+let html='';
+
+clientes.sort((a,b)=>a.nom.localeCompare(b.nom)).forEach(cli=>{
+// Stock día a día
+let tE=0,tMI=0,tMO=0,rowsDia='';
+for(let d=1;d<=diasMes;d++){
+const fd=pref+'-'+String(d).padStart(2,'0');
+const dD=new Date(fd);if(dD>hoyDate)break;
+const st=data.movCli.filter(mv=>mv.clienteId===cli._id&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir==='in'?mv.pal:-mv.pal),0);
+const stPos=Math.max(0,st);
+const eD=stPos*(data.tar.pts||0); // usar tarifa PT seco por defecto — configurable
+tE+=eD;
+const mH=data.movCli.filter(mv=>mv.clienteId===cli._id&&mv.fecha===fd);
+const mi=mH.filter(mv=>mv.dir==='in').reduce((s,mv)=>s+mv.pal,0)*tmi;
+const mo=mH.filter(mv=>mv.dir==='out').reduce((s,mv)=>s+mv.pal,0)*tme;
+tMI+=mi;tMO+=mo;
+if(stPos>0||mH.length>0) rowsDia+=`<tr><td>${fd}</td><td style="text-align:center">${stPos}</td><td style="text-align:right">${$c(eD)}</td></tr>`;
+}
+
+// Movimientos del mes
+const movsM=data.movCli.filter(mv=>mv.clienteId===cli._id&&mv.fecha&&mv.fecha.startsWith(pref)).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+const rowsMov=movsM.map(mv=>`<tr>
+<td>${mv.fecha}</td>
+<td><span class="bdg ${mv.dir==='in'?'bdi':'bdo'}">${mv.dir==='in'?'Ingreso':'Egreso'}</span></td>
+<td style="text-align:center">${mv.pal}</td>
+<td>${mv.desc||'—'}</td>
+<td>${mv.remito||'—'}</td>
+<td style="text-align:right">${$c(mv.dir==='in'?mv.pal*tmi:mv.pal*tme)}</td>
+<td>
+<button class="accion-btn del" onclick="delMovCli('${mv._id}')">🗑️</button>
+</td>
+</tr>`).join('');
+
+const stHoy=stCli(cli._id,hoy());
+const g=tE+tMI+tMO;
+totalEstadia+=tE;totalMov+=tMI+tMO;
+
+html+=`<div class="oc-blk">
+<div class="oc-h">
+<div style="display:flex;align-items:center;gap:10px">
+<div class="oc-n" style="background:#2E7D32">${cli.nom.charAt(0).toUpperCase()}</div>
+<div><div class="oc-tt">${cli.nom}${cli.desc?' — <span style="font-weight:400;color:#888;font-size:12px">'+cli.desc+'</span>':''}</div>
+<div class="oc-ss">Stock hoy: ${stHoy} pallets | Total mes: ${$c(g)}</div></div>
+</div>
+<div style="font-size:14px;font-weight:700;color:#111">${$c(g)}</div>
+</div>
+${rowsDia?`<div class="card"><div class="ct">Estadía diaria</div><div class="ovx"><table>
+<thead><tr><th>Fecha</th><th style="text-align:center">Stock</th><th style="text-align:right">Estadía</th></tr></thead>
+<tbody>${rowsDia}</tbody></table></div></div>`:''}
+${rowsMov?`<div class="card" style="margin-top:10px"><div class="ct">Movimientos del mes</div><div class="ovx"><table>
+<thead><tr><th>Fecha</th><th>Mov.</th><th style="text-align:center">Pallets</th><th>Descripción</th><th>Remito</th><th style="text-align:right">Cargo</th><th></th></tr></thead>
+<tbody>${rowsMov}</tbody></table></div></div>`:''}
+<div class="res" style="margin-top:10px">
+<div class="rr"><span>Estadía</span><span>${$c(tE)}</span></div>
+<div class="rr"><span>Movimientos ingreso</span><span>${$c(tMI)}</span></div>
+<div class="rr"><span>Movimientos egreso</span><span>${$c(tMO)}</span></div>
+<div class="rr grand"><span>Total a facturar</span><span>${$c(g)}</span></div>
+</div>
+</div>`;
+});
+
+if(!html) html='<div class="card"><div class="empty">Sin clientes. Agregá uno con el botón + Cliente.</div></div>';
+v('plan-cli').innerHTML=html;
+
+const gran=totalEstadia+totalMov;
+v('res-cli').innerHTML=`<div class="res">
+<div class="rr"><span>Total estadías</span><span>${$c(totalEstadia)}</span></div>
+<div class="rr"><span>Total movimientos</span><span>${$c(totalMov)}</span></div>
+<div class="rr grand"><span>Total general otros clientes</span><span>${$c(gran)}</span></div>
+</div>`;
+
+const hD=new Date(hoy());
+v('met-cli').innerHTML=`
+<div class="met"><div class="ml">Clientes activos</div><div class="mv">${data.clientes.length}</div></div>
+<div class="met"><div class="ml">Movimientos del mes</div><div class="mv">${data.movCli.filter(mv=>mv.fecha&&mv.fecha.startsWith(pref)).length}</div></div>
+<div class="met"><div class="ml">Total estadías</div><div class="mv">${$c(totalEstadia)}</div></div>
+<div class="met"><div class="ml">Total a facturar</div><div class="mv">${$c(gran)}</div></div>`;
+}
+
+async function delMovCli(id){
+if(!confirm('¿Eliminar este movimiento?'))return;
+dot('loading');
+try{await deleteDoc(doc(db,'movCli',id));dot('ok');rCli();}
+catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+function cTar(){['mps','mpf','pts','ptf','mi','me','cam'].forEach(k=>v('t-'+k).value=data.tar[k]||'');}
+async function gTar(){
+const tar={};['mps','mpf','pts','ptf','mi','me','cam'].forEach(k=>tar[k]=parseFloat(v('t-'+k).value)||0);
+dot('loading');
+try{await setDoc(doc(db,'config','tarifas'),tar);data.tar=tar;const s=v('tSv');s.style.display='inline';setTimeout(()=>s.style.display='none',2500);dot('ok');}
+catch(e){alert('Error: '+e.message);dot('err');}
+}
+
+v('mes-res').value=mes0();v('mes-mps').value=mes0();v('mes-mpf').value=mes0();v('mes-pt').value=mes0();v('mes-cam').value=mes0();v('mes-rep').value=mes0();if(v('mes-cli'))v('mes-cli').value=mes0();
+rRes();
+
+// Exponer funciones al scope global para que funcionen con onclick
+window.nav=nav;
+window.aM=aM;
+window.cM=cM;
+window.selEmo=selEmo;
+window.selEmoOC=selEmoOC;
+window.editMP=editMP;
+window.delMP=delMP;
+window.editPT=editPT;
+window.gEditPT=gEditPT;
+window.delPT=delPT;
+window.gIM=gIM;
+window.gEM=gEM;
+window.actStockInfo=actStockInfo;
+window.gIPT=gIPT;
+window.gEPT=gEPT;
+window.gTar=gTar;
+window.cTar=cTar;
+window.addLote=addLote;
+window.syncProd=syncProd;
+window.abrirStkMP=abrirStkMP;
+window.abrirStkPT=abrirStkPT;
+window.stkMPAccion=stkMPAccion;
+window.stkPTAccion=stkPTAccion;
+window.confirmarEgresoMP=confirmarEgresoMP;
+window.rRes=rRes;
+window.rMPS=rMPS;
+window.rMPF=rMPF;
+window.rPT=rPT;
+window.rCam=rCam;
+window.rStk=rStk;
+window.rRep=rRep;
+window.exportarExcel=exportarExcel;
+window.rCli=rCli;
+window.abrirNuevoCliente=abrirNuevoCliente;
+window.guardarNuevoCliente=guardarNuevoCliente;
+window.gICli=gICli;
+window.gECli=gECli;
+window.actStockCli=actStockCli;
+window.delMovCli=delMovCli;
 </script>
 
 </body>
