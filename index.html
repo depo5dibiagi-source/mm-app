@@ -1,685 +1,954 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>MM - Deposito</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#F4F4F0;min-height:100vh;font-size:14px}
-input,select,button{font-family:Arial,sans-serif;font-size:14px}
-input,select{width:100%;padding:10px 12px;border:1.5px solid #ccc;border-radius:8px;color:#111;background:#fff;outline:none}
-input:focus,select:focus{border-color:#185FA5}
-.btn{padding:10px 16px;border-radius:8px;border:1.5px solid #ccc;background:#fff;color:#333;cursor:pointer;font-weight:500}
-.btnp{background:#185FA5;color:#fff;border-color:#185FA5}
-.btnr{color:#c62828;border-color:#ffcdd2}
-.card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px 16px;margin-bottom:12px}
-.tit{font-size:13px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #eee}
-.fg{margin-bottom:14px}
-.fg label{display:block;font-size:12px;color:#666;margin-bottom:4px;font-weight:600}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.hdr{background:#185FA5;padding:14px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
-.htit{color:#fff;font-size:15px;font-weight:700;flex:1}
-.back{width:34px;height:34px;border-radius:8px;border:none;background:rgba(255,255,255,0.2);color:#fff;font-size:18px;cursor:pointer}
-.bdy{padding:16px;max-width:500px;margin:0 auto}
-.opbtn{padding:18px 12px;border-radius:12px;border:2px solid #ddd;background:#fff;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;text-align:center;width:100%}
-.opbtn:active{border-color:#185FA5;background:#EEF4FF}
-.rr{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #eee}
-.rr:last-child{border-bottom:none}
-.rrgrand{font-weight:700;font-size:14px;border-top:2px solid #ddd;border-bottom:none;padding-top:8px;margin-top:4px}
-.nav{display:flex;gap:4px;padding:8px 14px;background:#fff;border-bottom:1px solid #ddd;overflow-x:auto}
-.ntab{padding:5px 12px;border-radius:7px;border:1px solid #ddd;background:transparent;color:#555;font-size:12px;cursor:pointer;white-space:nowrap}
-.ntab.on{background:#185FA5;color:#fff;border-color:#185FA5}
-.firma{position:fixed;bottom:12px;right:14px;font-size:13px;color:#185FA5;z-index:9999;pointer-events:none;font-style:italic;font-weight:700;background:rgba(255,255,255,0.92);padding:4px 10px;border-radius:20px}
-.mcard{background:#F8F8F6;border-radius:8px;padding:12px 14px;margin-bottom:8px;border:1px solid #eee}
-.min{background:#E8F5E9}
-.mout{background:#FFEBEE}
-.mrow{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:8px;margin-bottom:6px}
-.empty{text-align:center;padding:24px;color:#bbb;font-size:13px}
-.errbox{background:#FFEBEE;color:#c62828;border-radius:7px;padding:8px 12px;font-size:13px;margin-bottom:10px}
-.infobox{background:#EEF4FF;border:1px solid #B5D4F4;border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:13px}
-.loterow{display:grid;grid-template-columns:1fr 1fr auto auto;gap:6px;margin-bottom:8px;align-items:center}
-.linp{padding:8px 10px;border:1.5px solid #ccc;border-radius:6px;font-size:13px;width:100%}
-.camb{display:flex;align-items:center;justify-content:center;width:36px;height:38px;border:1.5px solid #185FA5;border-radius:6px;background:#EEF4FF;cursor:pointer;flex-shrink:0;font-size:18px}
-.delb{width:32px;height:38px;border:1px solid #ffcdd2;background:#fff;color:#c62828;border-radius:6px;cursor:pointer;flex-shrink:0}
-.chip{padding:6px 14px;border-radius:20px;border:2px solid #ddd;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#555}
-.chip.on{border-color:#185FA5;background:#EEF4FF;color:#185FA5}
-.metgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
-.met{background:#F8F8F6;border-radius:8px;padding:12px 14px;border:1px solid #eee}
-.adh{background:#fff;border-bottom:1px solid #ddd;padding:12px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
-.indgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
-.indcard{background:#fff;border-radius:10px;padding:14px;border:1px solid #ddd;text-align:center}
-.indlbl{font-size:11px;color:#888;text-transform:uppercase;margin-bottom:6px}
-.indval{font-size:22px;font-weight:700;margin-bottom:4px}
-.bar{background:#eee;border-radius:99px;height:8px;margin:4px 0}
-.bfill{height:8px;border-radius:99px}
-.pla{overflow-x:auto}
-.platbl{border-collapse:collapse;font-size:11px;min-width:600px}
-.platbl th,.platbl td{border:1px solid #ddd;padding:4px 6px;white-space:nowrap}
-.platbl th{background:#EEF4FF;font-weight:700;text-align:center}
-.plalote{background:#fff;text-align:left;min-width:120px;position:sticky;left:0;z-index:2;border-right:2px solid #B5D4F4}
-.plaoc{background:#185FA5;color:#fff;font-weight:700;text-align:left}
-.celok{background:#C8E6C9;text-align:center;color:#2E7D32;font-weight:700}
-.celn{background:#F5F5F5;text-align:center;color:#ccc}
-.celeg{background:#FFCDD2;text-align:center;color:#C62828;font-weight:700}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MM</title>
 </head>
 <body>
-<div class="firma">&#169; Marcos Manchon</div>
-<div id="app"></div>
-<script>
-var K = 'mm_v4';
-function baseD() {
-return { tar:{mps:0,mpf:0,pts:0,ptf:0,mi:0,me:0,cam:0,pin:'1234'}, mp:[], pt:[], clientes:[], movCli:[] };
-}
-var D = (function() {
-try { var s=localStorage.getItem(K); return s?JSON.parse(s):baseD(); } catch(e) { return baseD(); }
-})();
-function sv() { try{localStorage.setItem(K,JSON.stringify(D));}catch(e){} }
-function uid() { return Date.now()+Math.random().toString(36).slice(2); }
-function hoy() { return new Date().toISOString().slice(0,10); }
-function mes0() { return new Date().toISOString().slice(0,7); }
-function $c(n) { return '$'+parseFloat(n||0).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function el(id) { return document.getElementById(id); }
-function gv(id) { return el(id)?el(id).value:''; }
-function sv2(id,v) { if(el(id))el(id).value=v; }
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { useState } = React;
 
-function stPT(tipo) {
-var hD=new Date(hoy()),tot=0;
-for(var i=0;i<D.pt.length;i++){var mv=D.pt[i];if(mv.tipo===tipo&&new Date(mv.fecha)<=hD)tot+=mv.dir==='in'?mv.pal:-mv.pal;}
-return Math.max(0,tot);
-}
-function stCli(cid) {
-var tot=0;
-for(var i=0;i<D.movCli.length;i++){var m=D.movCli[i];if(m.clienteId===cid)tot+=m.dir==='in'?m.pal:-m.pal;}
-return Math.max(0,tot);
+const PIN = “1234”;
+const AZUL = “#185FA5”;
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function uid() { return Date.now() + Math.random().toString(36).slice(2); }
+function hoy() { return new Date().toISOString().slice(0, 10); }
+function mes0() { return new Date().toISOString().slice(0, 7); }
+function $c(n) { return ‘$’ + parseFloat(n || 0).toLocaleString(‘es-AR’, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function useData() {
+const [data, setData] = useState(() => {
+try {
+const s = localStorage.getItem(‘dep_v2’);
+return s ? JSON.parse(s) : base();
+} catch { return base(); }
+});
+function base() { return { tar: { mps:0,mpf:0,pts:0,ptf:0,mi:0,me:0,cam:0,pin:PIN }, mp:[], pt:[], clientes:[], movCli:[] }; }
+function save(next) { setData(next); try { localStorage.setItem(‘dep_v2’, JSON.stringify(next)); } catch {} }
+return [data, save];
 }
 
-var pantalla='inicio';
-function ir(p){pantalla=p;render();}
-function render(){
-try{
-var app=el('app');if(!app)return;
-if(pantalla==='inicio')app.innerHTML=htmlInicio();
-else if(pantalla==='pin')app.innerHTML=htmlPin();
-else if(pantalla==='operario')renderOperario();
-else if(pantalla==='admin')renderAdmin();
-}catch(e){var a=el('app');if(a)a.innerHTML='<div style="padding:20px;color:red"><b>Error:</b> '+e.message+'</div>';}
+// ── ESTILOS GLOBALES ─────────────────────────────────────────────────────────
+const css = `*{box-sizing:border-box;margin:0;padding:0} body{font-family:'Segoe UI',system-ui,sans-serif;background:#F4F4F0;min-height:100vh}`;
+
+// ── COMPONENTES BASE ─────────────────────────────────────────────────────────
+// IMPORTANTE: definidos FUERA de cualquier componente para evitar re-renders
+
+function Fg({ label, children }) {
+return (
+<div style={{ marginBottom: 14 }}>
+<label style={{ display:‘block’, fontSize:12, color:’#666’, marginBottom:4, fontWeight:500 }}>{label}</label>
+{children}
+</div>
+);
 }
 
-function htmlInicio(){
-return '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;background:#F4F4F0">'+
-'<div style="width:64px;height:64px;background:#185FA5;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:700">MM</div>'+
-'<div style="text-align:center"><div style="font-size:22px;font-weight:700">MM</div><div style="font-size:13px;color:#888;margin-top:4px">Gestion de deposito</div></div>'+
-'<button onclick="ir(\'operario\')" style="width:100%;max-width:340px;padding:18px;border-radius:12px;border:2px solid #ddd;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:left">'+
-'<div style="width:44px;height:44px;border-radius:10px;background:#EEF4FF;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">&#128119;</div>'+
-'<div><div style="font-size:16px;font-weight:700">Operario</div><div style="font-size:12px;color:#888;margin-top:2px">Registrar ingresos y egresos</div></div></button>'+
-'<button onclick="ir(\'pin\')" style="width:100%;max-width:340px;padding:18px;border-radius:12px;border:2px solid #ddd;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:left">'+
-'<div style="width:44px;height:44px;border-radius:10px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">&#128202;</div>'+
-'<div><div style="font-size:16px;font-weight:700">Administrador</div><div style="font-size:12px;color:#888;margin-top:2px">Reportes, stock y tarifas</div></div></button>'+
-'</div>';
+function G2({ children }) {
+return <div style={{ display:‘grid’, gridTemplateColumns:‘1fr 1fr’, gap:12 }}>{children}</div>;
 }
 
-function htmlPin(){
-return '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;background:#F4F4F0">'+
-'<div style="font-size:48px">&#128272;</div>'+
-'<div style="font-size:18px;font-weight:700">Acceso Administrador</div>'+
-'<div style="font-size:13px;color:#888">Ingresa tu PIN</div>'+
-'<input id="pin-inp" type="password" inputmode="numeric" maxlength="6" placeholder="****" oninput="chkPin(this.value)" style="font-size:28px;letter-spacing:12px;text-align:center;width:180px;padding:12px;border:2px solid #ddd;border-radius:10px">'+
-'<div id="pin-err" style="color:#c62828;font-size:13px;display:none">PIN incorrecto</div>'+
-'<span onclick="ir(\'inicio\')" style="font-size:13px;color:#888;cursor:pointer;text-decoration:underline">Volver</span></div>';
-}
-function chkPin(v){
-var p=String(D.tar.pin||'1234');
-if(v.length>=p.length&&v===p){ir('admin');}
-else if(v.length>=4){if(el('pin-err'))el('pin-err').style.display='block';if(el('pin-inp'))el('pin-inp').value='';}
+function Inp({ value, onChange, type=‘text’, placeholder=’’, min, style={} }) {
+return (
+<input
+value={value}
+onChange={onChange}
+type={type}
+placeholder={placeholder}
+min={min}
+style={{ width:‘100%’, padding:‘10px 12px’, border:‘1.5px solid #ddd’, borderRadius:8, fontSize:14, color:’#111’, background:’#fff’, outline:‘none’, …style }}
+/>
+);
 }
 
-var OP={paso:0,cliente:'arcor',clienteNom:'Arcor',operacion:null,mercaderia:null,tipo:null,operario:''};
-var lotesOP=[{nom:'',cod:''}];
-var lotesSelOP=[];
-function resetOP(){OP={paso:0,cliente:'arcor',clienteNom:'Arcor',operacion:null,mercaderia:null,tipo:null,operario:''};lotesOP=[{nom:'',cod:''}];lotesSelOP=[];}
-
-function renderOperario(){
-var stepHtml=OP.paso>0?'<div style="color:rgba(255,255,255,0.7);font-size:12px">Paso '+OP.paso+'</div>':'';
-el('app').innerHTML='<div style="min-height:100vh;background:#F4F4F0;display:flex;flex-direction:column">'+
-'<div class="hdr"><button class="back" onclick="opVolver()">&#8592;</button>'+
-'<div class="htit" id="op-tit">Nueva operacion</div>'+stepHtml+'</div>'+
-'<div class="bdy" id="op-body"></div></div>';
-renderOpPaso();
-}
-function opVolver(){
-if(OP.paso===0){ir('inicio');return;}
-OP.paso--;
-if(OP.paso===0){OP.operacion=null;OP.mercaderia=null;OP.tipo=null;}
-else if(OP.paso===1){OP.mercaderia=null;OP.tipo=null;}
-else if(OP.paso===2){OP.tipo=null;}
-renderOpPaso();
-}
-function stit(t){if(el('op-tit'))el('op-tit').textContent=t;}
-
-function renderOpPaso(){
-var b=el('op-body');if(!b)return;
-if(OP.paso===0){
-stit('Nueva operacion');
-var chips='<button class="chip'+(OP.cliente==='arcor'?' on':'')+'" onclick="opCli(\'arcor\',\'Arcor\')">&#127807; Arcor</button> ';
-for(var i=0;i<D.clientes.length;i++){var c=D.clientes[i];chips+='<button class="chip'+(OP.cliente===c._id?' on':'')+'" onclick="opCli(\''+c._id+'\',\''+c.nom.replace(/'/g,'')+'\')">&#127981; '+c.nom+'</button> ';}
-b.innerHTML='<div class="fg"><label>Tu nombre o legajo *</label><input id="op-nom" placeholder="Ej: Juan Perez" value="'+(OP.operario||'')+'"></div>'+
-'<div style="font-size:18px;font-weight:700;margin-bottom:6px">Que operacion?</div>'+
-'<div style="font-size:13px;color:#888;margin-bottom:16px">Entra o sale mercaderia?</div>'+
-'<div class="g2" style="margin-bottom:20px">'+
-'<button class="opbtn" onclick="opOp(\'ingreso\')"><span style="font-size:34px">&#128229;</span><span style="font-size:15px;font-weight:700">Ingreso</span><span style="font-size:12px;color:#888">Entra al deposito</span></button>'+
-'<button class="opbtn" onclick="opOp(\'egreso\')"><span style="font-size:34px">&#128228;</span><span style="font-size:15px;font-weight:700">Egreso</span><span style="font-size:12px;color:#888">Sale del deposito</span></button>'+
-'</div>'+(D.clientes.length>0?'<div style="font-size:12px;color:#888;margin-bottom:8px;font-weight:600">CLIENTE</div><div style="display:flex;gap:8px;flex-wrap:wrap">'+chips+'</div>':'');
-}else if(OP.paso===1){
-if(OP.cliente!=='arcor'){OP.tipo='cli';renderFormOP();return;}
-stit('Que mercaderia?');
-b.innerHTML='<div style="font-size:18px;font-weight:700;margin-bottom:6px">Que mercaderia?</div>'+
-'<div style="font-size:13px;color:#888;margin-bottom:16px">Selecciona la categoria</div>'+
-'<div class="g2">'+
-'<button class="opbtn" onclick="opMer(\'mp\')"><span style="font-size:34px">&#128230;</span><span style="font-size:15px;font-weight:700">Materia Prima</span><span style="font-size:12px;color:#888">Seca o Fria</span></button>'+
-'<button class="opbtn" onclick="opMer(\'pt\')"><span style="font-size:34px">&#128236;</span><span style="font-size:15px;font-weight:700">Prod. Terminado</span><span style="font-size:12px;color:#888">Seco o Frio</span></button></div>';
-}else if(OP.paso===2){
-stit('Seco o Frio?');
-b.innerHTML='<div style="font-size:18px;font-weight:700;margin-bottom:6px">Seco o Frio?</div>'+
-'<div style="font-size:13px;color:#888;margin-bottom:16px">Tipo de almacenaje</div>'+
-'<div class="g2">'+
-'<button class="opbtn" onclick="opTipo(\'seco\')"><span style="font-size:34px">&#9728;</span><span style="font-size:15px;font-weight:700">Seco</span></button>'+
-'<button class="opbtn" onclick="opTipo(\'frio\')"><span style="font-size:34px">&#10052;</span><span style="font-size:15px;font-weight:700">Frio</span></button></div>';
-}else if(OP.paso===3){renderFormOP();}
+function Card({ title, children }) {
+return (
+<div style={{ background:’#fff’, border:‘1px solid #e5e5e5’, borderRadius:10, padding:‘14px 16px’, marginBottom:12 }}>
+{title && <div style={{ fontSize:13, fontWeight:600, marginBottom:10, paddingBottom:8, borderBottom:‘1px solid #eee’ }}>{title}</div>}
+{children}
+</div>
+);
 }
 
-function opOp(op){
-var nom=gv('op-nom').trim();
-if(!nom){alert('Ingresa tu nombre antes de continuar');if(el('op-nom'))el('op-nom').focus();return;}
-OP.operario=nom;OP.operacion=op;OP.paso=1;renderOpPaso();
-}
-function opCli(id,nom){
-OP.cliente=id;OP.clienteNom=nom;
-var chips=document.querySelectorAll('.chip');
-for(var i=0;i<chips.length;i++)chips[i].classList.remove('on');
-if(event&&event.target)event.target.classList.add('on');
-}
-function opMer(m){OP.mercaderia=m;OP.paso=2;renderOpPaso();}
-function opTipo(t){OP.tipo=OP.mercaderia+'-'+t;OP.paso=3;renderOpPaso();}
-
-function renderFormOP(){
-var b=el('op-body');if(!b)return;
-var tipo=OP.tipo||'';
-var esMp=tipo.indexOf('mp')===0,esPt=tipo.indexOf('pt')===0,esCli=OP.cliente!=='arcor';
-var esFrio=tipo.indexOf('frio')>=0,tipoMer=esFrio?'frio':'seco';
-var stS=stPT(tipoMer);
-var tit='';
-if(esMp)tit=(OP.operacion==='ingreso'?'Ingreso':'Egreso')+' MP '+(esFrio?'Fria':'Seca');
-else if(esPt)tit=(OP.operacion==='ingreso'?'Ingreso':'Egreso')+' PT '+(esFrio?'Frio':'Seco');
-else tit=(OP.operacion==='ingreso'?'Ingreso':'Egreso')+' - '+OP.clienteNom;
-stit(tit);
-var html='<div class="card"><div style="font-size:16px;font-weight:700;margin-bottom:16px">'+tit+'</div>';
-
-if(esMp&&OP.operacion==='ingreso'){
-html+='<div class="g2"><div class="fg"><label>Orden de compra *</label><input id="f-oc" placeholder="OC-001"></div>'+
-'<div class="fg"><label>Fecha *</label><input id="f-fi" type="date" value="'+hoy()+'"></div></div>'+
-'<div class="fg"><label>Producto *</label><input id="f-prod" placeholder="Ej: Harina de trigo" oninput="syncProd(this.value)"></div>'+
-'<div class="fg"><label>Lotes *</label><div style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee">'+
-'<div id="lotes-cont"></div>'+
-'<button class="btn" style="width:100%;margin-top:6px;border-style:dashed;font-size:12px" onclick="addLote()">+ Agregar lote</button></div></div>'+
-'<div class="g2"><div class="fg"><label>Zona</label><select id="f-zona"><option value="">Sin asignar</option><option value="almacenaje">Almacenaje</option><option value="armado">Armado de pedidos</option></select></div>'+
-'<div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1"></div></div>';
-lotesOP=[{nom:'',cod:''}];
-}else if(esMp&&OP.operacion==='egreso'){
-var ocs=[];
-for(var i=0;i<D.mp.length;i++){var r=D.mp[i];if(r.tipo===tipoMer&&!r.fe){var f=false;for(var j=0;j<ocs.length;j++){if(ocs[j]===r.oc){f=true;break;}}if(!f)ocs.push(r.oc);}}
-ocs.sort();
-var opts='<option value="">Elige una OC</option>';
-for(var k=0;k<ocs.length;k++)opts+='<option value="'+ocs[k]+'">OC: '+ocs[k]+'</option>';
-html+='<div class="fg"><label>Orden de compra *</label><select id="f-oc-eg" onchange="cargarLotes(\''+tipoMer+'\')">'+opts+'</select></div>'+
-'<div id="lotes-eg-wrap" style="display:none;margin-bottom:14px"><label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:8px">Lotes a egresar *</label>'+
-'<div id="lotes-eg-list" style="background:#F8F8F6;border-radius:8px;padding:10px;border:1px solid #eee"></div></div>'+
-'<div class="fg"><label>Fecha de egreso *</label><input id="f-fe" type="date" value="'+hoy()+'"></div>';
-lotesSelOP=[];
-}else if(esPt&&OP.operacion==='ingreso'){
-html+='<div class="infobox"><b>Tipo:</b> '+(esFrio?'Frio':'Seco')+' &nbsp;|&nbsp; <b>Stock actual:</b> <span style="color:#185FA5;font-weight:700">'+stS+' posiciones</span></div>'+
-'<div class="g2"><div class="fg"><label>Remito *</label><input id="f-rem" placeholder="REM-001"></div>'+
-'<div class="fg"><label>Fecha *</label><input id="f-fi" type="date" value="'+hoy()+'"></div></div>'+
-'<div class="fg"><label>Transporte</label><input id="f-tra" placeholder="Transporte..."></div>'+
-'<div class="fg"><label>Posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div>'+
-'<div class="g2"><div class="fg"><label>Zona</label><select id="f-zona"><option value="">Sin asignar</option><option value="almacenaje">Almacenaje</option><option value="armado">Armado de pedidos</option></select></div>'+
-'<div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1"></div></div>';
-}else if(esPt&&OP.operacion==='egreso'){
-html+='<div class="infobox"><b>Tipo:</b> '+(esFrio?'Frio':'Seco')+' &nbsp;|&nbsp; <b>Stock:</b> <span style="color:#185FA5;font-weight:700">'+stS+' posiciones</span></div>'+
-'<div class="g2"><div class="fg"><label>Fecha *</label><input id="f-fe" type="date" value="'+hoy()+'"></div>'+
-'<div class="fg"><label>Posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div></div>'+
-'<div class="g2"><div class="fg"><label>Remito salida *</label><input id="f-rs" placeholder="RS-001"></div>'+
-'<div class="fg"><label>Ord. entrega *</label><input id="f-oe" placeholder="OE-001"></div></div>'+
-'<div class="g2"><div class="fg"><label>Ord. compra *</label><input id="f-oc" placeholder="OC-001"></div>'+
-'<div class="fg"><label>Transporte</label><input id="f-tra" placeholder="Transporte..."></div></div>';
-}else if(esCli){
-var stC=stCli(OP.cliente);
-if(OP.operacion==='egreso')html+='<div class="infobox"><b>Stock actual:</b> <span style="color:#185FA5;font-weight:700">'+stC+' posiciones</span></div>';
-html+='<div class="g2"><div class="fg"><label>Fecha *</label><input id="f-fecha" type="date" value="'+hoy()+'"></div>'+
-'<div class="fg"><label>Posiciones *</label><input id="f-pal" type="number" min="1" placeholder="0"></div></div>'+
-'<div class="fg"><label>Descripcion</label><input id="f-desc" placeholder="Ej: Mangueras 16mm"></div>'+
-'<div class="fg"><label>Remito</label><input id="f-rem" placeholder="REM-001"></div>';
-if(OP.operacion==='ingreso')html+='<div class="g2"><div class="fg"><label>Zona</label><select id="f-zona"><option value="">Sin asignar</option><option value="almacenaje">Almacenaje</option><option value="armado">Armado de pedidos</option></select></div>'+
-'<div class="fg"><label>Fila</label><input id="f-fila" placeholder="Ej: F3, A1"></div></div>';
+function Rr({ label, val, grand }) {
+return (
+<div style={{ display:‘flex’, justifyContent:‘space-between’, padding:‘6px 0’, fontSize: grand?15:13, fontWeight: grand?700:400, borderTop: grand?‘2px solid #ddd’:‘none’, marginTop: grand?6:0, borderBottom: grand?‘none’:‘1px solid #eee’ }}>
+<span>{label}</span><span>{val}</span>
+</div>
+);
 }
 
-html+='<div id="op-err" class="errbox" style="display:none"></div>'+
-'<button class="btn btnp" style="width:100%;padding:14px;font-size:16px;font-weight:700;margin-top:8px" onclick="opGuardar()">Guardar</button></div>';
-b.innerHTML=html;
-if(esMp&&OP.operacion==='ingreso')renderLotes();
+function BtnOpcion({ ico, tit, sub, onClick }) {
+return (
+<button onClick={onClick} style={{ padding:‘20px 12px’, borderRadius:12, border:‘2px solid #e0e0e0’, background:’#fff’, display:‘flex’, flexDirection:‘column’, alignItems:‘center’, gap:8, cursor:‘pointer’, textAlign:‘center’, width:‘100%’ }}>
+<span style={{ fontSize:36 }}>{ico}</span>
+<div style={{ fontSize:15, fontWeight:700, color:’#111’ }}>{tit}</div>
+{sub && <div style={{ fontSize:12, color:’#888’ }}>{sub}</div>}
+</button>
+);
 }
 
-function syncProd(v){for(var i=0;i<lotesOP.length;i++)lotesOP[i].nom=v;renderLotes();}
-function renderLotes(){
-var c=el('lotes-cont');if(!c)return;
-var html='';
-for(var i=0;i<lotesOP.length;i++){
-var l=lotesOP[i];
-html+='<div class="loterow">'+
-'<input class="linp" placeholder="Producto" value="'+l.nom.replace(/"/g,'')+'" readonly style="background:#f5f5f5;color:#555">'+
-'<input class="linp" placeholder="N de lote" value="'+l.cod.replace(/"/g,'')+'" oninput="setLC('+i+',this.value)">'+
-'<label class="camb" title="Foto sticker">&#128247;<input type="file" accept="image/*" capture="environment" style="display:none" onchange="escanear(event,'+i+')"></label>'+
-(lotesOP.length>1?'<button class="delb" onclick="delLote('+i+')">X</button>':'<span style="width:32px"></span>')+
-'</div>';
-}
-c.innerHTML=html;
-}
-function addLote(){var prod=gv('f-prod')||'';lotesOP.push({nom:prod,cod:''});renderLotes();}
-function setLC(i,v){lotesOP[i].cod=v;}
-function delLote(i){lotesOP.splice(i,1);renderLotes();}
-
-function cargarLotes(tipo){
-var oc=gv('f-oc-eg'),wrap=el('lotes-eg-wrap'),list2=el('lotes-eg-list');
-if(!oc){if(wrap)wrap.style.display='none';return;}
-var lotes=[];
-for(var i=0;i<D.mp.length;i++){var r=D.mp[i];if(r.oc===oc&&r.tipo===tipo&&!r.fe)lotes.push(r);}
-if(!lotes.length){if(wrap)wrap.style.display='none';return;}
-lotesSelOP=[];
-var html='';
-for(var j=0;j<lotes.length;j++){
-var r2=lotes[j];
-html+='<div id="lc-'+r2._id+'" onclick="togLote(\''+r2._id+'\')" style="display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:9px;margin-bottom:8px;border:2px solid #eee;cursor:pointer">'+
-'<div id="lchk-'+r2._id+'" style="width:24px;height:24px;border-radius:6px;border:2px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#fff"></div>'+
-'<div><div style="font-weight:700;font-size:14px">'+r2.nom+'</div>'+
-'<div style="font-size:12px;color:#888">Lote: '+(r2.cod||'-')+' - Ingreso: '+r2.fi+'</div></div></div>';
-}
-if(list2)list2.innerHTML=html;
-if(wrap)wrap.style.display='block';
-}
-function togLote(id){
-var idx=lotesSelOP.indexOf(id),card=el('lc-'+id),chk=el('lchk-'+id);
-if(idx>=0){lotesSelOP.splice(idx,1);if(card){card.style.borderColor='#eee';card.style.background='#fff';}if(chk){chk.style.borderColor='#ccc';chk.style.background='#fff';chk.innerHTML='';}}
-else{lotesSelOP.push(id);if(card){card.style.borderColor='#185FA5';card.style.background='#EEF4FF';}if(chk){chk.style.borderColor='#185FA5';chk.style.background='#185FA5';chk.innerHTML='<span style="color:#fff;font-size:13px">&#10003;</span>';}}
+// ── PANTALLA INICIO ──────────────────────────────────────────────────────────
+function Inicio({ onOperario, onAdmin }) {
+return (
+<div style={{ minHeight:‘100vh’, display:‘flex’, flexDirection:‘column’, alignItems:‘center’, justifyContent:‘center’, padding:24, gap:20, background:’#F4F4F0’ }}>
+<div style={{ width:64, height:64, background:AZUL, borderRadius:16, display:‘flex’, alignItems:‘center’, justifyContent:‘center’, color:’#fff’, fontSize:22, fontWeight:700 }}>MM</div>
+<div style={{ textAlign:‘center’ }}>
+<div style={{ fontSize:22, fontWeight:700 }}>MM</div>
+<div style={{ fontSize:13, color:’#888’, marginTop:4 }}>¿Cómo vas a usar la app hoy?</div>
+</div>
+{[
+{ ico:‘👷’, tit:‘Operario’, sub:‘Registrar ingresos y egresos’, fn:onOperario, bg:’#E6F1FB’ },
+{ ico:‘📊’, tit:‘Administrador’, sub:‘Ver reportes, stock y tarifas’, fn:onAdmin, bg:’#E8F5E9’ }
+].map(b => (
+<button key={b.tit} onClick={b.fn} style={{ width:‘100%’, maxWidth:340, padding:18, borderRadius:12, border:‘2px solid #e0e0e0’, background:’#fff’, display:‘flex’, alignItems:‘center’, gap:14, cursor:‘pointer’, textAlign:‘left’ }}>
+<div style={{ width:44, height:44, borderRadius:10, background:b.bg, display:‘flex’, alignItems:‘center’, justifyContent:‘center’, fontSize:24, flexShrink:0 }}>{b.ico}</div>
+<div>
+<div style={{ fontSize:16, fontWeight:700 }}>{b.tit}</div>
+<div style={{ fontSize:12, color:’#888’, marginTop:2 }}>{b.sub}</div>
+</div>
+</button>
+))}
+</div>
+);
 }
 
-function escanear(e,idx){
-var file=e.target.files[0];if(!file)return;
-var lbl=e.target.parentElement;if(lbl)lbl.textContent='...';
-var reader=new FileReader();
-reader.onload=function(){
-var b64=reader.result.split(',')[1];
-fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,messages:[{role:'user',content:[
-{type:'image',source:{type:'base64',media_type:file.type||'image/jpeg',data:b64}},
-{type:'text',text:'Foto de sticker. Extrae LOTE y CODIGO. Responde SOLO JSON: {"lote":"...","codigo":"..."}'}
-]}]})})
-.then(function(r){return r.json();})
-.then(function(d){
-var txt=d.content&&d.content[0]?d.content[0].text||'':'';
-txt=txt.replace(/```json|```/g,'').trim();
-var parsed=JSON.parse(txt);
-if(parsed.lote)lotesOP[idx].nom=parsed.lote;
-if(parsed.codigo)lotesOP[idx].cod=parsed.codigo;
-renderLotes();
-}).catch(function(){alert('No pude leer el sticker.');})
-.finally(function(){if(lbl)lbl.innerHTML='&#128247;<input type="file" accept="image/*" capture="environment" style="display:none" onchange="escanear(event,'+idx+')">';e.target.value='';});
-};
-reader.readAsDataURL(file);
+// ── PIN ──────────────────────────────────────────────────────────────────────
+function PinScreen({ pinCorrecto, onOk, onVolver }) {
+const [pin, setPin] = useState(’’);
+const [err, setErr] = useState(false);
+function check(v) {
+setPin(v);
+if (v.length >= 4 && v === String(pinCorrecto || PIN)) { onOk(); }
+else if (v.length >= 4) { setErr(true); setPin(’’); }
+}
+return (
+<div style={{ minHeight:‘100vh’, display:‘flex’, flexDirection:‘column’, alignItems:‘center’, justifyContent:‘center’, gap:16, padding:24, background:’#F4F4F0’ }}>
+<div style={{ fontSize:48 }}>🔐</div>
+<div style={{ fontSize:18, fontWeight:700 }}>Acceso Administrador</div>
+<div style={{ fontSize:13, color:’#888’ }}>Ingresá tu PIN</div>
+<Inp value={pin} onChange={e => check(e.target.value)} type=“password” placeholder=”••••” style={{ fontSize:28, letterSpacing:12, textAlign:‘center’, width:180, padding:12, border:‘2px solid #ddd’, borderRadius:10 }} />
+{err && <div style={{ color:’#c62828’, fontSize:13 }}>PIN incorrecto</div>}
+<span onClick={onVolver} style={{ fontSize:13, color:’#888’, cursor:‘pointer’, textDecoration:‘underline’ }}>← Volver</span>
+</div>
+);
 }
 
-function opGuardar(){
-var err=el('op-err');if(err)err.style.display='none';
-var tipo=OP.tipo||';
-var esMp=tipo.indexOf('mp')===0,esPt=tipo.indexOf('pt')===0,esCli=OP.cliente!=='arcor';
-var esFrio=tipo.indexOf('frio')>=0,tipoMer=esFrio?'frio':'seco';
-function er(msg){if(err){err.textContent=msg;err.style.display='block';}else alert(msg);}
+// ── MODO OPERARIO ─────────────────────────────────────────────────────────────
+function Operario({ data, save, onVolver }) {
+const [paso, setPaso] = useState(0);
+const [op, setOp] = useState({ cliente:‘arcor’, clienteNom:‘Arcor’, operacion:null, mercaderia:null, tipo:null });
+const [exito, setExito] = useState(null);
 
-if(esMp&&OP.operacion==='ingreso'){
-var oc=gv('f-oc').trim(),fi=gv('f-fi'),prod=gv('f-prod').trim();
-if(!oc||!fi||!prod){er('Completa OC, fecha y producto');return;}
-for(var i=0;i<lotesOP.length;i++){if(!lotesOP[i].nom){er('Todos los lotes necesitan nombre');return;}}
-var zona=gv('f-zona'),fila=gv('f-fila');
-for(var j=0;j<lotesOP.length;j++){D.mp.push({_id:uid(),tipo:tipoMer,oc:oc,fi:fi,fe:null,prod:prod,nom:lotesOP[j].nom,cod:lotesOP[j].cod,zona:zona,fila:fila,operario:OP.operario,movs:[],ts:new Date().toISOString()});}
-sv();opExito(lotesOP.length+' lote(s) ingresados en OC '+oc);
-}else if(esMp&&OP.operacion==='egreso'){
-var fe=gv('f-fe');
-if(!fe){er('Ingresa la fecha');return;}
-if(!lotesSelOP.length){er('Selecciona al menos un lote');return;}
-for(var k=0;k<D.mp.length;k++){if(lotesSelOP.indexOf(D.mp[k]._id)>=0){D.mp[k].fe=fe;D.mp[k].movs=D.mp[k].movs||[];D.mp[k].movs.push({fe:fe});}}
-sv();opExito(lotesSelOP.length+' lote(s) egresados');
-}else if(esPt&&OP.operacion==='ingreso'){
-var rem=gv('f-rem').trim(),fi2=gv('f-fi'),pal=parseInt(gv('f-pal'))||0;
-if(!rem||!fi2||pal<1){er('Completa remito, fecha y posiciones');return;}
-D.pt.push({_id:uid(),fecha:fi2,tipo:tipoMer,dir:'in',pal:pal,remito:rem,tra:gv('f-tra'),zona:gv('f-zona'),fila:gv('f-fila'),operario:OP.operario,oe:'',oc:'',ts:new Date().toISOString()});
-sv();opExito('Ingreso de '+pal+' posiciones PT '+tipoMer);
-}else if(esPt&&OP.operacion==='egreso'){
-var rs=gv('f-rs').trim(),oe=gv('f-oe').trim(),oc2=gv('f-oc').trim(),fe2=gv('f-fe'),pal2=parseInt(gv('f-pal'))||0;
-if(!rs||!oe||!oc2||!fe2||pal2<1){er('Completa todos los campos');return;}
-if(pal2>stPT(tipoMer)){er('Posiciones insuficientes. Stock: '+stPT(tipoMer));return;}
-D.pt.push({_id:uid(),fecha:fe2,tipo:tipoMer,dir:'out',pal:pal2,remito:rs,oe:oe,oc:oc2,tra:gv('f-tra'),operario:OP.operario,ts:new Date().toISOString()});
-sv();opExito('Egreso de '+pal2+' posiciones PT '+tipoMer);
-}else if(esCli){
-var fecha=gv('f-fecha'),pal3=parseInt(gv('f-pal'))||0;
-if(!fecha||pal3<1){er('Completa fecha y posiciones');return;}
-if(OP.operacion==='egreso'&&pal3>stCli(OP.cliente)){er('Posiciones insuficientes. Stock: '+stCli(OP.cliente));return;}
-D.movCli.push({_id:uid(),clienteId:OP.cliente,fecha:fecha,dir:OP.operacion==='ingreso'?'in':'out',pal:pal3,desc:gv('f-desc'),remito:gv('f-rem'),zona:OP.operacion==='ingreso'?gv('f-zona'):'',fila:OP.operacion==='ingreso'?gv('f-fila'):'',operario:OP.operario,ts:new Date().toISOString()});
-sv();opExito((OP.operacion==='ingreso'?'Ingreso':'Egreso')+' de '+pal3+' posiciones - '+OP.clienteNom);
-}
-}
+function reset() { setPaso(0); setOp({ cliente:‘arcor’, clienteNom:‘Arcor’, operacion:null, mercaderia:null, tipo:null }); setExito(null); }
+function volver() { if (paso === 0) { onVolver(); return; } setPaso(p => p-1); }
 
-function opExito(msg){
-var b=el('op-body');if(!b)return;
-b.innerHTML='<div style="text-align:center;padding:40px 20px">'+
-'<div style="font-size:60px;margin-bottom:16px">&#9989;</div>'+
-'<div style="font-size:20px;font-weight:700;margin-bottom:8px">Registrado!</div>'+
-'<div style="font-size:13px;color:#888;margin-bottom:28px">'+msg+'</div>'+
-'<button class="btn btnp" style="padding:12px 28px;font-size:15px;font-weight:600" onclick="resetOP();renderOperario()">+ Nueva operacion</button></div>';
-stit('Listo!');
-}
+const titulos = [‘Nueva operación’, op.operacion===‘ingreso’?‘Ingreso’:‘Egreso’, op.mercaderia===‘mp’?‘Materia Prima’:‘Prod. Terminado’, ‘Seco o Frío’, ‘Formulario’];
 
-var tabAdm='res';
-function renderAdmin(){
-el('app').innerHTML='<div style="min-height:100vh;background:#F4F4F0;display:flex;flex-direction:column">'+
-'<div class="adh"><div style="width:32px;height:32px;background:#185FA5;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700">MM</div>'+
-'<div style="flex:1"><div style="font-size:13px;font-weight:700">MM - Administracion</div></div>'+
-'<button class="btn" style="font-size:12px;padding:5px 12px" onclick="ir(\'inicio\')">Salir</button></div>'+
-'<div class="nav">'+
-'<button class="ntab'+(tabAdm==='res'?' on':'')+'" onclick="admTab(\'res\')">Resumen</button>'+
-'<button class="ntab'+(tabAdm==='mov'?' on':'')+'" onclick="admTab(\'mov\')">Movimientos</button>'+
-'<button class="ntab'+(tabAdm==='stk'?' on':'')+'" onclick="admTab(\'stk\')">Stock</button>'+
-'<button class="ntab'+(tabAdm==='pla'?' on':'')+'" onclick="admTab(\'pla\')">Planilla</button>'+
-'<button class="ntab'+(tabAdm==='tar'?' on':'')+'" onclick="admTab(\'tar\')">Tarifas</button>'+
-'</div><div style="padding:14px;max-width:900px;margin:0 auto;width:100%" id="adm-body"></div></div>';
-renderTab();
-}
-function admTab(t){
-tabAdm=t;
-var tabs=document.querySelectorAll('.ntab'),names=['res','mov','stk','pla','tar'];
-for(var i=0;i<tabs.length;i++)tabs[i].classList.toggle('on',i===names.indexOf(t));
-renderTab();
-}
-function renderTab(){
-var b=el('adm-body');if(!b)return;
-if(tabAdm==='res')b.innerHTML=htmlRes();
-else if(tabAdm==='mov')b.innerHTML=htmlMov();
-else if(tabAdm==='stk')htmlStk(b);
-else if(tabAdm==='pla')b.innerHTML=htmlPla();
-else if(tabAdm==='tar')b.innerHTML=htmlTar();
-}
+if (exito) return (
+<div style={{ minHeight:‘100vh’, background:’#F4F4F0’ }}>
+<div style={{ background:AZUL, padding:‘14px 18px’, display:‘flex’, alignItems:‘center’ }}>
+<div style={{ color:’#fff’, fontSize:15, fontWeight:600 }}>¡Listo!</div>
+</div>
+<div style={{ padding:40, textAlign:‘center’ }}>
+<div style={{ fontSize:60, marginBottom:16 }}>✅</div>
+<div style={{ fontSize:20, fontWeight:700, marginBottom:8 }}>¡Registrado!</div>
+<div style={{ fontSize:13, color:’#888’, marginBottom:28 }}>{exito}</div>
+<button onClick={reset} style={{ padding:‘12px 28px’, borderRadius:10, border:‘none’, background:AZUL, color:’#fff’, fontSize:15, fontWeight:600, cursor:‘pointer’ }}>+ Nueva operación</button>
+</div>
+</div>
+);
 
-function calcMPtot(tipo){
-var mes=mes0(),parts=mes.split('-'),y=parseInt(parts[0]),m=parseInt(parts[1]);
-var im=new Date(y,m-1,1),fm=new Date(y,m,0),hD=new Date(hoy());
-var tar=tipo==='seco'?D.tar.mps:D.tar.mpf,tmi=D.tar.mi||0,tme=D.tar.me||0,tot=0;
-for(var i=0;i<D.mp.length;i++){
-var r=D.mp[i];if(r.tipo!==tipo)continue;
-var rfi=new Date(r.fi),rfe=r.fe?new Date(r.fe):null;
-if(rfi>fm)continue;if(rfe&&rfe<im)continue;
-var de=rfi>im?rfi:im,ha=rfe?(rfe<hD?rfe:hD):hD;
-if(de<=ha)tot+=Math.ceil((ha-de)/86400000+1)*(tar||0);
-tot+=tmi;
-if(r.fe&&rfe>=im&&rfe<=fm)tot+=tme;
+let contenido = null;
+
+if (paso === 0) {
+contenido = (
+<div>
+<div style={{ fontSize:18, fontWeight:700, marginBottom:6 }}>¿Qué operación?</div>
+<div style={{ fontSize:13, color:’#888’, marginBottom:20 }}>¿Entra o sale mercadería?</div>
+<div style={{ display:‘grid’, gridTemplateColumns:‘1fr 1fr’, gap:12, marginBottom:20 }}>
+<BtnOpcion ico=“📥” tit=“Ingreso” sub=“Entra al depósito” onClick={() => { setOp(o=>({…o,operacion:‘ingreso’})); setPaso(1); }} />
+<BtnOpcion ico=“📤” tit=“Egreso” sub=“Sale del depósito” onClick={() => { setOp(o=>({…o,operacion:‘egreso’})); setPaso(1); }} />
+</div>
+{data.clientes.length > 0 && (
+<div>
+<div style={{ fontSize:12, color:’#888’, marginBottom:8, fontWeight:500 }}>CLIENTE</div>
+<div style={{ display:‘flex’, gap:8, flexWrap:‘wrap’ }}>
+{[{id:‘arcor’,nom:‘Arcor’,ico:‘🌽’}, …data.clientes.map(c=>({id:c._id,nom:c.nom,ico:‘🏭’}))].map(c => (
+<button key={c.id} onClick={() => setOp(o=>({…o,cliente:c.id,clienteNom:c.nom}))}
+style={{ padding:‘6px 14px’, borderRadius:20, border:`2px solid ${op.cliente===c.id?AZUL:'#ddd'}`, background:op.cliente===c.id?’#E6F1FB’:’#fff’, fontSize:13, fontWeight:600, cursor:‘pointer’, color:op.cliente===c.id?AZUL:’#555’ }}>
+{c.ico} {c.nom}
+</button>
+))}
+</div>
+</div>
+)}
+</div>
+);
+} else if (paso === 1) {
+if (op.cliente !== ‘arcor’) {
+contenido = <Formulario op={op} data={data} save={save} onExito={setExito} />;
+} else {
+contenido = (
+<div>
+<div style={{ fontSize:18, fontWeight:700, marginBottom:6 }}>¿Qué mercadería?</div>
+<div style={{ fontSize:13, color:’#888’, marginBottom:20 }}>Seleccioná la categoría</div>
+<div style={{ display:‘grid’, gridTemplateColumns:‘1fr 1fr’, gap:12 }}>
+<BtnOpcion ico=“📦” tit=“Materia Prima” sub=“MP Seca o Fría” onClick={() => { setOp(o=>({…o,mercaderia:‘mp’})); setPaso(2); }} />
+<BtnOpcion ico=“📬” tit=“Prod. Terminado” sub=“PT Seco o Frío” onClick={() => { setOp(o=>({…o,mercaderia:‘pt’})); setPaso(2); }} />
+</div>
+</div>
+);
 }
-return tot;
-}
-function calcPT(){
-var mes=mes0(),parts=mes.split('-'),y=parseInt(parts[0]),m=parseInt(parts[1]);
-var diasMes=new Date(y,m,0).getDate(),hoyDate=new Date(),tot=0;
-for(var d=1;d<=diasMes;d++){
-var fd=y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-var dD=new Date(fd);if(dD>hoyDate)break;
-var stS2=0,stF2=0;
-for(var i=0;i<D.pt.length;i++){var mv=D.pt[i];if(new Date(mv.fecha)<=dD){var delta=mv.dir==='in'?mv.pal:-mv.pal;if(mv.tipo==='seco')stS2+=delta;else stF2+=delta;}}
-tot+=Math.max(0,stS2)*(D.tar.pts||0)+Math.max(0,stF2)*(D.tar.ptf||0);
-for(var j=0;j<D.pt.length;j++){if(D.pt[j].fecha===fd)tot+=D.pt[j].pal*(D.tar.mi||0);}
-}
-return tot;
-}
-function calcCam(){var pref=mes0(),cam=D.tar.cam||0,cnt=0;for(var i=0;i<D.pt.length;i++){var mv=D.pt[i];if(mv.dir==='out'&&mv.fecha&&mv.fecha.indexOf(pref)===0)cnt++;}return{cnt:cnt,tot:cnt*cam};}
-function calcCliTot(){
-var mes=mes0(),parts=mes.split('-'),y=parseInt(parts[0]),m=parseInt(parts[1]);
-var diasMes=new Date(y,m,0).getDate(),hoyDate=new Date(),pref=mes,tot=0;
-for(var ci=0;ci<D.clientes.length;ci++){
-var cli=D.clientes[ci];
-for(var d=1;d<=diasMes;d++){
-var fd=y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-var dD=new Date(fd);if(dD>hoyDate)break;
-var st=0;for(var i=0;i<D.movCli.length;i++){var mv2=D.movCli[i];if(mv2.clienteId===cli._id&&new Date(mv2.fecha)<=dD)st+=mv2.dir==='in'?mv2.pal:-mv2.pal;}
-tot+=Math.max(0,st)*(cli.tarEst||0);
-}
-for(var j=0;j<D.movCli.length;j++){var mv3=D.movCli[j];if(mv3.clienteId===cli._id&&mv3.fecha&&mv3.fecha.indexOf(pref)===0)tot+=mv3.pal*(mv3.dir==='in'?(cli.tarMI||0):(cli.tarME||0));}
-}
-return tot;
+} else if (paso === 2) {
+contenido = (
+<div>
+<div style={{ fontSize:18, fontWeight:700, marginBottom:6 }}>¿Seco o Frío?</div>
+<div style={{ fontSize:13, color:’#888’, marginBottom:20 }}>Tipo de almacenaje</div>
+<div style={{ display:‘grid’, gridTemplateColumns:‘1fr 1fr’, gap:12 }}>
+<BtnOpcion ico=“☀️” tit=“Seco” onClick={() => { setOp(o=>({…o,tipo:o.mercaderia+’-seco’})); setPaso(3); }} />
+<BtnOpcion ico=“❄️” tit=“Frío” onClick={() => { setOp(o=>({…o,tipo:o.mercaderia+’-frio’})); setPaso(3); }} />
+</div>
+</div>
+);
+} else if (paso === 3) {
+contenido = <Formulario op={op} data={data} save={save} onExito={setExito} />;
 }
 
-function htmlRes(){
-var mes=mes0(),mpS=calcMPtot('seco'),mpF=calcMPtot('frio'),pt=calcPT(),cam=calcCam();
-var arcor=mpS+mpF+pt+cam.tot,cli=calcCliTot(),gran=arcor+cli;
-var stS2=stPT('seco'),stF2=stPT('frio'),mpAct=0;
-for(var i=0;i<D.mp.length;i++){if(!D.mp[i].fe)mpAct++;}
-var PMAX=1300,M2MAX=2400,M2PP=1.2,totPos=mpAct+stS2+stF2;
-var pctP=Math.min(100,Math.round(totPos/PMAX*100)),m2ocp=Math.round(totPos*M2PP*10)/10;
-var pctM=Math.min(100,Math.round(m2ocp/M2MAX*100)),m2lib=Math.max(0,M2MAX-m2ocp);
-var revM2=gran>0?(gran/M2MAX).toFixed(2):0;
-function bc(p){return p>90?'#C62828':p>70?'#E65100':'#185FA5';}
-var cliRows='';
-for(var ci=0;ci<D.clientes.length;ci++){
-var c2=D.clientes[ci],pref=mes,y2=parseInt(mes.split('-')[0]),m2=parseInt(mes.split('-')[1]);
-var dm2=new Date(y2,m2,0).getDate(),hD2=new Date(),t2=0;
-for(var d=1;d<=dm2;d++){
-var fd=y2+'-'+String(m2).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-if(new Date(fd)>hD2)break;
-var st2=0;for(var k=0;k<D.movCli.length;k++){var mv4=D.movCli[k];if(mv4.clienteId===c2._id&&new Date(mv4.fecha)<=new Date(fd))st2+=mv4.dir==='in'?mv4.pal:-mv4.pal;}
-t2+=Math.max(0,st2)*(c2.tarEst||0);
-}
-for(var jj=0;jj<D.movCli.length;jj++){var mv5=D.movCli[jj];if(mv5.clienteId===c2._id&&mv5.fecha&&mv5.fecha.indexOf(pref)===0)t2+=mv5.pal*(mv5.dir==='in'?(c2.tarMI||0):(c2.tarME||0));}
-cliRows+='<div class="rr"><span>&#127981; '+c2.nom+'</span><span>'+$c(t2)+'</span></div>';
-}
-return '<div style="background:linear-gradient(135deg,#185FA5,#0C447C);border-radius:12px;padding:18px;margin-bottom:14px;color:#fff">'+
-'<div style="font-size:13px;opacity:0.85;margin-bottom:12px">Total del deposito - '+mes+'</div>'+
-'<div style="font-size:28px;font-weight:700;margin-bottom:3px">'+$c(gran)+'</div>'+
-'<div style="font-size:11px;opacity:0.7;margin-bottom:14px">Suma de todos los clientes</div>'+
-'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
-'<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:9px 11px"><div style="font-size:11px;opacity:0.8">Arcor</div><div style="font-size:15px;font-weight:600">'+$c(arcor)+'</div></div>'+
-'<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:9px 11px"><div style="font-size:11px;opacity:0.8">Otros clientes</div><div style="font-size:15px;font-weight:600">'+$c(cli)+'</div></div>'+
-'</div></div>'+
-'<div class="metgrid">'+
-'<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;margin-bottom:4px">Lotes MP activos</div><div style="font-size:20px;font-weight:600">'+mpAct+'</div></div>'+
-'<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;margin-bottom:4px">PT Seco stock</div><div style="font-size:20px;font-weight:600">'+stS2+'</div><div style="font-size:11px;color:#aaa">posiciones</div></div>'+
-'<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;margin-bottom:4px">PT Frio stock</div><div style="font-size:20px;font-weight:600">'+stF2+'</div><div style="font-size:11px;color:#aaa">posiciones</div></div>'+
-'<div class="met"><div style="font-size:11px;color:#888;text-transform:uppercase;margin-bottom:4px">Camiones mes</div><div style="font-size:20px;font-weight:600">'+cam.cnt+'</div></div>'+
-'</div>'+
-'<div class="card"><div class="tit">Arcor - '+$c(arcor)+'</div>'+
-'<div class="rr"><span>MP Seca</span><span>'+$c(mpS)+'</span></div>'+
-'<div class="rr"><span>MP Fria</span><span>'+$c(mpF)+'</span></div>'+
-'<div class="rr"><span>Prod. Terminados</span><span>'+$c(pt)+'</span></div>'+
-'<div class="rr"><span>Camiones</span><span>'+$c(cam.tot)+'</span></div>'+
-'<div class="rr rrgrand"><span>Total Arcor</span><span>'+$c(arcor)+'</span></div></div>'+
-(D.clientes.length?'<div class="card"><div class="tit">Otros clientes - '+$c(cli)+'</div>'+(cliRows||'<div class="empty">Sin movimientos</div>')+'<div class="rr rrgrand"><span>Total otros</span><span>'+$c(cli)+'</span></div></div>':'')+
-'<div style="background:#111;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'+
-'<span style="color:#fff;font-size:13px;font-weight:600">Total a facturar</span>'+
-'<span style="color:#4CAF50;font-size:20px;font-weight:700">'+$c(gran)+'</span></div>'+
-'<div style="font-size:13px;font-weight:700;color:#555;margin-bottom:10px;text-transform:uppercase">Indicadores de capacidad</div>'+
-'<div class="indgrid">'+
-'<div class="indcard"><div class="indlbl">Posiciones ocupadas</div><div class="indval" style="color:'+bc(pctP)+'">'+pctP+'%</div><div class="bar"><div class="bfill" style="width:'+pctP+'%;background:'+bc(pctP)+'"></div></div><div style="font-size:11px;color:#888">'+totPos+' / '+PMAX+'</div></div>'+
-'<div class="indcard"><div class="indlbl">Superficie ocupada</div><div class="indval" style="color:'+bc(pctM)+'">'+pctM+'%</div><div class="bar"><div class="bfill" style="width:'+pctM+'%;background:'+bc(pctM)+'"></div></div><div style="font-size:11px;color:#888">'+m2ocp+' / '+M2MAX+' m2</div></div>'+
-'<div class="indcard"><div class="indlbl">Superficie libre</div><div class="indval" style="color:#2E7D32">'+m2lib+'</div><div style="font-size:11px;color:#888">metros cuadrados</div></div>'+
-'<div class="indcard"><div class="indlbl">Ganancia / m2</div><div class="indval" style="color:#185FA5">$'+revM2+'</div><div style="font-size:11px;color:#888">en lo que va del mes</div></div>'+
-'</div>';
+return (
+<div style={{ minHeight:‘100vh’, background:’#F4F4F0’, display:‘flex’, flexDirection:‘column’ }}>
+<div style={{ background:AZUL, padding:‘14px 18px’, display:‘flex’, alignItems:‘center’, gap:12, position:‘sticky’, top:0, zIndex:50 }}>
+<button onClick={volver} style={{ width:32, height:32, borderRadius:8, border:‘none’, background:‘rgba(255,255,255,.2)’, color:’#fff’, fontSize:16, cursor:‘pointer’ }}>←</button>
+<div style={{ color:’#fff’, fontSize:15, fontWeight:600, flex:1 }}>{titulos[paso] || ‘Formulario’}</div>
+{paso > 0 && <div style={{ color:‘rgba(255,255,255,.7)’, fontSize:12 }}>Paso {paso} de {op.cliente!==‘arcor’?2:3}</div>}
+</div>
+<div style={{ flex:1, padding:20, maxWidth:500, margin:‘0 auto’, width:‘100%’ }}>
+{contenido}
+</div>
+</div>
+);
 }
 
-function stEnFecha(tipo,f){var fd=new Date(f),tot=0;for(var i=0;i<D.pt.length;i++){var mv=D.pt[i];if(mv.tipo===tipo&&new Date(mv.fecha)<=fd)tot+=mv.dir==='in'?mv.pal:-mv.pal;}return Math.max(0,tot);}
-function lotesEnFecha(tipo,f){var fd=new Date(f),cnt=0;for(var i=0;i<D.mp.length;i++){var r=D.mp[i];if(r.tipo===tipo&&new Date(r.fi)<=fd&&(!r.fe||new Date(r.fe)>fd))cnt++;}return cnt;}
+// ── FORMULARIO OPERARIO ───────────────────────────────────────────────────────
+function Formulario({ op, data, save, onExito }) {
+const { cliente, clienteNom, operacion, tipo } = op;
+const esFrio = tipo?.includes(‘frio’);
+const tipoMer = esFrio ? ‘frio’ : ‘seco’;
+const esMp = tipo?.startsWith(‘mp’);
+const esPt = tipo?.startsWith(‘pt’);
+const esCli = cliente !== ‘arcor’;
 
-function htmlMov(){
-var mes=mes0(),parts=mes.split('-'),y=parseInt(parts[0]),m=parseInt(parts[1]);
-var diasMes=new Date(y,m,0).getDate(),hoyDate=new Date(),fdHoy=hoy();
-var fd7d=new Date(hoyDate);fd7d.setDate(fd7d.getDate()-7);var fd7=fd7d.toISOString().slice(0,10);
-var dias=[];
-for(var d=1;d<=diasMes;d++){
-var fd=y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-if(new Date(fd)>hoyDate)break;
-var ptDia=[],mpIn=[],mpOut=[];
-for(var i=0;i<D.pt.length;i++){if(D.pt[i].fecha===fd)ptDia.push(D.pt[i]);}
-for(var j=0;j<D.mp.length;j++){if(D.mp[j].fi===fd)mpIn.push(D.mp[j]);}
-for(var k=0;k<D.mp.length;k++){if(D.mp[k].fe===fd)mpOut.push(D.mp[k]);}
-if(ptDia.length||mpIn.length||mpOut.length)dias.push({fd:fd,ptDia:ptDia,mpIn:mpIn,mpOut:mpOut});
-}
-var totals={msI:0,msO:0,mfI:0,mfO:0,ptSI:0,ptSO:0,ptFI:0,ptFO:0};
-for(var di=0;di<dias.length;di++){
-var day=dias[di];
-for(var ii=0;ii<day.mpIn.length;ii++){if(day.mpIn[ii].tipo==='seco')totals.msI++;else totals.mfI++;}
-for(var io=0;io<day.mpOut.length;io++){if(day.mpOut[io].tipo==='seco')totals.msO++;else totals.mfO++;}
-for(var pi=0;pi<day.ptDia.length;pi++){var pv=day.ptDia[pi];if(pv.tipo==='seco'&&pv.dir==='in')totals.ptSI+=pv.pal;else if(pv.tipo==='seco'&&pv.dir==='out')totals.ptSO+=pv.pal;else if(pv.tipo==='frio'&&pv.dir==='in')totals.ptFI+=pv.pal;else if(pv.tipo==='frio'&&pv.dir==='out')totals.ptFO+=pv.pal;}
-}
-var ahora={mpS:lotesEnFecha('seco',fdHoy),mpF:lotesEnFecha('frio',fdHoy),ptS:stEnFecha('seco',fdHoy),ptF:stEnFecha('frio',fdHoy)};
-var antes={mpS:lotesEnFecha('seco',fd7),mpF:lotesEnFecha('frio',fd7),ptS:stEnFecha('seco',fd7),ptF:stEnFecha('frio',fd7)};
-function compCard(ico,label,aV,bV,unidad){
-var diff=aV-bV,pct=bV>0?Math.round(Math.abs(diff)/bV*100):0;
-var fl=diff>0?'&#8593;':(diff<0?'&#8595;':'&#8594;'),col=diff>0?'#1565C0':(diff<0?'#B71C1C':'#555'),fondo=diff>0?'#E3F2FD':(diff<0?'#FFEBEE':'#F5F5F5');
-var txt=diff>0?('+'+diff+' vs semana pasada ('+pct+'%)'):(diff<0?(diff+' vs semana pasada ('+pct+'%)'):'Sin cambio vs semana pasada');
-return '<div style="background:#fff;border-radius:10px;padding:12px;border:1px solid #ddd"><div style="font-size:11px;color:#888;margin-bottom:6px;text-transform:uppercase">'+ico+' '+label+'</div><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span style="font-size:24px;font-weight:700">'+aV+'</span><span style="font-size:12px;color:#888">'+unidad+' hoy</span><span style="font-size:20px;font-weight:700;color:'+col+';margin-left:auto">'+fl+'</span></div><div style="background:'+fondo+';border-radius:6px;padding:4px 8px;font-size:12px;color:'+col+';font-weight:600">'+txt+'</div><div style="font-size:11px;color:#aaa;margin-top:4px">Hace 7 dias: '+bV+' '+unidad+'</div></div>';
-}
-function filaTot(ico,label,inn,out,unidad){
-if(!inn&&!out)return '';
-return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="font-size:14px">'+ico+'</span><div style="flex:1;font-size:13px;font-weight:500">'+label+'</div>'+(inn>0?'<span style="background:#E8F5E9;color:#2E7D32;font-weight:700;font-size:12px;padding:3px 9px;border-radius:99px">+'+inn+' '+unidad+'</span>':'')+(out>0?'<span style="background:#FFEBEE;color:#C62828;font-weight:700;font-size:12px;padding:3px 9px;border-radius:99px">-'+out+' '+unidad+'</span>':'')+'</div>';
-}
-var diasHtml='';
-for(var di2=0;di2<dias.length;di2++){
-var day2=dias[di2],mpSI=[],mpFI=[],mpSO=[],mpFO=[],ptSIl=[],ptSOl=[],ptFIl=[],ptFOl=[];
-for(var ii2=0;ii2<day2.mpIn.length;ii2++){if(day2.mpIn[ii2].tipo==='seco')mpSI.push(day2.mpIn[ii2]);else mpFI.push(day2.mpIn[ii2]);}
-for(var io2=0;io2<day2.mpOut.length;io2++){if(day2.mpOut[io2].tipo==='seco')mpSO.push(day2.mpOut[io2]);else mpFO.push(day2.mpOut[io2]);}
-for(var pi2=0;pi2<day2.ptDia.length;pi2++){var pv2=day2.ptDia[pi2];if(pv2.tipo==='seco'&&pv2.dir==='in')ptSIl.push(pv2);else if(pv2.tipo==='seco'&&pv2.dir==='out')ptSOl.push(pv2);else if(pv2.tipo==='frio'&&pv2.dir==='in')ptFIl.push(pv2);else ptFOl.push(pv2);}
-var sI=0,sO=0,fI=0,fO=0;
-for(var x=0;x<ptSIl.length;x++)sI+=ptSIl[x].pal;for(var x2=0;x2<ptSOl.length;x2++)sO+=ptSOl[x2].pal;for(var x3=0;x3<ptFIl.length;x3++)fI+=ptFIl[x3].pal;for(var x4=0;x4<ptFOl.length;x4++)fO+=ptFOl[x4].pal;
-var items=[];
-if(mpSI.length||mpSO.length)items.push('MP Seca: '+(mpSI.length?'+'+mpSI.length:'')+(mpSO.length?' -'+mpSO.length:'')+' lotes');
-if(mpFI.length||mpFO.length)items.push('MP Fria: '+(mpFI.length?'+'+mpFI.length:'')+(mpFO.length?' -'+mpFO.length:'')+' lotes');
-if(sI||sO)items.push('PT Seco: '+(sI?'+'+sI:'')+(sO?' -'+sO:'')+' pos.');
-if(fI||fO)items.push('PT Frio: '+(fI?'+'+fI:'')+(fO?' -'+fO:'')+' pos.');
-var chips2='';for(var it=0;it<items.length;it++)chips2+='<span style="background:#EEF4FF;border-radius:20px;padding:4px 10px;font-size:12px;color:#185FA5;font-weight:600">'+items[it]+'</span> ';
-var detMP='';
-var allMP=mpSI.concat(mpSO).concat(mpFI).concat(mpFO);
-for(var rm=0;rm<allMP.length;rm++){var rx=allMP[rm],isIn=mpSI.indexOf(rx)>=0||mpFI.indexOf(rx)>=0;detMP+='<div class="mrow '+(isIn?'min':'mout')+'"><span style="font-size:16px">'+(isIn?'&#128229;':'&#128228;')+'</span><div style="flex:1"><div style="font-size:13px;font-weight:600">'+rx.nom+'</div><div style="font-size:11px;color:#555">OC: '+rx.oc+' - Lote: '+(rx.cod||'-')+(rx.operario?' - '+rx.operario:'')+'</div></div><span style="font-weight:700;font-size:12px;color:'+(isIn?'#2E7D32':'#C62828')+'">'+(isIn?'Ingreso':'Egreso')+'</span></div>';}
-var detPT='';var allPT=ptSIl.concat(ptSOl).concat(ptFIl).concat(ptFOl);
-for(var pp=0;pp<allPT.length;pp++){var mv6=allPT[pp];detPT+='<div class="mrow '+(mv6.dir==='in'?'min':'mout')+'"><span style="font-size:16px">'+(mv6.dir==='in'?'&#128229;':'&#128228;')+'</span><div style="flex:1"><div style="font-size:13px;font-weight:600">'+mv6.pal+' posiciones '+(mv6.tipo==='frio'?'Frio':'Seco')+'</div><div style="font-size:11px;color:#555">Remito: '+(mv6.remito||'-')+(mv6.oc?' - OC: '+mv6.oc:'')+(mv6.operario?' - '+mv6.operario:'')+'</div></div><span style="font-weight:700;font-size:13px;color:'+(mv6.dir==='in'?'#2E7D32':'#C62828')+'">'+(mv6.dir==='in'?'+':'-')+mv6.pal+'</span></div>';}
-diasHtml+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-weight:700;font-size:15px">'+day2.fd+'</div><div style="font-size:11px;color:#888">'+(day2.ptDia.length+day2.mpIn.length+day2.mpOut.length)+' mov.</div></div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+chips2+'</div>'+detMP+detPT+'</div>';
-}
-return '<div class="card"><div class="tit">Totales del mes - '+mes+'</div>'+filaTot('MP','MP Seca',totals.msI,totals.msO,'lotes')+filaTot('MP','MP Fria',totals.mfI,totals.mfO,'lotes')+filaTot('PT','PT Seco',totals.ptSI,totals.ptSO,'pos.')+filaTot('PT','PT Frio',totals.ptFI,totals.ptFO,'pos.')+(!totals.msI&&!totals.msO&&!totals.mfI&&!totals.mfO&&!totals.ptSI&&!totals.ptSO&&!totals.ptFI&&!totals.ptFO?'<div class="empty">Sin movimientos este mes.</div>':'')+'</div>'+
-'<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:700;color:#555;margin-bottom:8px;text-transform:uppercase">Comparativa - hoy vs hace 7 dias</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+compCard('MP','MP Seca',ahora.mpS,antes.mpS,'lotes')+compCard('MP','MP Fria',ahora.mpF,antes.mpF,'lotes')+compCard('PT','PT Seco',ahora.ptS,antes.ptS,'pos.')+compCard('PT','PT Frio',ahora.ptF,antes.ptF,'pos.')+'</div><div style="font-size:11px;color:#aaa;margin-top:8px;text-align:center">arriba=llenando | igual=estable | abajo=vaciando</div></div>'+
-(dias.length?diasHtml:'<div class="card"><div class="empty">Sin movimientos este mes.</div></div>');
+const [oc, setOc] = useState(’’);
+const [fi, setFi] = useState(hoy());
+const [fe, setFe] = useState(hoy());
+const [prod, setProd] = useState(’’);
+const [lotes, setLotes] = useState([{ nom:’’, cod:’’ }]);
+const [zona, setZona] = useState(’’);
+const [fila, setFila] = useState(’’);
+const [pal, setPal] = useState(’’);
+const [rem, setRem] = useState(’’);
+const [tra, setTra] = useState(’’);
+const [rs, setRs] = useState(’’);
+const [oe, setOe] = useState(’’);
+const [ocEg, setOcEg] = useState(’’);
+const [lotesSelec, setLotesSelec] = useState([]);
+const [desc, setDesc] = useState(’’);
+const [err, setErr] = useState(’’);
+const [escanLoading, setEscanLoading] = useState(false);
+
+const hD = new Date(hoy());
+const stPT = (t) => Math.max(0, (data.pt||[]).filter(mv=>mv.tipo===t&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0));
+const stCli = () => Math.max(0, (data.movCli||[]).filter(m=>m.clienteId===cliente).reduce((s,m)=>s+(m.dir===‘in’?m.pal:-m.pal),0));
+const ocDisp = […new Set((data.mp||[]).filter(r=>r.tipo===tipoMer&&!r.fe).map(r=>r.oc))].sort();
+const lotesOC = (data.mp||[]).filter(r=>r.oc===ocEg&&r.tipo===tipoMer&&!r.fe);
+
+function addLote() { setLotes(l=>[…l,{nom:prod,cod:’’}]); }
+function setLote(i,k,v) { setLotes(l=>{ const n=[…l]; n[i]={…n[i],[k]:v}; return n; }); }
+function toggleLote(id) { setLotesSelec(s=>s.includes(id)?s.filter(x=>x!==id):[…s,id]); }
+
+async function escanear(e, idx) {
+const file = e.target.files[0]; if (!file) return;
+setEscanLoading(true);
+try {
+const base64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(’,’)[1]); r.onerror=rej; r.readAsDataURL(file); });
+const resp = await fetch(‘https://api.anthropic.com/v1/messages’,{method:‘POST’,headers:{‘Content-Type’:‘application/json’},body:JSON.stringify({model:‘claude-sonnet-4-20250514’,max_tokens:200,messages:[{role:‘user’,content:[{type:‘image’,source:{type:‘base64’,media_type:file.type||‘image/jpeg’,data:base64}},{type:‘text’,text:‘Foto de sticker de pallet. Extraé el LOTE y CÓDIGO. Respondé SOLO JSON: {“lote”:”…”,“codigo”:”…”} Sin nada más.’}]}]})});
+const d = await resp.json();
+const parsed = JSON.parse((d.content?.[0]?.text||’{}’).replace(/`json|`/g,’’).trim());
+setLotes(l=>{ const n=[…l]; n[idx]={…n[idx],nom:parsed.lote||n[idx].nom,cod:parsed.codigo||n[idx].cod}; return n; });
+} catch { alert(‘No pude leer el sticker. Cargalo a mano.’); }
+finally { setEscanLoading(false); e.target.value=’’; }
 }
 
-function htmlStk(b){
-var mpS=[],mpF=[];
-for(var i=0;i<D.mp.length;i++){if(D.mp[i].tipo==='seco'&&!D.mp[i].fe)mpS.push(D.mp[i]);else if(D.mp[i].tipo==='frio'&&!D.mp[i].fe)mpF.push(D.mp[i]);}
-var stS2=stPT('seco'),stF2=stPT('frio');
-function lCard(r){return '<div class="mcard"><div style="font-weight:700;font-size:13px;margin-bottom:3px">'+r.nom+' ['+(r.cod||'-')+']</div><div style="font-size:12px;color:#888;margin-bottom:8px">OC: '+r.oc+' - Ingreso: '+r.fi+(r.zona?' - '+r.zona:'')+(r.fila?' - Fila '+r.fila:'')+(r.operario?' - '+r.operario:'')+'</div><div style="display:flex;gap:8px"><button class="btn" style="font-size:12px;padding:6px 12px" onclick="stkEgr(\''+r._id+'\')">Egresar</button><button class="btn btnr" style="font-size:12px;padding:6px 12px" onclick="stkElMP(\''+r._id+'\')">Eliminar</button></div></div>';}
-function ptR(tipo){var movs=[];for(var i2=0;i2<D.pt.length;i2++){if(D.pt[i2].tipo===tipo)movs.push(D.pt[i2]);}movs.sort(function(a,b){return b.fecha<a.fecha?-1:1;});if(movs.length>15)movs=movs.slice(0,15);var h2='';for(var j=0;j<movs.length;j++){var mv7=movs[j];h2+='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px"><div><span style="font-weight:600;color:'+(mv7.dir==='in'?'#2E7D32':'#C62828')+'">'+(mv7.dir==='in'?'Ingreso':'Egreso')+'</span><span style="color:#888;margin-left:8px">'+mv7.pal+' pos. - '+mv7.fecha+'</span></div><button class="btn btnr" style="font-size:11px;padding:3px 8px" onclick="stkElPT(\''+mv7._id+'\')">X</button></div>';}return h2||'<div class="empty">Sin movimientos</div>';}
-b.innerHTML='<div class="card"><div class="tit">MP Seca - '+mpS.length+' lotes</div>'+(mpS.length?mpS.map(lCard).join(''):'<div class="empty">Sin lotes activos</div>')+'</div>'+
-'<div class="card"><div class="tit">MP Fria - '+mpF.length+' lotes</div>'+(mpF.length?mpF.map(lCard).join(''):'<div class="empty">Sin lotes activos</div>')+'</div>'+
-'<div class="card"><div class="tit">PT Seco - Stock: '+stS2+' posiciones</div>'+ptR('seco')+'</div>'+
-'<div class="card"><div class="tit">PT Frio - Stock: '+stF2+' posiciones</div>'+ptR('frio')+'</div>';
-}
-function stkEgr(id){var fe=prompt('Fecha de egreso (AAAA-MM-DD):',hoy());if(!fe)return;for(var i=0;i<D.mp.length;i++){if(D.mp[i]._id===id){D.mp[i].fe=fe;D.mp[i].movs=D.mp[i].movs||[];D.mp[i].movs.push({fe:fe});break;}}sv();renderTab();}
-function stkElMP(id){if(!confirm('Eliminar este lote?'))return;D.mp=D.mp.filter(function(x){return x._id!==id;});sv();renderTab();}
-function stkElPT(id){if(!confirm('Eliminar?'))return;D.pt=D.pt.filter(function(x){return x._id!==id;});sv();renderTab();}
+function guardar() {
+setErr(’’);
 
-function htmlPla(){
-var mes=mes0(),parts=mes.split('-'),y=parseInt(parts[0]),m=parseInt(parts[1]);
-var diasMes=new Date(y,m,0).getDate(),fdHoy=hoy(),diasCab=[];
-for(var d=1;d<=diasMes;d++){var fd=y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(fd<=fdHoy)diasCab.push(fd);}
-var im=new Date(y,m-1,1),fm=new Date(y,m,0),regs=[];
-for(var i=0;i<D.mp.length;i++){var r=D.mp[i],rfi=new Date(r.fi),rfe=r.fe?new Date(r.fe):null;if(rfi<=fm&&(!rfe||rfe>=im))regs.push(r);}
-var ocMap={};for(var j=0;j<regs.length;j++){var oc=regs[j].oc;if(!ocMap[oc])ocMap[oc]=[];ocMap[oc].push(regs[j]);}
-var ocKeys=Object.keys(ocMap).sort();for(var ok=0;ok<ocKeys.length;ok++)ocMap[ocKeys[ok]].sort(function(a,b){return a.fi<b.fi?-1:1;});
-if(!ocKeys.length)return '<div class="card"><div class="empty">Sin lotes de MP para este mes.</div></div>';
-var thDias='';for(var dd=0;dd<diasCab.length;dd++)thDias+='<th style="min-width:28px;font-size:10px">'+parseInt(diasCab[dd].slice(8))+'</th>';
-var rows='';
-for(var oi=0;oi<ocKeys.length;oi++){
-var oc2=ocKeys[oi],lotes2=ocMap[oc2];
-rows+='<tr><td class="plaoc" colspan="'+(diasCab.length+2)+'">OC: '+oc2+' - '+lotes2.length+' lote(s)</td></tr>';
-for(var li=0;li<lotes2.length;li++){
-var r2=lotes2[li],celdas='';
-for(var cd=0;cd<diasCab.length;cd++){var fdX=diasCab[cd],diaX=new Date(fdX),fiX=new Date(r2.fi),feX=r2.fe?new Date(r2.fe):null;if(diaX<fiX)celdas+='<td class="celn">-</td>';else if(fdX===r2.fe)celdas+='<td class="celeg">&#8617;</td>';else if(feX&&diaX>feX)celdas+='<td class="celn">-</td>';else celdas+='<td class="celok">&#10003;</td>';}
-rows+='<tr><td class="plalote"><b>'+r2.nom+'</b><br><span style="font-size:10px;color:#888">['+(r2.cod||'-')+'] '+(r2.tipo==='frio'?'Frio':'Seco')+'</span></td>'+celdas+'<td style="font-size:11px;color:#888">'+(r2.operario||'-')+'</td></tr>';
+```
+if (esMp && operacion==='ingreso') {
+if (!oc||!fi||!prod) { setErr('Completá OC, fecha y producto'); return; }
+if (lotes.some(l=>!l.nom)) { setErr('Todos los lotes necesitan nombre'); return; }
+const nuevos = lotes.map(l=>({_id:uid(),tipo:tipoMer,oc,fi,fe:null,prod,nom:l.nom,cod:l.cod,zona,fila,movs:[],ts:new Date().toISOString()}));
+save({...data,mp:[...data.mp,...nuevos]});
+onExito(`${nuevos.length} lote(s) ingresados en OC ${oc}`);
 }
+else if (esMp && operacion==='egreso') {
+if (!fe) { setErr('Ingresá la fecha'); return; }
+if (!lotesSelec.length) { setErr('Seleccioná al menos un lote'); return; }
+const mp = data.mp.map(r=>lotesSelec.includes(r._id)?{...r,fe,movs:[...(r.movs||[]),{fe}]}:r);
+save({...data,mp});
+onExito(`${lotesSelec.length} lote(s) egresados`);
 }
-return '<div class="card"><div class="tit">Planilla de lotes por dia - '+mes+'</div><div style="font-size:12px;color:#888;margin-bottom:8px">Verde: activo | Rojo: egreso | Gris: no estaba</div><div class="pla"><table class="platbl"><thead><tr><th class="plalote">Lote</th>'+thDias+'<th style="min-width:80px">Operario</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+else if (esPt && operacion==='ingreso') {
+if (!rem||!fi||!pal) { setErr('Completá remito, fecha y pallets'); return; }
+save({...data,pt:[...data.pt,{_id:uid(),fecha:fi,tipo:tipoMer,dir:'in',pal:parseInt(pal),remito:rem,tra,zona,fila,oe:'',oc:'',ts:new Date().toISOString()}]});
+onExito(`Ingreso ${pal} pallets PT ${tipoMer}`);
 }
+else if (esPt && operacion==='egreso') {
+if (!rs||!oe||!oc||!fe||!pal) { setErr('Completá todos los campos'); return; }
+const st=stPT(tipoMer);
+if (parseInt(pal)>st) { setErr(`Pallets insuficientes. Stock: ${st}`); return; }
+save({...data,pt:[...data.pt,{_id:uid(),fecha:fe,tipo:tipoMer,dir:'out',pal:parseInt(pal),remito:rs,oe,oc,tra,ts:new Date().toISOString()}]});
+onExito(`Egreso ${pal} pallets PT ${tipoMer}`);
+}
+else if (esCli) {
+const fecha = operacion==='ingreso'?fi:fe;
+if (!fecha||!pal) { setErr('Completá fecha y pallets'); return; }
+if (operacion==='egreso') {
+const st=stCli();
+if (parseInt(pal)>st) { setErr(`Pallets insuficientes. Stock: ${st}`); return; }
+}
+save({...data,movCli:[...data.movCli,{_id:uid(),clienteId:cliente,fecha,dir:operacion==='ingreso'?'in':'out',pal:parseInt(pal),desc,remito:rem,zona:operacion==='ingreso'?zona:'',fila:operacion==='ingreso'?fila:'',ts:new Date().toISOString()}]});
+onExito(`${operacion==='ingreso'?'Ingreso':'Egreso'} ${pal} pallets — ${clienteNom}`);
+}
+```
 
-function htmlTar(){
-var t=D.tar,cliHtml='';
-for(var i=0;i<D.clientes.length;i++){var c=D.clientes[i];cliHtml+='<div class="mcard"><div style="font-weight:700;font-size:13px">'+c.nom+'</div>'+(c.desc?'<div style="font-size:12px;color:#888">'+c.desc+'</div>':'')+'<div style="font-size:11px;color:#888;margin:4px 0 8px">Est: $'+(c.tarEst||0)+'/pos/dia - Mov in: $'+(c.tarMI||0)+' - Mov out: $'+(c.tarME||0)+'</div><div style="display:flex;gap:8px"><button class="btn" style="font-size:12px;padding:6px 12px" onclick="editCli(\''+c._id+'\')">Editar</button><button class="btn btnr" style="font-size:12px;padding:6px 12px" onclick="elimCli(\''+c._id+'\')">Eliminar</button></div></div>';}
-return '<div class="card"><div class="tit">Estadias Arcor - tarifa diaria ($)</div><div class="g2">'+
-'<div class="fg"><label>MP Seca / lote</label><input id="t-mps" type="number" value="'+(t.mps||'')+'" placeholder="0.00"></div>'+
-'<div class="fg"><label>MP Fria / lote</label><input id="t-mpf" type="number" value="'+(t.mpf||'')+'" placeholder="0.00"></div>'+
-'<div class="fg"><label>PT Seco / posicion</label><input id="t-pts" type="number" value="'+(t.pts||'')+'" placeholder="0.00"></div>'+
-'<div class="fg"><label>PT Frio / posicion</label><input id="t-ptf" type="number" value="'+(t.ptf||'')+'" placeholder="0.00"></div>'+
-'</div></div>'+
-'<div class="card"><div class="tit">Movimientos Arcor ($)</div><div class="g2">'+
-'<div class="fg"><label>Ingreso / posicion</label><input id="t-mi" type="number" value="'+(t.mi||'')+'" placeholder="0.00"></div>'+
-'<div class="fg"><label>Egreso / posicion</label><input id="t-me" type="number" value="'+(t.me||'')+'" placeholder="0.00"></div>'+
-'</div></div>'+
-'<div class="card"><div class="tit">Tarifa por camion PT</div><div class="fg"><label>Por camion cargado</label><input id="t-cam" type="number" value="'+(t.cam||'')+'" placeholder="0.00"></div></div>'+
-'<div class="card"><div class="tit">PIN de administrador</div><div class="fg"><label>Nuevo PIN (vacio = no cambia)</label><input id="t-pin" type="password" inputmode="numeric" maxlength="6" placeholder="****"></div></div>'+
-'<button class="btn btnp" style="width:100%;padding:14px;font-size:16px;font-weight:700;margin-bottom:8px" onclick="guardarTar()">Guardar tarifas Arcor</button>'+
-'<div id="tar-ok" style="color:#2E7D32;text-align:center;margin-bottom:16px;display:none;font-weight:600">Guardado</div>'+
-'<div class="card"><div class="tit">Clientes</div>'+(cliHtml||'<div class="empty">Sin clientes</div>')+'</div>'+
-'<div class="card" style="background:#EEF4FF;border-color:#B5D4F4">'+
-'<div id="cli-tit" style="font-size:12px;font-weight:700;color:#185FA5;margin-bottom:12px">Nuevo cliente</div>'+
-'<input type="hidden" id="cli-eid">'+
-'<div class="g2"><div class="fg"><label>Nombre *</label><input id="cli-nom" placeholder="Ej: Netafim"></div>'+
-'<div class="fg"><label>Descripcion</label><input id="cli-desc" placeholder="Ej: Mangueras"></div></div>'+
-'<div style="font-size:11px;font-weight:700;color:#666;text-transform:uppercase;margin-bottom:10px">Tarifas ($)</div>'+
-'<div class="g2"><div class="fg"><label>Estadia / pos / dia</label><input id="cli-est" type="number" placeholder="0.00"></div>'+
-'<div class="fg"><label>Mov. ingreso / pos</label><input id="cli-mi2" type="number" placeholder="0.00"></div></div>'+
-'<div class="fg"><label>Mov. egreso / pos</label><input id="cli-me2" type="number" placeholder="0.00"></div>'+
-'<div style="display:flex;gap:8px"><button class="btn btnp" style="flex:1;padding:12px;font-size:14px;font-weight:600" onclick="guardarCli()">Guardar cliente</button>'+
-'<button class="btn" id="cli-cancel" style="padding:12px;font-size:14px;display:none" onclick="cancelCli()">Cancelar</button></div></div>';
 }
 
-function guardarTar(){
-var pin=gv('t-pin');
-D.tar={mps:parseFloat(gv('t-mps'))||0,mpf:parseFloat(gv('t-mpf'))||0,pts:parseFloat(gv('t-pts'))||0,ptf:parseFloat(gv('t-ptf'))||0,mi:parseFloat(gv('t-mi'))||0,me:parseFloat(gv('t-me'))||0,cam:parseFloat(gv('t-cam'))||0,pin:(pin&&pin.length>=4)?pin:(D.tar.pin||'1234')};
-sv();var ok=el('tar-ok');if(ok){ok.style.display='block';setTimeout(function(){ok.style.display='none';},2500);}
-}
-function guardarCli(){
-var nom=gv('cli-nom').trim();if(!nom){alert('Ingresa el nombre');return;}
-var eid=gv('cli-eid'),obj={nom:nom,desc:gv('cli-desc').trim(),tarEst:parseFloat(gv('cli-est'))||0,tarMI:parseFloat(gv('cli-mi2'))||0,tarME:parseFloat(gv('cli-me2'))||0};
-if(eid){for(var i=0;i<D.clientes.length;i++){if(D.clientes[i]._id===eid){D.clientes[i]=Object.assign({},D.clientes[i],obj);break;}}}
-else{obj._id=uid();D.clientes.push(obj);}
-sv();renderTab();
-}
-function editCli(id){
-var c=null;for(var i=0;i<D.clientes.length;i++){if(D.clientes[i]._id===id){c=D.clientes[i];break;}}if(!c)return;
-sv2('cli-eid',id);sv2('cli-nom',c.nom);sv2('cli-desc',c.desc||'');sv2('cli-est',c.tarEst||'');sv2('cli-mi2',c.tarMI||'');sv2('cli-me2',c.tarME||'');
-if(el('cli-tit'))el('cli-tit').textContent='Editar cliente';
-if(el('cli-cancel'))el('cli-cancel').style.display='';
-if(el('cli-nom'))el('cli-nom').scrollIntoView({behavior:'smooth'});
-}
-function cancelCli(){
-sv2('cli-eid','');sv2('cli-nom','');sv2('cli-desc','');sv2('cli-est','');sv2('cli-mi2','');sv2('cli-me2','');
-if(el('cli-tit'))el('cli-tit').textContent='Nuevo cliente';
-if(el('cli-cancel'))el('cli-cancel').style.display='none';
-}
-function elimCli(id){
-if(!confirm('Eliminar este cliente?'))return;
-D.clientes=D.clientes.filter(function(x){return x._id!==id;});sv();renderTab();
+const titulo = esMp?`${operacion==='ingreso'?'Ingreso':'Egreso'} MP ${esFrio?'Fría':'Seca'}`:esPt?`${operacion==='ingreso'?'Ingreso':'Egreso'} PT ${esFrio?'Frío':'Seco'}`:`${operacion==='ingreso'?'Ingreso':'Egreso'} — ${clienteNom}`;
+
+const ZonaFila = () => (
+<div style={{ marginBottom:14 }}>
+<div style={{ fontSize:12, color:’#666’, fontWeight:500, marginBottom:8 }}>Ubicación en depósito</div>
+<G2>
+<div>
+<label style={{ display:‘block’, fontSize:11, color:’#888’, marginBottom:4 }}>Zona</label>
+<select value={zona} onChange={e=>setZona(e.target.value)} style={{ width:‘100%’, padding:‘10px 12px’, border:‘1.5px solid #ddd’, borderRadius:8, fontSize:14, background:’#fff’ }}>
+<option value="">— Sin asignar —</option>
+<option value="almacenaje">🏪 Almacenaje</option>
+<option value="armado">📦 Armado de pedidos</option>
+</select>
+</div>
+<div>
+<label style={{ display:‘block’, fontSize:11, color:’#888’, marginBottom:4 }}>Fila</label>
+<Inp value={fila} onChange={e=>setFila(e.target.value)} placeholder=“Ej: F3, A1…” />
+</div>
+</G2>
+</div>
+);
+
+return (
+<div style={{ background:’#fff’, borderRadius:12, border:‘1px solid #e5e5e5’, padding:20, marginTop:8 }}>
+<div style={{ fontSize:16, fontWeight:700, marginBottom:16 }}>{titulo}</div>
+
+```
+{/* INGRESO MP */}
+{esMp && operacion==='ingreso' && (
+<div>
+<G2>
+<Fg label="Orden de compra *"><Inp value={oc} onChange={e=>setOc(e.target.value)} placeholder="OC-2025-001" /></Fg>
+<Fg label="Fecha *"><Inp value={fi} onChange={e=>setFi(e.target.value)} type="date" /></Fg>
+</G2>
+<Fg label="Producto *"><Inp value={prod} onChange={e=>{ setProd(e.target.value); setLotes(l=>l.map(x=>({...x,nom:x.nom||e.target.value}))); }} placeholder="Ej: Harina de trigo" /></Fg>
+<div style={{ marginBottom:14 }}>
+<div style={{ fontSize:12, color:'#666', fontWeight:500, marginBottom:8 }}>Lotes *</div>
+<div style={{ background:'#F8F8F6', borderRadius:8, padding:10, border:'1px solid #eee' }}>
+{lotes.map((l,i) => (
+<div key={i} style={{ marginBottom:8 }}>
+<div style={{ display:'grid', gridTemplateColumns:'1fr 1fr auto auto', gap:6, alignItems:'center' }}>
+<input value={l.nom} onChange={e=>setLote(i,'nom',e.target.value)} placeholder="Nombre lote"
+style={{ padding:'8px 10px', border:'1.5px solid #ddd', borderRadius:6, fontSize:13, width:'100%' }} />
+<input value={l.cod} onChange={e=>setLote(i,'cod',e.target.value)} placeholder="Código"
+style={{ padding:'8px 10px', border:'1.5px solid #ddd', borderRadius:6, fontSize:13, width:'100%' }} />
+<label style={{ display:'flex', alignItems:'center', justifyContent:'center', width:36, height:36, border:'1.5px solid '+AZUL, borderRadius:6, background:'#E6F1FB', cursor:'pointer', flexShrink:0 }}>
+📷
+<input type="file" accept="image/*" capture="environment" style={{ display:'none' }} onChange={e=>escanear(e,i)} />
+</label>
+{lotes.length>1 && <button onClick={()=>setLotes(l=>l.filter((_,j)=>j!==i))} style={{ width:32, height:36, border:'1px solid #ffcdd2', background:'#fff', color:'#c62828', borderRadius:6, cursor:'pointer', flexShrink:0 }}>✕</button>}
+</div>
+</div>
+))}
+{escanLoading && <div style={{ textAlign:'center', padding:10, fontSize:13, color:AZUL }}>🔍 Leyendo sticker...</div>}
+<button onClick={addLote} style={{ width:'100%', padding:8, marginTop:4, border:'1px dashed #ddd', background:'#fff', borderRadius:6, cursor:'pointer', fontSize:12 }}>+ Agregar lote</button>
+</div>
+</div>
+<ZonaFila />
+</div>
+)}
+
+{/* EGRESO MP */}
+{esMp && operacion==='egreso' && (
+<div>
+<Fg label="Orden de compra *">
+<select value={ocEg} onChange={e=>{ setOcEg(e.target.value); setLotesSelec([]); }}
+style={{ width:'100%', padding:'10px 12px', border:'1.5px solid #ddd', borderRadius:8, fontSize:14, background:'#fff' }}>
+<option value="">— Elegí una OC —</option>
+{ocDisp.map(o=><option key={o} value={o}>OC: {o}</option>)}
+</select>
+</Fg>
+{ocEg && lotesOC.length>0 && (
+<div style={{ marginBottom:14 }}>
+<div style={{ fontSize:12, color:'#666', fontWeight:500, marginBottom:8 }}>Lotes a egresar *</div>
+<div style={{ background:'#F8F8F6', borderRadius:8, padding:10, border:'1px solid #eee' }}>
+{lotesOC.map(r=>(
+<label key={r._id} style={{ display:'flex', alignItems:'center', gap:10, padding:10, background:'#fff', borderRadius:7, marginBottom:8, border:'1px solid #eee', cursor:'pointer' }}>
+<input type="checkbox" checked={lotesSelec.includes(r._id)} onChange={()=>toggleLote(r._id)} style={{ width:18, height:18 }} />
+<div>
+<div style={{ fontWeight:600, fontSize:13 }}>{r.nom} <span style={{ fontSize:11, color:'#aaa' }}>[{r.cod||'—'}]</span></div>
+<div style={{ fontSize:11, color:'#888' }}>Ingresó: {r.fi}</div>
+</div>
+</label>
+))}
+</div>
+</div>
+)}
+<Fg label="Fecha de egreso *"><Inp value={fe} onChange={e=>setFe(e.target.value)} type="date" /></Fg>
+</div>
+)}
+
+{/* INGRESO PT */}
+{esPt && operacion==='ingreso' && (
+<div>
+<div style={{ background:'#F0F4F9', borderRadius:8, padding:'8px 12px', marginBottom:14, fontSize:13 }}>
+<strong>Tipo:</strong> {esFrio?'❄️ Frío':'☀️ Seco'} &nbsp;|&nbsp; <strong>Stock actual:</strong> <span style={{ color:AZUL, fontWeight:700 }}>{stPT(tipoMer)} pallets</span>
+</div>
+<G2>
+<Fg label="Remito *"><Inp value={rem} onChange={e=>setRem(e.target.value)} placeholder="REM-001" /></Fg>
+<Fg label="Fecha *"><Inp value={fi} onChange={e=>setFi(e.target.value)} type="date" /></Fg>
+</G2>
+<Fg label="Transporte"><Inp value={tra} onChange={e=>setTra(e.target.value)} placeholder="Transporte..." /></Fg>
+<Fg label="Pallets *"><Inp value={pal} onChange={e=>setPal(e.target.value)} type="number" min="1" placeholder="0" /></Fg>
+<ZonaFila />
+</div>
+)}
+
+{/* EGRESO PT */}
+{esPt && operacion==='egreso' && (
+<div>
+<div style={{ background:'#F0F4F9', borderRadius:8, padding:'8px 12px', marginBottom:14, fontSize:13 }}>
+<strong>Tipo:</strong> {esFrio?'❄️ Frío':'☀️ Seco'} &nbsp;|&nbsp; <strong>Stock:</strong> <span style={{ color:AZUL, fontWeight:700 }}>{stPT(tipoMer)} pallets</span>
+</div>
+<G2>
+<Fg label="Fecha *"><Inp value={fe} onChange={e=>setFe(e.target.value)} type="date" /></Fg>
+<Fg label="Pallets *"><Inp value={pal} onChange={e=>setPal(e.target.value)} type="number" min="1" placeholder="0" /></Fg>
+</G2>
+<G2>
+<Fg label="Remito salida *"><Inp value={rs} onChange={e=>setRs(e.target.value)} placeholder="RS-001" /></Fg>
+<Fg label="Ord. entrega *"><Inp value={oe} onChange={e=>setOe(e.target.value)} placeholder="OE-001" /></Fg>
+</G2>
+<G2>
+<Fg label="Ord. compra *"><Inp value={oc} onChange={e=>setOc(e.target.value)} placeholder="OC-001" /></Fg>
+<Fg label="Transporte"><Inp value={tra} onChange={e=>setTra(e.target.value)} placeholder="Transporte..." /></Fg>
+</G2>
+</div>
+)}
+
+{/* OTRO CLIENTE */}
+{esCli && (
+<div>
+{operacion==='egreso' && (
+<div style={{ background:'#F0F4F9', borderRadius:8, padding:10, marginBottom:14, fontSize:13 }}>
+<strong>Stock actual:</strong> <span style={{ color:AZUL, fontWeight:700 }}>{stCli()} pallets</span>
+</div>
+)}
+<G2>
+<Fg label="Fecha *"><Inp value={operacion==='ingreso'?fi:fe} onChange={e=>operacion==='ingreso'?setFi(e.target.value):setFe(e.target.value)} type="date" /></Fg>
+<Fg label="Pallets *"><Inp value={pal} onChange={e=>setPal(e.target.value)} type="number" min="1" placeholder="0" /></Fg>
+</G2>
+<Fg label="Descripción"><Inp value={desc} onChange={e=>setDesc(e.target.value)} placeholder="Ej: Mangueras 16mm" /></Fg>
+<Fg label="Remito"><Inp value={rem} onChange={e=>setRem(e.target.value)} placeholder="REM-001" /></Fg>
+{operacion==='ingreso' && <ZonaFila />}
+</div>
+)}
+
+{err && <div style={{ color:'#c62828', fontSize:13, marginBottom:10, padding:'8px 12px', background:'#FFEBEE', borderRadius:7 }}>{err}</div>}
+<button onClick={guardar} style={{ width:'100%', padding:14, borderRadius:10, border:'none', background:AZUL, color:'#fff', fontSize:16, fontWeight:700, cursor:'pointer', marginTop:8 }}>✓ Guardar</button>
+</div>
+```
+
+);
 }
 
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',render);}else{render();}
+// ── MODO ADMIN ────────────────────────────────────────────────────────────────
+function Admin({ data, save, onVolver }) {
+const [tab, setTab] = useState(‘res’);
+const tabs = [
+{id:‘res’,ico:‘📊’,label:‘Resumen’},
+{id:‘mov’,ico:‘📋’,label:‘Movimientos’},
+{id:‘stk’,ico:‘🗂️’,label:‘Stock’},
+{id:‘tar’,ico:‘⚙️’,label:‘Tarifas’},
+];
+return (
+<div style={{ minHeight:‘100vh’, background:’#F4F4F0’, display:‘flex’, flexDirection:‘column’ }}>
+<div style={{ background:’#fff’, borderBottom:‘1px solid #e5e5e5’, padding:‘12px 18px’, display:‘flex’, alignItems:‘center’, gap:12, position:‘sticky’, top:0, zIndex:50 }}>
+<div style={{ width:32, height:32, background:AZUL, borderRadius:7, display:‘flex’, alignItems:‘center’, justifyContent:‘center’, color:’#fff’, fontSize:12, fontWeight:700 }}>MM</div>
+<div style={{ flex:1 }}>
+<div style={{ fontSize:13, fontWeight:600 }}>MM</div>
+<div style={{ fontSize:11, color:’#888’ }}>Panel de administración</div>
+</div>
+<button onClick={onVolver} style={{ padding:‘5px 12px’, borderRadius:6, border:‘1px solid #ddd’, background:’#fff’, fontSize:12, cursor:‘pointer’ }}>← Salir</button>
+</div>
+<div style={{ display:‘flex’, gap:4, padding:‘8px 16px’, background:’#fff’, borderBottom:‘1px solid #e5e5e5’, overflowX:‘auto’ }}>
+{tabs.map(t=>(
+<button key={t.id} onClick={()=>setTab(t.id)} style={{ padding:‘5px 12px’, borderRadius:7, border:‘1px solid #ddd’, background:tab===t.id?AZUL:‘transparent’, color:tab===t.id?’#fff’:’#555’, fontSize:12, cursor:‘pointer’, whiteSpace:‘nowrap’ }}>
+{t.ico} {t.label}
+</button>
+))}
+</div>
+<div style={{ padding:16, maxWidth:800, margin:‘0 auto’, width:‘100%’ }}>
+{tab===‘res’ && <TabResumen data={data} />}
+{tab===‘mov’ && <TabMovimientos data={data} />}
+{tab===‘stk’ && <TabStock data={data} save={save} />}
+{tab===‘tar’ && <TabTarifas data={data} save={save} />}
+</div>
+</div>
+);
+}
+
+// ── TAB RESUMEN ───────────────────────────────────────────────────────────────
+function TabResumen({ data }) {
+const mes = mes0();
+const [y,m] = mes.split(’-’).map(Number);
+const im = new Date(y,m-1,1), fm = new Date(y,m,0), hD = new Date(hoy());
+const pref = mes;
+const diasMes = new Date(y,m,0).getDate();
+
+function calcMP(tipo) {
+const tar = tipo===‘seco’?data.tar.mps:data.tar.mpf;
+const tmi=data.tar.mi||0, tme=data.tar.me||0;
+const regs=(data.mp||[]).filter(r=>r.tipo===tipo&&new Date(r.fi)<=fm&&(!r.fe||new Date(r.fe)>=im));
+let tE=0,tMI=0,tMO=0;
+regs.forEach(r=>{
+const en=new Date(r.fi),sa=r.fe?new Date(r.fe):hD;
+const de=en>im?en:im, ha=sa<hD?sa:hD;
+const ds=de>ha?0:Math.ceil((ha-de)/86400000)+1;
+tE+=ds*(tar||0); tMI+=tmi;
+if(r.fe&&new Date(r.fe)>=im&&new Date(r.fe)<=fm) tMO+=tme;
+});
+return tE+tMI+tMO;
+}
+
+let ptTotal=0;
+for(let d=1;d<=diasMes;d++){
+const fd=y+’-’+String(m).padStart(2,‘0’)+’-’+String(d).padStart(2,‘0’);
+const dD=new Date(fd); if(dD>new Date()) break;
+const stS=(data.pt||[]).filter(mv=>mv.tipo===‘seco’&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0);
+const stF=(data.pt||[]).filter(mv=>mv.tipo===‘frio’&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0);
+ptTotal+=Math.max(0,stS)*(data.tar.pts||0)+Math.max(0,stF)*(data.tar.ptf||0);
+const mH=(data.pt||[]).filter(mv=>mv.fecha===fd);
+ptTotal+=mH.reduce((s,mv)=>s+mv.pal,0)*(data.tar.mi||0);
+}
+
+const cams=(data.pt||[]).filter(mv=>mv.dir===‘out’&&mv.fecha?.startsWith(pref));
+const camTotal=cams.length*(data.tar.cam||0);
+const arcorTotal=calcMP(‘seco’)+calcMP(‘frio’)+ptTotal+camTotal;
+
+let cliTotal=0;
+(data.clientes||[]).forEach(cli=>{
+for(let d=1;d<=diasMes;d++){
+const fd=y+’-’+String(m).padStart(2,‘0’)+’-’+String(d).padStart(2,‘0’);
+const dD=new Date(fd); if(dD>new Date()) break;
+const st=Math.max(0,(data.movCli||[]).filter(mv=>mv.clienteId===cli._id&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0));
+cliTotal+=st*(cli.tarEst||0);
+}
+const movsM=(data.movCli||[]).filter(mv=>mv.clienteId===cli._id&&mv.fecha?.startsWith(pref));
+cliTotal+=movsM.filter(mv=>mv.dir===‘in’).reduce((s,mv)=>s+mv.pal,0)*(cli.tarMI||0);
+cliTotal+=movsM.filter(mv=>mv.dir===‘out’).reduce((s,mv)=>s+mv.pal,0)*(cli.tarME||0);
+});
+
+const granTotal=arcorTotal+cliTotal;
+const stS=Math.max(0,(data.pt||[]).filter(mv=>mv.tipo===‘seco’&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0));
+const stF=Math.max(0,(data.pt||[]).filter(mv=>mv.tipo===‘frio’&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0));
+const mpActivos=(data.mp||[]).filter(r=>!r.fe).length;
+
+return (
+<div>
+<div style={{ background:‘linear-gradient(135deg,#185FA5,#0C447C)’, borderRadius:12, padding:18, marginBottom:14, color:’#fff’ }}>
+<div style={{ fontSize:13, opacity:.85, marginBottom:12 }}>🏢 Total del depósito — {mes}</div>
+<div style={{ fontSize:28, fontWeight:700, marginBottom:3 }}>{$c(granTotal)}</div>
+<div style={{ fontSize:11, opacity:.7, marginBottom:14 }}>Suma de todos los clientes</div>
+<div style={{ display:‘grid’, gridTemplateColumns:‘1fr 1fr’, gap:8 }}>
+{[[‘Arcor’,arcorTotal],[‘Otros clientes’,cliTotal]].map(([l,v])=>(
+<div key={l} style={{ background:‘rgba(255,255,255,.15)’, borderRadius:8, padding:‘9px 11px’ }}>
+<div style={{ fontSize:11, opacity:.8 }}>{l}</div>
+<div style={{ fontSize:15, fontWeight:600 }}>{$c(v)}</div>
+</div>
+))}
+</div>
+</div>
+<div style={{ display:‘grid’, gridTemplateColumns:‘repeat(2,1fr)’, gap:10, marginBottom:14 }}>
+{[[‘Lotes MP activos’,mpActivos,‘lotes’],[‘PT Seco — stock’,stS,‘pallets’],[‘PT Frío — stock’,stF,‘pallets’],[‘Camiones mes’,cams.length,‘cargas’]].map(([l,v,s])=>(
+<div key={l} style={{ background:’#F8F8F6’, borderRadius:8, padding:‘12px 14px’, border:‘1px solid #eee’ }}>
+<div style={{ fontSize:11, color:’#888’, marginBottom:4, textTransform:‘uppercase’, letterSpacing:.3 }}>{l}</div>
+<div style={{ fontSize:20, fontWeight:600 }}>{v}</div>
+<div style={{ fontSize:11, color:’#aaa’ }}>{s}</div>
+</div>
+))}
+</div>
+<Card title="🌽 Arcor">
+<Rr label=“MP Seca” val={$c(calcMP(‘seco’))} />
+<Rr label=“MP Fría” val={$c(calcMP(‘frio’))} />
+<Rr label="Prod. Terminados" val={$c(ptTotal)} />
+<Rr label="Camiones" val={$c(camTotal)} />
+<Rr label="Total Arcor" val={$c(arcorTotal)} grand />
+</Card>
+{(data.clientes||[]).length>0 && (
+<Card title="🏭 Otros clientes">
+{(data.clientes||[]).map(c=>{
+let tot=0;
+for(let d=1;d<=diasMes;d++){
+const fd=y+’-’+String(m).padStart(2,‘0’)+’-’+String(d).padStart(2,‘0’);
+const dD=new Date(fd); if(dD>new Date()) break;
+const st=Math.max(0,(data.movCli||[]).filter(mv=>mv.clienteId===c._id&&new Date(mv.fecha)<=dD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0));
+tot+=st*(c.tarEst||0);
+}
+const movsM=(data.movCli||[]).filter(mv=>mv.clienteId===c._id&&mv.fecha?.startsWith(pref));
+tot+=movsM.filter(mv=>mv.dir===‘in’).reduce((s,mv)=>s+mv.pal,0)*(c.tarMI||0);
+tot+=movsM.filter(mv=>mv.dir===‘out’).reduce((s,mv)=>s+mv.pal,0)*(c.tarME||0);
+return <Rr key={c._id} label={`🏭 ${c.nom}`} val={$c(tot)} />;
+})}
+<Rr label="Total otros clientes" val={$c(cliTotal)} grand />
+</Card>
+)}
+<div style={{ background:’#111’, borderRadius:10, padding:‘14px 18px’, display:‘flex’, justifyContent:‘space-between’, alignItems:‘center’ }}>
+<span style={{ color:’#fff’, fontSize:13, fontWeight:600 }}>💰 Total a facturar</span>
+<span style={{ color:’#4CAF50’, fontSize:20, fontWeight:700 }}>{$c(granTotal)}</span>
+</div>
+</div>
+);
+}
+
+// ── TAB MOVIMIENTOS ───────────────────────────────────────────────────────────
+function TabMovimientos({ data }) {
+const [mes, setMes] = useState(mes0());
+const [y,m] = mes.split(’-’).map(Number);
+const pref = mes;
+const hoyDate = new Date();
+const diasMes = new Date(y,m,0).getDate();
+
+const diasConMovs = [];
+for(let d=1;d<=diasMes;d++){
+const fd=y+’-’+String(m).padStart(2,‘0’)+’-’+String(d).padStart(2,‘0’);
+if(new Date(fd)>hoyDate) break;
+const ptDia=(data.pt||[]).filter(mv=>mv.fecha===fd);
+const mpIn=(data.mp||[]).filter(r=>r.fi===fd);
+const mpOut=(data.mp||[]).filter(r=>r.fe===fd);
+if(ptDia.length||mpIn.length||mpOut.length){
+diasConMovs.push({fd,ptDia,mpIn,mpOut});
+}
+}
+
+const totMpIn=diasConMovs.reduce((s,d)=>s+d.mpIn.length,0);
+const totMpOut=diasConMovs.reduce((s,d)=>s+d.mpOut.length,0);
+const totPtIn=diasConMovs.reduce((s,d)=>s+d.ptDia.filter(mv=>mv.dir===‘in’).reduce((a,mv)=>a+mv.pal,0),0);
+const totPtOut=diasConMovs.reduce((s,d)=>s+d.ptDia.filter(mv=>mv.dir===‘out’).reduce((a,mv)=>a+mv.pal,0),0);
+
+return (
+<div>
+<div style={{ display:‘flex’, gap:8, alignItems:‘center’, marginBottom:14 }}>
+<label style={{ fontSize:12, fontWeight:500 }}>Mes:</label>
+<input type=“month” value={mes} onChange={e=>setMes(e.target.value)}
+style={{ padding:‘6px 10px’, border:‘1px solid #ddd’, borderRadius:6, fontSize:13, background:’#fff’ }} />
+</div>
+
+```
+<Card title="📊 Totales del mes">
+<div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+{[
+['MP ingresados',totMpIn+' lotes','#2E7D32'],
+['MP egresados',totMpOut+' lotes','#C62828'],
+['PT entró',totPtIn+' pallets','#185FA5'],
+['PT salió',totPtOut+' pallets','#E65100'],
+].map(([l,v,c])=>(
+<div key={l} style={{ background:'#F8F8F6', borderRadius:8, padding:'10px 12px', border:'1px solid #eee' }}>
+<div style={{ fontSize:11, color:'#888', marginBottom:3 }}>{l}</div>
+<div style={{ fontSize:18, fontWeight:700, color:c }}>{v}</div>
+</div>
+))}
+</div>
+</Card>
+
+{diasConMovs.length===0 && <Card><div style={{ color:'#bbb', fontSize:13, textAlign:'center', padding:20 }}>Sin movimientos este mes.</div></Card>}
+
+{diasConMovs.map(d=>(
+<Card key={d.fd}>
+<div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12 }}>
+<div style={{ fontWeight:700, fontSize:15 }}>{d.fd}</div>
+<div style={{ fontSize:12, color:'#888' }}>{d.ptDia.length+d.mpIn.length+d.mpOut.length} movimientos</div>
+</div>
+
+{(d.mpIn.length>0||d.mpOut.length>0) && (
+<div style={{ marginBottom:10 }}>
+<div style={{ fontSize:11, color:'#888', fontWeight:600, marginBottom:6, textTransform:'uppercase' }}>Materia Prima</div>
+{d.mpIn.map(r=>(
+<div key={r._id} style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 10px', background:'#E8F5E9', borderRadius:8, marginBottom:6 }}>
+<span style={{ fontSize:18 }}>📥</span>
+<div style={{ flex:1 }}>
+<div style={{ fontSize:13, fontWeight:600 }}>{r.nom} <span style={{ color:'#888', fontWeight:400 }}>[{r.cod||'—'}]</span></div>
+<div style={{ fontSize:11, color:'#555' }}>OC: {r.oc} · {r.tipo==='frio'?'❄️ Fría':'☀️ Seca'}{r.zona?' · '+r.zona:''}{r.fila?' fila '+r.fila:''}</div>
+</div>
+<span style={{ fontSize:12, fontWeight:700, color:'#2E7D32' }}>Ingresó</span>
+</div>
+))}
+{d.mpOut.map(r=>(
+<div key={r._id} style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 10px', background:'#FFEBEE', borderRadius:8, marginBottom:6 }}>
+<span style={{ fontSize:18 }}>📤</span>
+<div style={{ flex:1 }}>
+<div style={{ fontSize:13, fontWeight:600 }}>{r.nom} <span style={{ color:'#888', fontWeight:400 }}>[{r.cod||'—'}]</span></div>
+<div style={{ fontSize:11, color:'#555' }}>OC: {r.oc} · {r.tipo==='frio'?'❄️ Fría':'☀️ Seca'}</div>
+</div>
+<span style={{ fontSize:12, fontWeight:700, color:'#C62828' }}>Egresó</span>
+</div>
+))}
+</div>
+)}
+
+{d.ptDia.length>0 && (
+<div>
+<div style={{ fontSize:11, color:'#888', fontWeight:600, marginBottom:6, textTransform:'uppercase' }}>Producto Terminado</div>
+{d.ptDia.map(mv=>(
+<div key={mv._id} style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 10px', background:mv.dir==='in'?'#E8F5E9':'#FFEBEE', borderRadius:8, marginBottom:6 }}>
+<span style={{ fontSize:18 }}>{mv.dir==='in'?'📥':'📤'}</span>
+<div style={{ flex:1 }}>
+<div style={{ fontSize:13, fontWeight:600 }}>{mv.pal} pallets — {mv.tipo==='frio'?'❄️ Frío':'☀️ Seco'}</div>
+<div style={{ fontSize:11, color:'#555' }}>Remito: {mv.remito||'—'}{mv.oc?' · OC: '+mv.oc:''}</div>
+</div>
+<span style={{ fontSize:14, fontWeight:700, color:mv.dir==='in'?'#2E7D32':'#C62828' }}>{mv.dir==='in'?'+':'-'}{mv.pal}</span>
+</div>
+))}
+</div>
+)}
+</Card>
+))}
+</div>
+```
+
+);
+}
+
+// ── TAB STOCK ─────────────────────────────────────────────────────────────────
+function TabStock({ data, save }) {
+const hD = new Date(hoy());
+const mpSeco=(data.mp||[]).filter(r=>r.tipo===‘seco’&&!r.fe);
+const mpFrio=(data.mp||[]).filter(r=>r.tipo===‘frio’&&!r.fe);
+const stS=Math.max(0,(data.pt||[]).filter(mv=>mv.tipo===‘seco’&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0));
+const stF=Math.max(0,(data.pt||[]).filter(mv=>mv.tipo===‘frio’&&new Date(mv.fecha)<=hD).reduce((s,mv)=>s+(mv.dir===‘in’?mv.pal:-mv.pal),0));
+
+function egresar(id) {
+const fe=prompt(‘Fecha de egreso (AAAA-MM-DD):’,hoy()); if(!fe) return;
+save({…data,mp:data.mp.map(r=>r._id===id?{…r,fe,movs:[…(r.movs||[]),{fe}]}:r)});
+}
+function elimMP(id) { if(confirm(’¿Eliminar este lote?’)) save({…data,mp:data.mp.filter(x=>x._id!==id)}); }
+function elimPT(id) { if(confirm(’¿Eliminar?’)) save({…data,pt:data.pt.filter(x=>x._id!==id)}); }
+
+return (
+<div>
+<Card title={`📦 MP Seca — ${mpSeco.length} lotes`}>
+{mpSeco.length===0?<div style={{ color:’#bbb’,fontSize:13 }}>Sin lotes activos</div>:mpSeco.map(r=>(
+<div key={r._id} style={{ background:’#F8F8F6’, borderRadius:8, padding:‘12px 14px’, marginBottom:10, border:‘1px solid #eee’ }}>
+<div style={{ fontWeight:600, fontSize:13 }}>{r.nom} <span style={{ fontSize:11, color:’#aaa’ }}>[{r.cod||’—’}]</span></div>
+<div style={{ fontSize:12, color:’#888’, marginBottom:8 }}>OC: {r.oc} · Ingresó: {r.fi}{r.zona?’ · ‘+r.zona:’’}{r.fila?’ · Fila ‘+r.fila:’’}</div>
+<div style={{ display:‘flex’, gap:8 }}>
+<button onClick={()=>egresar(r._id)} style={{ padding:‘6px 12px’, borderRadius:7, border:‘1px solid #ddd’, background:’#fff’, fontSize:12, cursor:‘pointer’ }}>↩ Egresar</button>
+<button onClick={()=>elimMP(r._id)} style={{ padding:‘6px 12px’, borderRadius:7, border:‘1px solid #ffcdd2’, background:’#fff’, color:’#c62828’, fontSize:12, cursor:‘pointer’ }}>🗑️ Eliminar</button>
+</div>
+</div>
+))}
+</Card>
+<Card title={`❄️ MP Fría — ${mpFrio.length} lotes`}>
+{mpFrio.length===0?<div style={{ color:’#bbb’,fontSize:13 }}>Sin lotes activos</div>:mpFrio.map(r=>(
+<div key={r._id} style={{ background:’#F8F8F6’, borderRadius:8, padding:‘12px 14px’, marginBottom:10, border:‘1px solid #eee’ }}>
+<div style={{ fontWeight:600, fontSize:13 }}>{r.nom} <span style={{ fontSize:11, color:’#aaa’ }}>[{r.cod||’—’}]</span></div>
+<div style={{ fontSize:12, color:’#888’, marginBottom:8 }}>OC: {r.oc} · Ingresó: {r.fi}{r.zona?’ · ‘+r.zona:’’}{r.fila?’ · Fila ‘+r.fila:’’}</div>
+<div style={{ display:‘flex’, gap:8 }}>
+<button onClick={()=>egresar(r._id)} style={{ padding:‘6px 12px’, borderRadius:7, border:‘1px solid #ddd’, background:’#fff’, fontSize:12, cursor:‘pointer’ }}>↩ Egresar</button>
+<button onClick={()=>elimMP(r._id)} style={{ padding:‘6px 12px’, borderRadius:7, border:‘1px solid #ffcdd2’, background:’#fff’, color:’#c62828’, fontSize:12, cursor:‘pointer’ }}>🗑️ Eliminar</button>
+</div>
+</div>
+))}
+</Card>
+<Card title={`📬 PT Seco — Stock: ${stS} pallets`}>
+{(data.pt||[]).filter(mv=>mv.tipo===‘seco’).sort((a,b)=>b.fecha?.localeCompare(a.fecha)).slice(0,15).map(mv=>(
+<div key={mv._id} style={{ display:‘flex’, justifyContent:‘space-between’, alignItems:‘center’, padding:‘8px 0’, borderBottom:‘1px solid #f0f0f0’, fontSize:13 }}>
+<div>
+<span style={{ fontWeight:600, color:mv.dir===‘in’?’#2E7D32’:’#C62828’ }}>{mv.dir===‘in’?‘↓ Ingreso’:‘↑ Egreso’}</span>
+<span style={{ color:’#888’, marginLeft:8 }}>{mv.pal} p. · {mv.fecha}</span>
+</div>
+<button onClick={()=>elimPT(mv._id)} style={{ padding:‘3px 8px’, border:‘1px solid #ffcdd2’, background:’#fff’, color:’#c62828’, borderRadius:5, cursor:‘pointer’, fontSize:11 }}>🗑️</button>
+</div>
+))}
+</Card>
+<Card title={`❄️ PT Frío — Stock: ${stF} pallets`}>
+{(data.pt||[]).filter(mv=>mv.tipo===‘frio’).sort((a,b)=>b.fecha?.localeCompare(a.fecha)).slice(0,15).map(mv=>(
+<div key={mv._id} style={{ display:‘flex’, justifyContent:‘space-between’, alignItems:‘center’, padding:‘8px 0’, borderBottom:‘1px solid #f0f0f0’, fontSize:13 }}>
+<div>
+<span style={{ fontWeight:600, color:mv.dir===‘in’?’#2E7D32’:’#C62828’ }}>{mv.dir===‘in’?‘↓ Ingreso’:‘↑ Egreso’}</span>
+<span style={{ color:’#888’, marginLeft:8 }}>{mv.pal} p. · {mv.fecha}</span>
+</div>
+<button onClick={()=>elimPT(mv._id)} style={{ padding:‘3px 8px’, border:‘1px solid #ffcdd2’, background:’#fff’, color:’#c62828’, borderRadius:5, cursor:‘pointer’, fontSize:11 }}>🗑️</button>
+</div>
+))}
+</Card>
+</div>
+);
+}
+
+// ── TAB TARIFAS ───────────────────────────────────────────────────────────────
+function TabTarifas({ data, save }) {
+// Usar estado separado por campo para evitar re-renders que cierran el teclado
+const [mps, setMps] = useState(String(data.tar.mps||’’));
+const [mpf, setMpf] = useState(String(data.tar.mpf||’’));
+const [pts, setPts] = useState(String(data.tar.pts||’’));
+const [ptf, setPtf] = useState(String(data.tar.ptf||’’));
+const [mi, setMi] = useState(String(data.tar.mi||’’));
+const [me, setMe] = useState(String(data.tar.me||’’));
+const [cam, setCam] = useState(String(data.tar.cam||’’));
+const [nuevoPin, setNuevoPin] = useState(’’);
+const [ok, setOk] = useState(false);
+
+// Gestión de clientes
+const [nomCli, setNomCli] = useState(’’);
+const [descCli, setDescCli] = useState(’’);
+const [tarEstCli, setTarEstCli] = useState(’’);
+const [tarMiCli, setTarMiCli] = useState(’’);
+const [tarMeCli, setTarMeCli] = useState(’’);
+const [editCliId, setEditCliId] = useState(null);
+
+function guardar() {
+const pin = nuevoPin ? (nuevoPin.length<4||isNaN(nuevoPin)?null:nuevoPin) : (data.tar.pin||PIN);
+if (nuevoPin && !pin) { alert(‘PIN 4-6 dígitos’); return; }
+const tar = { mps:parseFloat(mps)||0, mpf:parseFloat(mpf)||0, pts:parseFloat(pts)||0, ptf:parseFloat(ptf)||0, mi:parseFloat(mi)||0, me:parseFloat(me)||0, cam:parseFloat(cam)||0, pin };
+save({…data, tar});
+setOk(true); setTimeout(()=>setOk(false),2500);
+}
+
+function abrirEditCli(c) {
+setEditCliId(c._id); setNomCli(c.nom||’’); setDescCli(c.desc||’’);
+setTarEstCli(String(c.tarEst||’’)); setTarMiCli(String(c.tarMI||’’)); setTarMeCli(String(c.tarME||’’));
+}
+function limpiarCli() { setEditCliId(null); setNomCli(’’); setDescCli(’’); setTarEstCli(’’); setTarMiCli(’’); setTarMeCli(’’); }
+
+function guardarCli() {
+if (!nomCli.trim()) { alert(‘Ingresá el nombre’); return; }
+const c = { nom:nomCli.trim(), desc:descCli.trim(), tarEst:parseFloat(tarEstCli)||0, tarMI:parseFloat(tarMiCli)||0, tarME:parseFloat(tarMeCli)||0 };
+if (editCliId) {
+save({…data, clientes:data.clientes.map(x=>x._id===editCliId?{…x,…c}:x)});
+} else {
+save({…data, clientes:[…data.clientes,{_id:uid(),…c}]});
+}
+limpiarCli();
+}
+function eliminarCli(id) { if(confirm(’¿Eliminar este cliente?’)) save({…data,clientes:data.clientes.filter(x=>x._id!==id)}); }
+
+return (
+<div>
+<Card title="📊 Estadía Arcor — tarifa diaria ($)">
+<G2>
+<Fg label="MP Seca / lote"><Inp value={mps} onChange={e=>setMps(e.target.value)} type=“number” placeholder=“0.00” /></Fg>
+<Fg label="MP Fría / lote"><Inp value={mpf} onChange={e=>setMpf(e.target.value)} type=“number” placeholder=“0.00” /></Fg>
+</G2>
+<G2>
+<Fg label="PT Seco / pallet"><Inp value={pts} onChange={e=>setPts(e.target.value)} type=“number” placeholder=“0.00” /></Fg>
+<Fg label="PT Frío / pallet"><Inp value={ptf} onChange={e=>setPtf(e.target.value)} type=“number” placeholder=“0.00” /></Fg>
+</G2>
+</Card>
+<Card title="🔄 Movimientos Arcor — tarifa por pallet ($)">
+<G2>
+<Fg label="Ingreso"><Inp value={mi} onChange={e=>setMi(e.target.value)} type=“number” placeholder=“0.00” /></Fg>
+<Fg label="Egreso"><Inp value={me} onChange={e=>setMe(e.target.value)} type=“number” placeholder=“0.00” /></Fg>
+</G2>
+</Card>
+<Card title="🚛 Tarifa por camión PT">
+<Fg label="Por camión cargado"><Inp value={cam} onChange={e=>setCam(e.target.value)} type=“number” placeholder=“0.00” /></Fg>
+</Card>
+<Card title="🔐 PIN de administrador">
+<Fg label="Nuevo PIN (vacío = no cambia)"><Inp value={nuevoPin} onChange={e=>setNuevoPin(e.target.value)} type=“password” placeholder=”••••” /></Fg>
+</Card>
+<button onClick={guardar} style={{ width:‘100%’, padding:14, borderRadius:10, border:‘none’, background:AZUL, color:’#fff’, fontSize:16, fontWeight:700, cursor:‘pointer’ }}>Guardar tarifas Arcor</button>
+{ok && <div style={{ color:’#2E7D32’, textAlign:‘center’, marginTop:8, fontSize:13 }}>✓ Guardado</div>}
+
+```
+{/* GESTIÓN DE CLIENTES */}
+<div style={{ marginTop:20 }}>
+<Card title="🏭 Clientes">
+{(data.clientes||[]).length===0 && <div style={{ color:'#bbb',fontSize:13,marginBottom:12 }}>Sin clientes agregados</div>}
+{(data.clientes||[]).map(c=>(
+<div key={c._id} style={{ background:'#F8F8F6',borderRadius:8,padding:'10px 14px',marginBottom:8,border:'1px solid #eee' }}>
+<div style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-start' }}>
+<div>
+<div style={{ fontWeight:600,fontSize:13 }}>🏭 {c.nom}</div>
+{c.desc && <div style={{ fontSize:12,color:'#888' }}>{c.desc}</div>}
+<div style={{ fontSize:11,color:'#888',marginTop:3 }}>Est: ${c.tarEst||0}/p/día · Mov: ${c.tarMI||0} in / ${c.tarME||0} out</div>
+</div>
+<div style={{ display:'flex',gap:6 }}>
+<button onClick={()=>abrirEditCli(c)} style={{ padding:'5px 10px',borderRadius:6,border:'1px solid #ddd',background:'#fff',fontSize:12,cursor:'pointer' }}>✏️</button>
+<button onClick={()=>eliminarCli(c._id)} style={{ padding:'5px 10px',borderRadius:6,border:'1px solid #ffcdd2',background:'#fff',color:'#c62828',fontSize:12,cursor:'pointer' }}>🗑️</button>
+</div>
+</div>
+</div>
+))}
+
+{/* Formulario nuevo/editar cliente */}
+<div style={{ background:'#F0F4F9',borderRadius:8,padding:14,border:'1px solid #B5D4F4',marginTop:8 }}>
+<div style={{ fontSize:12,fontWeight:600,color:AZUL,marginBottom:10 }}>{editCliId?'✏️ Editar cliente':'➕ Nuevo cliente'}</div>
+<G2>
+<Fg label="Nombre *"><Inp value={nomCli} onChange={e=>setNomCli(e.target.value)} placeholder="Ej: Netafim" /></Fg>
+<Fg label="Descripción"><Inp value={descCli} onChange={e=>setDescCli(e.target.value)} placeholder="Ej: Mangueras" /></Fg>
+</G2>
+<div style={{ fontSize:11,color:'#666',fontWeight:600,marginBottom:8,textTransform:'uppercase' }}>Tarifas ($)</div>
+<G2>
+<Fg label="Estadía / pallet / día"><Inp value={tarEstCli} onChange={e=>setTarEstCli(e.target.value)} type="number" placeholder="0.00" /></Fg>
+<Fg label="Mov. ingreso / pallet"><Inp value={tarMiCli} onChange={e=>setTarMiCli(e.target.value)} type="number" placeholder="0.00" /></Fg>
+</G2>
+<Fg label="Mov. egreso / pallet"><Inp value={tarMeCli} onChange={e=>setTarMeCli(e.target.value)} type="number" placeholder="0.00" /></Fg>
+<div style={{ display:'flex',gap:8 }}>
+<button onClick={guardarCli} style={{ flex:1,padding:12,borderRadius:8,border:'none',background:AZUL,color:'#fff',fontSize:14,fontWeight:600,cursor:'pointer' }}>
+{editCliId?'Guardar cambios':'Agregar cliente'}
+</button>
+{editCliId && <button onClick={limpiarCli} style={{ padding:12,borderRadius:8,border:'1px solid #ddd',background:'#fff',fontSize:14,cursor:'pointer' }}>Cancelar</button>}
+</div>
+</div>
+</Card>
+</div>
+</div>
+```
+
+);
+}
+
+// ── APP ───────────────────────────────────────────────────────────────────────
+function App() {
+const [pantalla, setPantalla] = useState(‘inicio’);
+const [data, save] = useData();
+
+return (
+<>
+<style>{css}</style>
+<div style={{ position:‘fixed’, bottom:12, right:16, fontSize:13, color:AZUL, zIndex:9999, pointerEvents:‘none’, fontStyle:‘italic’, fontWeight:600, background:‘rgba(255,255,255,0.9)’, padding:‘4px 10px’, borderRadius:20 }}>© Marcos Manchón</div>
+{pantalla===‘inicio’ && <Inicio onOperario={()=>setPantalla(‘operario’)} onAdmin={()=>setPantalla(‘pin’)} />}
+{pantalla===‘pin’ && <PinScreen pinCorrecto={data.tar.pin||PIN} onOk={()=>setPantalla(‘admin’)} onVolver={()=>setPantalla(‘inicio’)} />}
+{pantalla===‘operario’ && <Operario data={data} save={save} onVolver={()=>setPantalla(‘inicio’)} />}
+{pantalla===‘admin’ && <Admin data={data} save={save} onVolver={()=>setPantalla(‘inicio’)} />}
+</>
+);
+}
+
+ReactDOM.createRoot(document.getElementById(“root”)).render(<App />);
+
 </script>
 </body>
 </html>
