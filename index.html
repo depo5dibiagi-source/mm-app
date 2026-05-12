@@ -1212,8 +1212,9 @@ sv(); renderTab();
 }
 
 // ===== ARRANCAR =====
-window.addEventListener(‘DOMContentLoaded’, function() { render(); });
+if(document.readyState===‘loading’){document.addEventListener(‘DOMContentLoaded’,render);}else{render();}
 </script>
 
 </body>
 </html>
+
